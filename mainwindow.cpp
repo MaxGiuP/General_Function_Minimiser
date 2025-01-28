@@ -20,9 +20,34 @@ MainWindow::~MainWindow()
 
 const double phi = 2 - (1 + sqrt(5)) / 2;
 
+double evaluateExpression(QString f);
+
 double func(double x, QString f)
 {
     f.replace("x", QString::number(x));
+
+    int startPos = f.indexOf("(");
+    while (startPos != -1) {
+        int endPos = f.indexOf(")", startPos);
+        if (endPos == -1) {
+            qWarning() << "Mismatched parentheses!";
+            return 0;
+        }
+
+        QString subExpr = f.mid(startPos + 1, endPos - startPos - 1);
+
+        double result = evaluateExpression(subExpr);
+
+        f.replace(startPos, endPos - startPos + 1, QString::number(result));
+
+        startPos = f.indexOf("(");
+    }
+
+    return evaluateExpression(f);
+}
+
+double evaluateExpression(QString f)
+{
     QRegularExpression regExp("(\\d*\\.?\\d+|[+\\-*/^()])");
     QRegularExpressionMatchIterator iter = regExp.globalMatch(f);
     QStringList tokens;
@@ -95,7 +120,7 @@ void MainWindow::on_pBGRCalc_clicked()
 
     QString inp = ui->leFunc->text();
 
-    while (x3 - x1 > tol && i < 20)
+    while (x3 - x1 > tol)
     {
         if (x3-x2 > x2-x1)
         {

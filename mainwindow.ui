@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>755</width>
-    <height>559</height>
+    <width>478</width>
+    <height>404</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,20 +18,29 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>0</y>
-      <width>741</width>
-      <height>511</height>
+      <y>80</y>
+      <width>461</width>
+      <height>251</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
-      <string>Single Variable Optimiser</string>
+      <string>Golden Section Search</string>
      </attribute>
      <widget class="QWidget" name="verticalLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>120</x>
-        <y>40</y>
+        <x>70</x>
+        <y>10</y>
         <width>129</width>
         <height>151</height>
        </rect>
@@ -46,30 +55,14 @@
        <item>
         <widget class="QLineEdit" name="lEx3"/>
        </item>
-       <item>
-        <widget class="QLineEdit" name="leTol"/>
-       </item>
-       <item>
-        <widget class="QLineEdit" name="leFunc"/>
-       </item>
       </layout>
-     </widget>
-     <widget class="QLineEdit" name="lEx4">
-      <property name="geometry">
-       <rect>
-        <x>350</x>
-        <y>90</y>
-        <width>158</width>
-        <height>24</height>
-       </rect>
-      </property>
      </widget>
      <widget class="QWidget" name="verticalLayoutWidget_2">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>30</y>
-        <width>71</width>
+        <x>10</x>
+        <y>10</y>
+        <width>53</width>
         <height>151</height>
        </rect>
       </property>
@@ -113,47 +106,103 @@
          </property>
         </widget>
        </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="verticalLayoutWidget_5">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>40</y>
+        <width>160</width>
+        <height>80</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
-        <widget class="QLabel" name="label_3">
+        <widget class="QLabel" name="label_9">
          <property name="text">
-          <string>Tolerance</string>
+          <string>Solution:</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+          <set>Qt::AlignmentFlag::AlignCenter</set>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_8">
+        <widget class="QLineEdit" name="leSol"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pBGRCalc">
          <property name="text">
-          <string>Function</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+          <string>Golden Ratio Search</string>
          </property>
         </widget>
        </item>
       </layout>
      </widget>
-     <widget class="QPushButton" name="pBGRCalc">
-      <property name="geometry">
-       <rect>
-        <x>370</x>
-        <y>130</y>
-        <width>121</width>
-        <height>24</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Golden Ratio Search</string>
-      </property>
-     </widget>
     </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
-      <string>Tab 2</string>
+      <string>Inverse Parabolic Interpolation</string>
      </attribute>
     </widget>
+    <widget class="QWidget" name="tab_7">
+     <attribute name="title">
+      <string>Newton's Method</string>
+     </attribute>
+    </widget>
+   </widget>
+   <widget class="QLineEdit" name="leFunc">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>30</y>
+      <width>127</width>
+      <height>24</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_8">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>0</y>
+      <width>49</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Function</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="leTol">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>30</y>
+      <width>127</width>
+      <height>24</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>0</y>
+      <width>51</width>
+      <height>33</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Tolerance</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+    </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -162,7 +211,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>755</width>
+     <width>478</width>
      <height>21</height>
     </rect>
    </property>
