@@ -151,19 +151,84 @@ double GoldenSection(double x1, double x2, double x3, QString inp, double tol)
 
 double Parabolic(double x1, double x2, double x3, QString inp, double tol)
 {
+    double f1, f2, f3;
+    double x_new;
+    int max_iterations = 1000;
+    int iteration = 0;
 
-    return 0;
+    while (std::abs(x3 - x1) > tol)
+    {
+        f1 = func(x1, inp);
+        f2 = func(x2, inp);
+        f3 = func(x3, inp);
+
+        double numerator = (x2 - x1) * (x2 - x1) * (f2 - f3) - (x2 - x3) * (x2 - x3) * (f2 - f1);
+        double denominator = (x2 - x1) * (f2 - f3) - (x2 - x3) * (f2 - f1);
+
+        if (std::abs(denominator) < 1e-10) { // Avoid division by zero
+            qDebug() << "Denominator too close to zero. Stopping early.";
+            return x2;
+        }
+
+        x_new = x2 - 0.5 * (numerator / denominator);
+
+        if (x_new > x2) {
+            if (func(x_new, inp) < f2) {
+                x1 = x2;
+                x2 = x_new;
+            } else {
+                x3 = x_new;
+            }
+        } else {
+            if (func(x_new, inp) < f2) {
+                x3 = x2;
+                x2 = x_new;
+            } else {
+                x1 = x_new;
+            }
+        }
+
+        iteration++;
+
+        if (iteration > max_iterations) {
+            qDebug() << "Maximum iterations reached in Inverse Parabolic Search.";
+            return x2;
+        }
+
+    }
+
+    return x2;
 }
 
-double Newton(double x1, double x2, double x3, QString inp, double tol)
+double Newton(double x1, QString inp, double tol)
 {
+    double fp, fpp;
+    double h = 0.01;
+    double x, temp;
 
-    return 0;
+    x = x1;
+    fp = (func(x + h, inp) - func(x - h, inp)) / (2.0 * h);
+    fpp = (func(x + h, inp) - 2.0 * func(x, inp) + func(x - h, inp)) / (h * h);
+
+    temp = 10;
+    while (std::abs(x - temp) > tol)
+    {
+        fp = (func(x + h, inp) - func(x - h, inp)) / (2.0 * h);
+        fpp = (func(x + h, inp) - 2.0 * func(x, inp) + func(x - h, inp)) / (h * h);
+
+        qDebug() << x;
+        temp = x;
+        x = x - (fp/fpp);
+    }
+
+    qDebug() << "End newton";
+
+    return x;
 }
 
 void MainWindow::on_pBGRCalc_clicked()
 {
-    double x1, x2, x3, tol, answer;
+    double x1, x2, x3, tol;
     int i = 0;
 
     tol = ui->leTol->text().toDouble();
@@ -173,17 +238,18 @@ void MainWindow::on_pBGRCalc_clicked()
 
     QString inp = ui->leFunc->text();
 
-    if (ui->rbtnGolden->isEnabled() == true)
+    if (ui->rbtnGolden->isChecked() == true)
     {
         ui->leSol->setText(QString::number(GoldenSection(x1, x2, x3, inp, tol)));
     }
-    else if(ui->rbtnParabolic->isEnabled() == true)
+    else if(ui->rbtnParabolic->isChecked() == true)
     {
         ui->leSol->setText(QString::number(Parabolic(x1, x2, x3, inp, tol)));
     }
-    else
+    else if(ui->rbtnNewton->isChecked() == true)
     {
-        ui->leSol->setText(QString::number(Newton(x1, x2, x3, inp, tol)));
+        ui->leSol->setText(QString::number(Newton(x1, inp, tol)));
+        qDebug() << "Newton's";
     }
 
     qDebug() << "DONE";
