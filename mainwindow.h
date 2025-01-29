@@ -20,6 +20,12 @@ public:
 private slots:
     void on_pBGRCalc_clicked();
 
+    void on_rbtnNewton_clicked();
+
+    void on_rbtnParabolic_clicked();
+
+    void on_rbtnGolden_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

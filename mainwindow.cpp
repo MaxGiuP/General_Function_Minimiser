@@ -108,19 +108,12 @@ double evaluateExpression(QString f)
     return result;
 }
 
-void MainWindow::on_pBGRCalc_clicked()
+double GoldenSection(double x1, double x2, double x3, QString inp, double tol)
 {
-    double x1, x2, x3, x4, tol;
+    double x4;
     int i = 0;
 
-    tol = ui->leTol->text().toDouble();
-    x1 = ui->lEx1->text().toDouble();
-    x2 = ui->lEx2->text().toDouble();
-    x3 = ui->lEx3->text().toDouble();
-
-    QString inp = ui->leFunc->text();
-
-    while (x3 - x1 > tol)
+    while (x3 - x1 > tol && i < 100000)
     {
         if (x3-x2 > x2-x1)
         {
@@ -150,18 +143,73 @@ void MainWindow::on_pBGRCalc_clicked()
                 x1 = x4;
             }
         }
-        qDebug() << i << " x1 is " << x1;
-        qDebug() << i << " x2 is " << x2;
-        qDebug() << i << " x3 is " << x3;
-        qDebug() << i << " x4 is " << x4;
-        qDebug() << i << " average of x1 and x3 is " << (x1 + x3) / 2.0;
-
         i++;
     }
 
-    ui->leSol->setText(QString::number((x1+x3) / 2.0));
+    return (x1+x3) / 2.0;
+}
+
+double Parabolic(double x1, double x2, double x3, QString inp, double tol)
+{
+
+    return 0;
+}
+
+double Newton(double x1, double x2, double x3, QString inp, double tol)
+{
+
+    return 0;
+}
+
+void MainWindow::on_pBGRCalc_clicked()
+{
+    double x1, x2, x3, tol, answer;
+    int i = 0;
+
+    tol = ui->leTol->text().toDouble();
+    x1 = ui->leX1->text().toDouble();
+    x2 = ui->leX2->text().toDouble();
+    x3 = ui->leX3->text().toDouble();
+
+    QString inp = ui->leFunc->text();
+
+    if (ui->rbtnGolden->isEnabled() == true)
+    {
+        ui->leSol->setText(QString::number(GoldenSection(x1, x2, x3, inp, tol)));
+    }
+    else if(ui->rbtnParabolic->isEnabled() == true)
+    {
+        ui->leSol->setText(QString::number(Parabolic(x1, x2, x3, inp, tol)));
+    }
+    else
+    {
+        ui->leSol->setText(QString::number(Newton(x1, x2, x3, inp, tol)));
+    }
 
     qDebug() << "DONE";
 
+}
+
+
+void MainWindow::on_rbtnNewton_clicked()
+{
+    ui->leX3->setEnabled(false);
+    ui->leX2->setEnabled(false);
+    ui->leX3->setText("");
+    ui->leX2->setText("");
+}
+
+
+void MainWindow::on_rbtnParabolic_clicked()
+{
+    ui->leX3->setEnabled(true);
+    ui->leX2->setEnabled(true);
+}
+
+
+void MainWindow::on_rbtnGolden_clicked()
+{
+    ui->leX3->setEnabled(true);
+    ui->leX2->setEnabled(true);
 }
 
