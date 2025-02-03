@@ -207,9 +207,6 @@ double Newton(double x1, QString inp, double tol)
     double x, temp;
 
     x = x1;
-    fp = (func(x + h, inp) - func(x - h, inp)) / (2.0 * h);
-    fpp = (func(x + h, inp) - 2.0 * func(x, inp) + func(x - h, inp)) / (h * h);
-
     temp = 10;
     while (std::abs(x - temp) > tol)
     {
@@ -261,8 +258,6 @@ void MainWindow::on_rbtnNewton_clicked()
 {
     ui->leX3->setEnabled(false);
     ui->leX2->setEnabled(false);
-    ui->leX3->setText("");
-    ui->leX2->setText("");
 }
 
 
