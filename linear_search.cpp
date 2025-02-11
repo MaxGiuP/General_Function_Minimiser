@@ -1,19 +1,19 @@
-#include "mainwindow.h"
-#include "./ui_mainwindow.h"
+#include "linear_search.h"
+#include "ui_linear_search.h"
 #include <qmessagebox.h>
 #include <QString>
 #include <QDebug>
 #include <QRegularExpression>
 #include <cmath>
 
-MainWindow::MainWindow(QWidget *parent)
+linear_search::linear_search(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::linear_search)
 {
     ui->setupUi(this);
 }
 
-MainWindow::~MainWindow()
+linear_search::~linear_search()
 {
     delete ui;
 }
@@ -226,7 +226,7 @@ double Newton(double x1, QString inp, double tol)
     return x;
 }
 
-void MainWindow::on_pBGRCalc_clicked()
+void linear_search::on_pBGRCalc_clicked()
 {
     double x1, x2, x3, tol;
     int i = 0;
@@ -257,7 +257,7 @@ void MainWindow::on_pBGRCalc_clicked()
 }
 
 
-void MainWindow::on_rbtnNewton_clicked()
+void linear_search::on_rbtnNewton_clicked()
 {
     ui->leX3->setEnabled(false);
     ui->leX2->setEnabled(false);
@@ -266,14 +266,14 @@ void MainWindow::on_rbtnNewton_clicked()
 }
 
 
-void MainWindow::on_rbtnParabolic_clicked()
+void linear_search::on_rbtnParabolic_clicked()
 {
     ui->leX3->setEnabled(true);
     ui->leX2->setEnabled(true);
 }
 
 
-void MainWindow::on_rbtnGolden_clicked()
+void linear_search::on_rbtnGolden_clicked()
 {
     ui->leX3->setEnabled(true);
     ui->leX2->setEnabled(true);

@@ -1,21 +1,21 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef LINEAR_SEARCH_H
+#define LINEAR_SEARCH_H
 
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
-class MainWindow;
+class linear_search;
 }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
+class linear_search : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    explicit linear_search(QWidget *parent = nullptr);
+    ~linear_search();
 
 private slots:
     void on_pBGRCalc_clicked();
@@ -27,6 +27,6 @@ private slots:
     void on_rbtnGolden_clicked();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::linear_search *ui;
 };
-#endif // MAINWINDOW_H
+#endif // LINEAR_SEARCH_H
