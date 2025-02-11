@@ -24,6 +24,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         main_menu.h main_menu.cpp main_menu.ui
+        multi_variable.h multi_variable.cpp multi_variable.ui
 
 
 

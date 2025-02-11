@@ -1,5 +1,6 @@
 #include "linear_search.h"
 #include "ui_linear_search.h"
+#include "main_menu.h"
 #include <qmessagebox.h>
 #include <QString>
 #include <QDebug>
@@ -108,12 +109,12 @@ double evaluateExpression(QString f)
     return result;
 }
 
-double GoldenSection(double x1, double x2, double x3, QString inp, double tol)
+double GoldenSection(double x1, double x2, double x3, QString inp, double tol, int max)
 {
     double x4;
     int i = 0;
 
-    while (x3 - x1 > tol && i < 100000)
+    while (x3 - x1 > tol && i < max)
     {
         if (x3-x2 > x2-x1)
         {
@@ -149,14 +150,14 @@ double GoldenSection(double x1, double x2, double x3, QString inp, double tol)
     return (x1+x3) / 2.0;
 }
 
-double Parabolic(double x1, double x2, double x3, QString inp, double tol)
+double Parabolic(double x1, double x2, double x3, QString inp, double tol, int max)
 {
     double f1, f2, f3;
     double x_new;
     int max_iterations = 1000;
     int iteration = 0;
 
-    while (std::abs(x3 - x1) > tol)
+    while (std::abs(x3 - x1) > tol && iteration < max)
     {
         f1 = func(x1, inp);
         f2 = func(x2, inp);
@@ -200,18 +201,19 @@ double Parabolic(double x1, double x2, double x3, QString inp, double tol)
     return x2;
 }
 
-double Newton(double x1, QString inp, double tol)
+double Newton(double x1, QString inp, double tol, int max)
 {
     double fp, fpp;
     double h = 0.01;
     double x, temp;
+    int i = 0;
 
     x = x1;
     fp = (func(x + h, inp) - func(x - h, inp)) / (2.0 * h);
     fpp = (func(x + h, inp) - 2.0 * func(x, inp) + func(x - h, inp)) / (h * h);
 
     temp = 10;
-    while (std::abs(x - temp) > tol)
+    while (std::abs(x - temp) > tol && i < max)
     {
         fp = (func(x + h, inp) - func(x - h, inp)) / (2.0 * h);
         fpp = (func(x + h, inp) - 2.0 * func(x, inp) + func(x - h, inp)) / (h * h);
@@ -219,6 +221,7 @@ double Newton(double x1, QString inp, double tol)
         qDebug() << x;
         temp = x;
         x = x - (fp/fpp);
+        i++;
     }
 
     qDebug() << "End newton";
@@ -230,25 +233,27 @@ void linear_search::on_pBGRCalc_clicked()
 {
     double x1, x2, x3, tol;
     int i = 0;
+    int max = 0;
 
     tol = ui->leTol->text().toDouble();
     x1 = ui->leX1->text().toDouble();
     x2 = ui->leX2->text().toDouble();
     x3 = ui->leX3->text().toDouble();
+    max = ui->leIter->text().toInt();
 
     QString inp = ui->leFunc->text();
 
     if (ui->rbtnGolden->isChecked() == true)
     {
-        ui->leSol->setText(QString::number(GoldenSection(x1, x2, x3, inp, tol)));
+        ui->leSol->setText(QString::number(GoldenSection(x1, x2, x3, inp, tol, max)));
     }
     else if(ui->rbtnParabolic->isChecked() == true)
     {
-        ui->leSol->setText(QString::number(Parabolic(x1, x2, x3, inp, tol)));
+        ui->leSol->setText(QString::number(Parabolic(x1, x2, x3, inp, tol, max)));
     }
     else if(ui->rbtnNewton->isChecked() == true)
     {
-        ui->leSol->setText(QString::number(Newton(x1, inp, tol)));
+        ui->leSol->setText(QString::number(Newton(x1, inp, tol, max)));
         qDebug() << "Newton's";
     }
 
@@ -277,5 +282,13 @@ void linear_search::on_rbtnGolden_clicked()
 {
     ui->leX3->setEnabled(true);
     ui->leX2->setEnabled(true);
+}
+
+
+void linear_search::on_btnBack_clicked()
+{
+    this->hide();
+    Main_Menu *menu = new Main_Menu(this);
+    menu->show();
 }
 

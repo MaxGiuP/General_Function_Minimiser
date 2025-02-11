@@ -26,6 +26,8 @@ private slots:
 
     void on_rbtnGolden_clicked();
 
+    void on_btnBack_clicked();
+
 private:
     Ui::linear_search *ui;
 };

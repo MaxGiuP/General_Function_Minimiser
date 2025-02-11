@@ -17,6 +17,9 @@ public:
     explicit Main_Menu(QWidget *parent = nullptr);
     ~Main_Menu();
 
+private slots:
+    void on_btnLinear_clicked();
+
 private:
     Ui::Main_Menu *ui;
 };

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>363</width>
+    <width>507</width>
     <height>289</height>
    </rect>
   </property>
@@ -30,7 +30,7 @@
       <x>70</x>
       <y>0</y>
       <width>49</width>
-      <height>25</height>
+      <height>33</height>
      </rect>
     </property>
     <property name="text">
@@ -69,7 +69,7 @@
    <widget class="QWidget" name="verticalLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>61</x>
       <y>70</y>
       <width>21</width>
       <height>151</height>
@@ -120,7 +120,7 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>30</x>
+      <x>81</x>
       <y>70</y>
       <width>129</width>
       <height>151</height>
@@ -141,7 +141,7 @@
    <widget class="QWidget" name="verticalLayoutWidget_5">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>280</x>
       <y>70</y>
       <width>160</width>
       <height>80</height>
@@ -173,7 +173,7 @@
    <widget class="QWidget" name="verticalLayoutWidget_6">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>300</x>
       <y>170</y>
       <width>122</width>
       <height>80</height>
@@ -206,6 +206,45 @@
      </item>
     </layout>
    </widget>
+   <widget class="QPushButton" name="btnBack">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>220</y>
+      <width>101</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Back to Menu</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="leTol_2">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>30</y>
+      <width>127</width>
+      <height>24</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>0</y>
+      <width>81</width>
+      <height>33</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Max Iterations</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
@@ -213,7 +252,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>363</width>
+     <width>507</width>
      <height>21</height>
     </rect>
    </property>
