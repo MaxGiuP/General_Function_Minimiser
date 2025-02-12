@@ -1,6 +1,7 @@
 #include "main_menu.h"
 #include "ui_main_menu.h"
 #include "linear_search.h"
+#include "multi_variable.h"
 
 Main_Menu::Main_Menu(QWidget *parent)
     : QMainWindow(parent)
@@ -17,9 +18,15 @@ Main_Menu::~Main_Menu()
 void Main_Menu::on_btnLinear_clicked()
 {
     this->hide();
-
     linear_search *lin = new linear_search(this);
     lin->show();
     \
+}
+
+void Main_Menu::on_btnMulti_clicked()
+{
+    this->hide();
+    multi_variable *multi = new multi_variable(this);
+    multi->show();
 }
 

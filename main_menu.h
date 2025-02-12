@@ -20,6 +20,8 @@ public:
 private slots:
     void on_btnLinear_clicked();
 
+    void on_btnMulti_clicked();
+
 private:
     Ui::Main_Menu *ui;
 };

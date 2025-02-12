@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>FEEG6009 - Linear Search</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLineEdit" name="leFunc">
@@ -48,6 +48,12 @@
       <width>127</width>
       <height>24</height>
      </rect>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
@@ -219,7 +225,7 @@
      <string>Back to Menu</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="leTol_2">
+   <widget class="QLineEdit" name="leIter">
     <property name="geometry">
      <rect>
       <x>360</x>
@@ -227,6 +233,12 @@
       <width>127</width>
       <height>24</height>
      </rect>
+    </property>
+    <property name="text">
+     <string>1000</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label_4">

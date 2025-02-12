@@ -15,6 +15,11 @@ public:
     explicit multi_variable(QWidget *parent = nullptr);
     ~multi_variable();
 
+private slots:
+    void on_btnCalculate_clicked();
+
+    void on_btnBack_clicked();
+
 private:
     Ui::multi_variable *ui;
 };
