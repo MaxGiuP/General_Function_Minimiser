@@ -21,6 +21,7 @@ linear_search::~linear_search()
 }
 
 const double phi = 2 - (1 + sqrt(5)) / 2;
+const double h = 0.1;
 
 double func(QString f, double x)
 {
@@ -123,27 +124,34 @@ double Parabolic(double x1, double x2, double x3, QString inp, double tol, int m
 double Newton(double x1, QString inp, double tol, int max)
 {
     double fp, fpp;
-    double h = 0.001;
     double x, temp;
     int i = 0;
 
     x = x1;
-    fp = (func(inp, x + h) - func(inp, x - h)) / (2.0 * h);
-    fpp = (func(inp, x + h) - 2.0 * func(inp, x) + func(inp, x - h)) / (h * h);
+    temp = x - 10;
 
-    temp = 10;
     while (std::abs(x - temp) > tol && i < max)
     {
         fp = (func(inp, x + h) - func(inp, x - h)) / (2.0 * h);
         fpp = (func(inp, x + h) - 2.0 * func(inp, x) + func(inp, x - h)) / (h * h);
 
-        qDebug() << x;
+        if (std::abs(fp) < tol)
+        {
+            qDebug() << "Gradient near zero; optimum found.";
+            break;
+        }
+
+        if (std::abs(fpp) < 1e-12) {
+            qWarning() << "Second derivative is too small, stopping iteration.";
+            break;
+        }
+
         temp = x;
         x = x - (fp/fpp);
         i++;
     }
-
-    qDebug() << "End newton";
+    qDebug() << inp;
+    qDebug() << "End newton\n";
 
     return x;
 }

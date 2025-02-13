@@ -1,8 +1,11 @@
 #include "multi_variable.h"
 #include "ui_multi_variable.h"
 #include "globalfunctions.h"
+#include "linear_search.h"
 #include "main_menu.h"
 #include "QTextEdit"
+
+const double h = 0.1;
 
 multi_variable::multi_variable(QWidget *parent)
     : QMainWindow(parent)
@@ -16,55 +19,141 @@ multi_variable::~multi_variable()
     delete ui;
 }
 
-double func(QString f, int count, ...)
+double func(QString f, QVector<double> x)
 {
-    int i;
-    va_list args;
-    va_start(args, count);
-
+    QStringList x_str;
+    int count = x.count();
     f.replace(" ", "");
-    for (int i = 0; i < count; i++) {
-        f.replace(QString::number(97 + i), QString::number(va_arg(args, double)));
+
+    for (int i = 0; i < count; i++)
+    {
+        x_str.append(QString::number(x[i]));
     }
 
-    va_end(args);
+    for (int i = 0; i < count; i++)
+    {
+        f.replace("x" + QString::number(i + 1), x_str[i]);
+    }
     return evaluateExpression(f);
 }
 
-double Steep_Descent(double x1, double x2, double x3, QString inp, double tol, int max)
+QStringList Steep_Descent(QStringList x_str, QString inp, double tol, int max)
 {
-    double ans;
+    int EndLoop = 0;
+    double diff = 0;
 
-    return ans;
+    int count = x_str.count();
+    if (count == 0) {
+        qDebug() << "Error: No variables provided!";
+        return QStringList();
+    }
+
+    QString func_lambda;
+    func_lambda = inp;
+    for (int i = 0; i < count; i++)
+    {
+        func_lambda = func_lambda.replace("x" + QString::number(i + 1), "x");
+    }
+    qDebug() << func_lambda;
+    QVector<double> x(count);
+    QVector<double> gradients(count);
+
+    double lambda = 1;  // Initial Guess for Line Search
+
+    for (int i = 0; i < count; i++)
+    {
+        x[i] = x_str[i].toDouble();
+    }
+    qDebug() << "Check 1";
+
+    int iter = 0;
+    QVector<double> x_2 = x;
+    while (EndLoop == 0 && iter < max)
+    {
+        qDebug() << ("iter loop: " + QString::number(iter));
+        x_2 = x;  // Store previous x values
+        diff = 0;
+
+        for (int i = 0; i < count; i++)
+        {
+            qDebug() << "\n---------STARTLOOP------------";
+
+            x[i] = x[i] + h;
+            x_2[i] = x_2[i] - h;
+            //qDebug() << "Check before func " + QString::number(count);
+            gradients[i] = (func(inp, x) - func(inp, x_2)) / (2.0 * h);
+
+            x[i] = x[i] - h;
+            x_2[i] = x_2[i] + h;
+
+            lambda = Newton(lambda, func_lambda, tol, 20);
+            x[i] = x[i] - lambda * gradients[i];
+
+            qDebug() << "x[" + QString::number(i) + "]: " + QString::number(x[i]);
+            qDebug() << "lambda: " + QString::number(lambda);
+            qDebug() << "gradients[" + QString::number(i) + "]: " + QString::number(gradients[i]);
+            if (i > 0)
+            {
+                if (std::abs(x[i] - x[i-1]) < diff)
+                {
+                    diff = std::abs(x[i] - x[i - 1]);
+                    if (diff < tol)
+                    {
+                        EndLoop = 1;
+                    }
+                }
+            }
+
+            qDebug() << "---------ENDLOOP------------\n";
+        }
+
+        qDebug() << "x1 is: " + QString::number(x[0]);
+        qDebug() << "x2 is: " + QString::number(x[1]);
+        qDebug() << "\n\n";
+        iter++;
+    }
+
+    for (int i = 0; i < count; i++)
+    {
+        x_str[i] = QString::number(x[i]);
+    }
+
+    return x_str;  // Return the final values as a QStringList
 }
 
 void multi_variable::on_btnCalculate_clicked()
 {
-    QString func, var;
-    func = ui->txtFunc->text();
-    var = ui->txtVar->text();
+    QString inp = ui->txtFunc->text();
+    QStringList x = ui->txtX->text().replace(" ", "").split(",");
+    double tol = ui->txtTol->text().toDouble();
+    int max = ui->txtIter->text().toInt();  // Ensure `txtMaxIter` exists in the UI
 
     QLineEdit *sol = ui->txtSol;
-    if (ui->rbSD->isChecked() == true)
-    {
-        sol->setText(QString::number(Steep_Descent()));
-    }
-    else if(ui->rbCG->isChecked() == true)
-    {
+    QStringList result;
 
-    }
-    else if(ui->rbNM->isChecked() == true)
+    if (ui->rbSD->isChecked())  // Steepest Descent
     {
-
+        result = Steep_Descent(x, inp, tol, max);
     }
-    else if(ui->rbBFGS->isChecked() == true)
+    else if(ui->rbCG->isChecked())  // Conjugate Gradient (Use Different Function)
     {
-
+        //result = Conjugate_Gradient(x, inp, tol, max);
     }
-    else if(ui->rbHJ->isChecked() == true)
+    else if(ui->rbNM->isChecked())  // Newton's Method
     {
-
+        //result = Newton_Method(x, inp, tol, max);
     }
+    else if(ui->rbBFGS->isChecked())  // BFGS
+    {
+        //result = BFGS(x, inp, tol, max);
+    }
+    else if(ui->rbHJ->isChecked())  // Hooke-Jeeves
+    {
+        //result = Hooke_Jeeves(x, inp, tol, max);
+    }
+
+    // Join the vector with commas and set as output
+    sol->setText(result.join(", "));
 }
 
 void multi_variable::on_btnBack_clicked()

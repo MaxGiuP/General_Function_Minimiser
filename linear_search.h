@@ -9,6 +9,8 @@ class linear_search;
 }
 QT_END_NAMESPACE
 
+double Newton(double x1, QString inp, double tol, int max);
+
 class linear_search : public QMainWindow
 {
     Q_OBJECT
