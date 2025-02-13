@@ -141,7 +141,7 @@ double Newton(double x1, QString inp, double tol, int max)
             break;
         }
 
-        if (std::abs(fpp) < 1e-20) {
+        if (std::abs(fpp) < 1e-32) {
             qWarning() << "Second derivative is too small, stopping iteration.";
             break;
         }

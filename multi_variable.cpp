@@ -6,6 +6,7 @@
 #include "QTextEdit"
 
 const double h = 0.01;
+const double phi = 2 - (1 + sqrt(5)) / 2;
 
 multi_variable::multi_variable(QWidget *parent)
     : QMainWindow(parent)
@@ -19,7 +20,7 @@ multi_variable::~multi_variable()
     delete ui;
 }
 
-double func(QString f, QVector<double> x)
+double func_vec(QString f, QVector<double> x)
 {
     QStringList x_str;
     int count = x.count();
@@ -38,10 +39,45 @@ double func(QString f, QVector<double> x)
     return evaluateExpression(f);
 }
 
+std::pair<double,double> getInterval(QString func_lambda, double alphaLow, double alphaHigh)
+{
+    if (alphaLow < 0) alphaLow = 0;
+    if (alphaHigh <= alphaLow) alphaHigh = alphaLow + 1.0;
+
+    double fLow  = func(func_lambda, alphaLow);
+    double fHigh = func(func_lambda, alphaHigh);
+
+    // If we already bracket a minimum:
+    if (fHigh > fLow) {
+        return std::make_pair(alphaLow, alphaHigh);
+    }
+
+    // Exponential expansion: up to 20 expansions
+    for (int i = 0; i < 20; i++)
+    {
+        double oldAlpha = alphaHigh;
+        double oldVal   = fHigh;
+        alphaHigh *= 2.0;
+        fHigh = func(func_lambda, alphaHigh);
+
+        // If we see fHigh > oldVal, bracket found
+        if (fHigh > oldVal) {
+            return {oldAlpha, alphaHigh};
+        }
+    }
+
+    // If we get here, the function never went up,
+    // so it's likely decreasing or nearly flat.
+    // Return the biggest range we have.
+    return {alphaHigh/2, alphaHigh};
+}
+
 QStringList Steep_Descent(QStringList x_str, QString inp, double tol, int max)
 {
     int EndLoop = 0;
     double diff = 0;
+    double alpha0 = 0;
+    double alpha1 = 0;
 
     int count = x_str.count();
     if (count == 0) {
@@ -51,7 +87,7 @@ QStringList Steep_Descent(QStringList x_str, QString inp, double tol, int max)
 
     QString func_lambda;
     QVector<double> x(count);
-    QVector<double> gradients(count);
+    QVector<double> p_derivatives(count);
 
     double lambda = 1;  // Initial Guess for Line Search
     for (int i = 0; i < count; i++)
@@ -76,19 +112,23 @@ QStringList Steep_Descent(QStringList x_str, QString inp, double tol, int max)
             QVector<double> backward = x;
             backward[i] = backward[i] - h;
 
-            gradients[i] = (func(inp, forward) - func(inp, backward)) / (2 * h);
-
-            func_lambda.replace("x" + QString::number(i + 1), "(" + QString::number(x[i]) + "-" + QString::number(gradients[i]) + "*x)");
+            p_derivatives[i] = (func_vec(inp, forward) - func_vec(inp, backward)) / (2 * h);
+            qDebug() << "gradients[" + QString::number(i) + "]: " << p_derivatives[i];
+            func_lambda.replace("x" + QString::number(i + 1), "(" + QString::number(x[i]) + "-" + QString::number(p_derivatives[i]) + "*x)");
         }
 
-        lambda = Newton(lambda, func_lambda, tol, 30);
+
+        auto [f0, f1] = getInterval(func_lambda, alpha0, alpha1);
+        qDebug() << "func_lambda: " << func_lambda;
+        qDebug() << "f0: " << f0 << "  f1: " << f1;
+        lambda = GoldenSection(f0, f1, std::abs(f1 - f0)*phi + f0, func_lambda, 0.1, 30);
         qDebug() << "lambda: " << lambda;
 
         for (int i = 0; i < count; i++)
         {
-            x[i] = x[i] - lambda * gradients[i];
+            x[i] = x[i] - lambda * p_derivatives[i];
+            qDebug() << "x[" + QString::number(i) + "]: " << lambda;
         }
-
 
         if (iter > 0)
         {

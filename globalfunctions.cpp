@@ -3,6 +3,7 @@
 #include <QString>
 #include <QStack>
 #include <cmath>
+#include <QDebug>
 
 double evaluateExpression(QString f)
 {
@@ -30,20 +31,18 @@ double evaluateExpression(QString f)
         startPos = f.lastIndexOf("(");
     }
 
-    // Tokenize the expression
-    QRegularExpression regExp("(\\d*\\.?\\d+|[+\\-*/^])");
-    QRegularExpressionMatchIterator iter = regExp.globalMatch(f);
+    QRegularExpression tokenRegex("(?:(?<=^)|(?<=[(*/]))-\\d*\\.?\\d+|\\d*\\.?\\d+|[+\\-*/^]");
+    QRegularExpressionMatchIterator iter = tokenRegex.globalMatch(f);
     QStringList tokens;
     while (iter.hasNext()) {
         QRegularExpressionMatch match = iter.next();
         tokens << match.captured(0);
     }
     if (tokens.isEmpty()) {
-        // Nothing to evaluate
         return 0;
     }
 
-    // Process exponentiation first
+    // Process exponentiation '^'
     for (int i = 0; i < tokens.size(); ++i) {
         if (tokens[i] == "^") {
             // Ensure we have a left and right operand
@@ -51,7 +50,6 @@ double evaluateExpression(QString f)
                 double left = tokens[i - 1].toDouble();
                 double right = tokens[i + 1].toDouble();
                 double power = std::pow(left, right);
-
                 tokens[i - 1] = QString::number(power);
                 tokens.removeAt(i);     // remove '^'
                 tokens.removeAt(i);     // remove right operand
@@ -63,12 +61,11 @@ double evaluateExpression(QString f)
     // Process multiplication/division
     for (int i = 0; i < tokens.size(); ++i) {
         if (tokens[i] == "*" || tokens[i] == "/") {
-            // Ensure we have a valid left and right operand
+            // Ensure we have valid left and right operands
             if (i > 0 && i < tokens.size() - 1) {
                 double left = tokens[i - 1].toDouble();
                 double right = tokens[i + 1].toDouble();
                 double result = 0;
-
                 if (tokens[i] == "*") {
                     result = left * right;
                 } else {  // tokens[i] == "/"
@@ -78,7 +75,6 @@ double evaluateExpression(QString f)
                     }
                     result = left / right;
                 }
-
                 tokens[i - 1] = QString::number(result);
                 tokens.removeAt(i);     // remove operator
                 tokens.removeAt(i);     // remove right operand
@@ -87,17 +83,19 @@ double evaluateExpression(QString f)
         }
     }
 
-    // Process addition/subtraction
-    // If tokens has fewer than 3 elements, the loop might skip automatically.
-    // We'll do i+=2 so we read [op, number] pairs
+    // Process addition '+' and subtraction '-'
+    if (tokens.size() % 2 == 0) {
+        qWarning() << "Invalid expression format: tokens count is even.";
+        return 0;
+    }
     double result = tokens[0].toDouble();
     for (int i = 1; i + 1 < tokens.size(); i += 2) {
         QString op = tokens[i];
-        double value = tokens[i + 1].toDouble();
+        double operand = tokens[i + 1].toDouble();
         if (op == "+") {
-            result += value;
+            result += operand;
         } else if (op == "-") {
-            result -= value;
+            result -= operand;
         }
     }
 
