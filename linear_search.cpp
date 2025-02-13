@@ -8,6 +8,9 @@
 #include <QRegularExpression>
 #include <cmath>
 
+const double phi = 2 - (1 + sqrt(5)) / 2;
+const double h = 0.01;
+
 linear_search::linear_search(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::linear_search)
@@ -19,9 +22,6 @@ linear_search::~linear_search()
 {
     delete ui;
 }
-
-const double phi = 2 - (1 + sqrt(5)) / 2;
-const double h = 0.1;
 
 double func(QString f, double x)
 {
@@ -141,7 +141,7 @@ double Newton(double x1, QString inp, double tol, int max)
             break;
         }
 
-        if (std::abs(fpp) < 1e-12) {
+        if (std::abs(fpp) < 1e-20) {
             qWarning() << "Second derivative is too small, stopping iteration.";
             break;
         }

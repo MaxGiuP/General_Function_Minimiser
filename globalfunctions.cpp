@@ -6,8 +6,17 @@
 
 double evaluateExpression(QString f)
 {
+    // Remove spaces, handle double negatives and leading minus
     f.replace(" ", "");
+    while (f.contains("--")) {
+        f.replace("--", "+");
+    }
+    if (f.startsWith("-")) {
+        f = "0" + f;
+    }
+    f.replace("(-", "(0-");
 
+    // Handle parenthesized expressions recursively
     int startPos = f.lastIndexOf("(");
     while (startPos != -1) {
         int endPos = f.indexOf(")", startPos);
@@ -15,65 +24,76 @@ double evaluateExpression(QString f)
             qWarning() << "Mismatched parentheses!";
             return 0;
         }
-
         QString subExpr = f.mid(startPos + 1, endPos - startPos - 1);
-        double result = evaluateExpression(subExpr);  // Recursively evaluate
-
-        f.replace(startPos, endPos - startPos + 1, QString::number(result));
-
+        double subResult = evaluateExpression(subExpr);
+        f.replace(startPos, endPos - startPos + 1, QString::number(subResult));
         startPos = f.lastIndexOf("(");
     }
 
+    // Tokenize the expression
     QRegularExpression regExp("(\\d*\\.?\\d+|[+\\-*/^])");
     QRegularExpressionMatchIterator iter = regExp.globalMatch(f);
     QStringList tokens;
-
     while (iter.hasNext()) {
         QRegularExpressionMatch match = iter.next();
         tokens << match.captured(0);
     }
+    if (tokens.isEmpty()) {
+        // Nothing to evaluate
+        return 0;
+    }
 
+    // Process exponentiation first
     for (int i = 0; i < tokens.size(); ++i) {
         if (tokens[i] == "^") {
-            double left = tokens[i - 1].toDouble();
-            double right = tokens[i + 1].toDouble();
-            double result = std::pow(left, right);
-            tokens.replace(i - 1, QString::number(result));
-            tokens.removeAt(i);
-            tokens.removeAt(i);
-            i--;
+            // Ensure we have a left and right operand
+            if (i > 0 && i < tokens.size() - 1) {
+                double left = tokens[i - 1].toDouble();
+                double right = tokens[i + 1].toDouble();
+                double power = std::pow(left, right);
+
+                tokens[i - 1] = QString::number(power);
+                tokens.removeAt(i);     // remove '^'
+                tokens.removeAt(i);     // remove right operand
+                i--; // step back to re-check
+            }
         }
     }
 
+    // Process multiplication/division
     for (int i = 0; i < tokens.size(); ++i) {
         if (tokens[i] == "*" || tokens[i] == "/") {
-            double left = tokens[i - 1].toDouble();
-            double right = tokens[i + 1].toDouble();
-            double result = 0;
+            // Ensure we have a valid left and right operand
+            if (i > 0 && i < tokens.size() - 1) {
+                double left = tokens[i - 1].toDouble();
+                double right = tokens[i + 1].toDouble();
+                double result = 0;
 
-            if (tokens[i] == "*") {
-                result = left * right;
-            } else if (tokens[i] == "/") {
-                if (right != 0) {
+                if (tokens[i] == "*") {
+                    result = left * right;
+                } else {  // tokens[i] == "/"
+                    if (right == 0.0) {
+                        qWarning() << "Division by zero!";
+                        return 0;
+                    }
                     result = left / right;
-                } else {
-                    qWarning() << "Division by zero!";
-                    return 0;
                 }
-            }
 
-            tokens.replace(i - 1, QString::number(result));
-            tokens.removeAt(i);
-            tokens.removeAt(i);
-            i--;
+                tokens[i - 1] = QString::number(result);
+                tokens.removeAt(i);     // remove operator
+                tokens.removeAt(i);     // remove right operand
+                i--; // step back to re-check
+            }
         }
     }
 
+    // Process addition/subtraction
+    // If tokens has fewer than 3 elements, the loop might skip automatically.
+    // We'll do i+=2 so we read [op, number] pairs
     double result = tokens[0].toDouble();
-    for (int i = 1; i < tokens.size(); i += 2) {
+    for (int i = 1; i + 1 < tokens.size(); i += 2) {
         QString op = tokens[i];
         double value = tokens[i + 1].toDouble();
-
         if (op == "+") {
             result += value;
         } else if (op == "-") {
@@ -83,4 +103,3 @@ double evaluateExpression(QString f)
 
     return result;
 }
-

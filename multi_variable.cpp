@@ -5,7 +5,7 @@
 #include "main_menu.h"
 #include "QTextEdit"
 
-const double h = 0.1;
+const double h = 0.01;
 
 multi_variable::multi_variable(QWidget *parent)
     : QMainWindow(parent)
@@ -24,7 +24,7 @@ double func(QString f, QVector<double> x)
     QStringList x_str;
     int count = x.count();
     f.replace(" ", "");
-
+    ;
     for (int i = 0; i < count; i++)
     {
         x_str.append(QString::number(x[i]));
@@ -34,6 +34,7 @@ double func(QString f, QVector<double> x)
     {
         f.replace("x" + QString::number(i + 1), x_str[i]);
     }
+
     return evaluateExpression(f);
 }
 
@@ -49,22 +50,15 @@ QStringList Steep_Descent(QStringList x_str, QString inp, double tol, int max)
     }
 
     QString func_lambda;
-    func_lambda = inp;
-    for (int i = 0; i < count; i++)
-    {
-        func_lambda = func_lambda.replace("x" + QString::number(i + 1), "x");
-    }
-    qDebug() << func_lambda;
     QVector<double> x(count);
     QVector<double> gradients(count);
 
     double lambda = 1;  // Initial Guess for Line Search
-
     for (int i = 0; i < count; i++)
     {
         x[i] = x_str[i].toDouble();
     }
-    qDebug() << "Check 1";
+    qDebug() << "START\n";
 
     int iter = 0;
     QVector<double> x_2 = x;
@@ -72,39 +66,40 @@ QStringList Steep_Descent(QStringList x_str, QString inp, double tol, int max)
     {
         qDebug() << ("iter loop: " + QString::number(iter));
         x_2 = x;  // Store previous x values
-        diff = 0;
+        diff = 100;
+        func_lambda = inp;
 
         for (int i = 0; i < count; i++)
         {
-            qDebug() << "\n---------STARTLOOP------------";
+            QVector<double> forward = x;
+            forward[i] = forward[i] + h;
+            QVector<double> backward = x;
+            backward[i] = backward[i] - h;
 
-            x[i] = x[i] + h;
-            x_2[i] = x_2[i] - h;
-            //qDebug() << "Check before func " + QString::number(count);
-            gradients[i] = (func(inp, x) - func(inp, x_2)) / (2.0 * h);
+            gradients[i] = (func(inp, forward) - func(inp, backward)) / (2 * h);
 
-            x[i] = x[i] - h;
-            x_2[i] = x_2[i] + h;
+            func_lambda.replace("x" + QString::number(i + 1), "(" + QString::number(x[i]) + "-" + QString::number(gradients[i]) + "*x)");
+        }
 
-            lambda = Newton(lambda, func_lambda, tol, 20);
+        lambda = Newton(lambda, func_lambda, tol, 30);
+        qDebug() << "lambda: " << lambda;
+
+        for (int i = 0; i < count; i++)
+        {
             x[i] = x[i] - lambda * gradients[i];
+        }
 
-            qDebug() << "x[" + QString::number(i) + "]: " + QString::number(x[i]);
-            qDebug() << "lambda: " + QString::number(lambda);
-            qDebug() << "gradients[" + QString::number(i) + "]: " + QString::number(gradients[i]);
-            if (i > 0)
+
+        if (iter > 0)
+        {
+            if (std::abs(x[0] - x_2[0]) < diff)
             {
-                if (std::abs(x[i] - x[i-1]) < diff)
+                diff = std::abs(x[0] - x_2[0]);
+                if (diff < tol)
                 {
-                    diff = std::abs(x[i] - x[i - 1]);
-                    if (diff < tol)
-                    {
-                        EndLoop = 1;
-                    }
+                    EndLoop = 1;
                 }
             }
-
-            qDebug() << "---------ENDLOOP------------\n";
         }
 
         qDebug() << "x1 is: " + QString::number(x[0]);
