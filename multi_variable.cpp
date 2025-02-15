@@ -94,7 +94,6 @@ QStringList Steep_Descent(QStringList x_str, QString inp, double tol, int max)
     {
         x[i] = x_str[i].toDouble();
     }
-    qDebug() << "START\n";
 
     int iter = 0;
     QVector<double> x_2 = x;
@@ -156,6 +155,218 @@ QStringList Steep_Descent(QStringList x_str, QString inp, double tol, int max)
     return x_str;  // Return the final values as a QStringList
 }
 
+QStringList Conjugate_Gradient(QStringList x_str, QString inp, double tol, int max)
+{
+    int EndLoop = 0;
+    double del_f; double last_del_f;
+    double diff = 0;
+    double alpha0 = 0;
+    double alpha1 = 0;
+
+    int count = x_str.count();
+    if (count == 0) {
+        qDebug() << "Error: No variables provided!";
+        return QStringList();
+    }
+
+    QString func_lambda;
+    QVector<double> x(count);
+    QVector<double> S(count);
+
+    double lambda = 1;  // Initial Guess for Line Search
+    for (int i = 0; i < count; i++)
+    {
+        x[i] = x_str[i].toDouble();
+    }
+
+    int iter = 0;
+    QVector<double> x_2 = x;
+    while (EndLoop == 0 && iter < max)
+    {
+        qDebug() << ("iter loop: " + QString::number(iter));
+        x_2 = x;  // Store previous x values
+        diff = 100;
+        func_lambda = inp;
+
+        for (int i = 0; i < count; i++)
+        {
+            qDebug() << "gradients[" + QString::number(i) + "]: " << S[i];
+            func_lambda.replace("x" + QString::number(i + 1), "(" + QString::number(x[i]) + "-" + QString::number(S[i]) + "*x)");
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            QVector<double> forward = x;
+            forward[i] = forward[i] + h;
+            QVector<double> backward = x;
+            backward[i] = backward[i] - h;
+
+            last_del_f = del_f;
+            del_f = (func_vec(inp, forward) - func_vec(inp, backward)) / (2 * h);
+            if (iter == 0)
+            {
+                S[i] = -del_f;
+            }
+            else
+            {
+                S[i] = -del_f + pow((del_f), 2) / pow((last_del_f), 2) * S[i];
+            }
+
+
+            qDebug() << "S[" + QString::number(i) + "]: " << S[i];
+            func_lambda.replace("x" + QString::number(i + 1), "(" + QString::number(x[i]) + "-" + QString::number(S[i]) + "*x)");
+        }
+
+
+        auto [f0, f1] = getInterval(func_lambda, alpha0, alpha1);
+        qDebug() << "func_lambda: " << func_lambda;
+        qDebug() << "f0: " << f0 << "  f1: " << f1;
+        lambda = GoldenSection(f0, f1, std::abs(f1 - f0)*phi + f0, func_lambda, 0.1, 30);
+        qDebug() << "lambda: " << lambda;
+
+        if (iter != 0)
+        {
+            lambda = -lambda;
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            x[i] = x[i] - lambda * S[i];
+            qDebug() << "x[" + QString::number(i) + "]: " << lambda;
+        }
+
+        if (iter > 0)
+        {
+            if (std::abs(x[0] - x_2[0]) < diff)
+            {
+                diff = std::abs(x[0] - x_2[0]);
+                if (diff < tol)
+                {
+                    EndLoop = 1;
+                }
+            }
+        }
+
+        qDebug() << "x1 is: " + QString::number(x[0]);
+        qDebug() << "x2 is: " + QString::number(x[1]);
+        qDebug() << "\n\n";
+        iter++;
+    }
+
+    for (int i = 0; i < count; i++)
+    {
+        x_str[i] = QString::number(x[i]);
+    }
+
+    return x_str;  // Return the final values as a QStringList
+}
+
+QStringList Newton_Method(QStringList x_str, QString inp, double tol, int max)
+{
+    int EndLoop = 0;
+    double del_f; double last_del_f;
+    double diff = 0;
+    double alpha0 = 0;
+    double alpha1 = 0;
+
+    int count = x_str.count();
+    if (count == 0) {
+        qDebug() << "Error: No variables provided!";
+        return QStringList();
+    }
+
+    QString func_lambda;
+    QVector<double> x(count);
+    QVector<double> S(count);
+
+    double lambda = 1;  // Initial Guess for Line Search
+    for (int i = 0; i < count; i++)
+    {
+        x[i] = x_str[i].toDouble();
+    }
+
+    int iter = 0;
+    QVector<double> x_2 = x;
+    while (EndLoop == 0 && iter < max)
+    {
+        qDebug() << ("iter loop: " + QString::number(iter));
+        x_2 = x;  // Store previous x values
+        diff = 100;
+        func_lambda = inp;
+
+        for (int i = 0; i < count; i++)
+        {
+            qDebug() << "gradients[" + QString::number(i) + "]: " << S[i];
+            func_lambda.replace("x" + QString::number(i + 1), "(" + QString::number(x[i]) + "-" + QString::number(S[i]) + "*x)");
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            QVector<double> forward = x;
+            forward[i] = forward[i] + h;
+            QVector<double> backward = x;
+            backward[i] = backward[i] - h;
+
+            last_del_f = del_f;
+            del_f = (func_vec(inp, forward) - func_vec(inp, backward)) / (2 * h);
+            if (iter == 0)
+            {
+                S[i] = -del_f;
+            }
+            else
+            {
+                S[i] = -del_f + pow((del_f), 2) / pow((last_del_f), 2) * S[i];
+            }
+
+
+            qDebug() << "S[" + QString::number(i) + "]: " << S[i];
+            func_lambda.replace("x" + QString::number(i + 1), "(" + QString::number(x[i]) + "-" + QString::number(S[i]) + "*x)");
+        }
+
+
+        auto [f0, f1] = getInterval(func_lambda, alpha0, alpha1);
+        qDebug() << "func_lambda: " << func_lambda;
+        qDebug() << "f0: " << f0 << "  f1: " << f1;
+        lambda = GoldenSection(f0, f1, std::abs(f1 - f0)*phi + f0, func_lambda, 0.1, 30);
+        qDebug() << "lambda: " << lambda;
+
+        if (iter != 0)
+        {
+            lambda = -lambda;
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            x[i] = x[i] - lambda * S[i];
+            qDebug() << "x[" + QString::number(i) + "]: " << lambda;
+        }
+
+        if (iter > 0)
+        {
+            if (std::abs(x[0] - x_2[0]) < diff)
+            {
+                diff = std::abs(x[0] - x_2[0]);
+                if (diff < tol)
+                {
+                    EndLoop = 1;
+                }
+            }
+        }
+
+        qDebug() << "x1 is: " + QString::number(x[0]);
+        qDebug() << "x2 is: " + QString::number(x[1]);
+        qDebug() << "\n\n";
+        iter++;
+    }
+
+    for (int i = 0; i < count; i++)
+    {
+        x_str[i] = QString::number(x[i]);
+    }
+
+    return x_str;  // Return the final values as a QStringList
+}
+
 void multi_variable::on_btnCalculate_clicked()
 {
     QString inp = ui->txtFunc->text();
@@ -172,11 +383,11 @@ void multi_variable::on_btnCalculate_clicked()
     }
     else if(ui->rbCG->isChecked())  // Conjugate Gradient (Use Different Function)
     {
-        //result = Conjugate_Gradient(x, inp, tol, max);
+        result = Conjugate_Gradient(x, inp, tol, max);
     }
     else if(ui->rbNM->isChecked())  // Newton's Method
     {
-        //result = Newton_Method(x, inp, tol, max);
+        result = Newton_Method(x, inp, tol, max);
     }
     else if(ui->rbBFGS->isChecked())  // BFGS
     {
