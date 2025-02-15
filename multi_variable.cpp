@@ -4,6 +4,7 @@
 #include "linear_search.h"
 #include "main_menu.h"
 #include "QTextEdit"
+#include <cmath>
 
 const double h = 0.01;
 const double phi = 2 - (1 + sqrt(5)) / 2;
@@ -190,12 +191,6 @@ QStringList Conjugate_Gradient(QStringList x_str, QString inp, double tol, int m
 
         for (int i = 0; i < count; i++)
         {
-            qDebug() << "gradients[" + QString::number(i) + "]: " << S[i];
-            func_lambda.replace("x" + QString::number(i + 1), "(" + QString::number(x[i]) + "-" + QString::number(S[i]) + "*x)");
-        }
-
-        for (int i = 0; i < count; i++)
-        {
             QVector<double> forward = x;
             forward[i] = forward[i] + h;
             QVector<double> backward = x;
@@ -261,27 +256,98 @@ QStringList Conjugate_Gradient(QStringList x_str, QString inp, double tol, int m
     return x_str;  // Return the final values as a QStringList
 }
 
+void invertMatrix(double **M, int count) {
+    // Augmented matrix (M | I)
+    double **aug = new double*[count];
+    for (int i = 0; i < count; i++) {
+        aug[i] = new double[2 * count];
+
+        // Copy M into the left side of aug and identity matrix into the right
+        for (int j = 0; j < count; j++) {
+            aug[i][j] = M[i][j];
+        }
+        for (int j = count; j < 2 * count; j++) {
+            aug[i][j] = (i == (j - count)) ? 1.0 : 0.0;
+        }
+    }
+
+    // Perform Gaussian elimination
+    for (int i = 0; i < count; i++) {
+        // Find the pivot row
+        int pivot = i;
+        for (int j = i + 1; j < count; j++) {
+            if (fabs(aug[j][i]) > fabs(aug[pivot][i])) {
+                pivot = j;
+            }
+        }
+
+        // Manually swap rows using a temporary variable (since swap() is not allowed)
+        if (pivot != i) {
+            for (int j = 0; j < 2 * count; j++) {
+                double temp = aug[i][j];
+                aug[i][j] = aug[pivot][j];
+                aug[pivot][j] = temp;
+            }
+        }
+
+        // Check if matrix is singular
+        if (fabs(aug[i][i]) < 1e-9) {
+            qDebug() << "Hessian is singular, adding small identity matrix perturbation.";
+            for (int i = 0; i < count; i++) {
+                M[i][i] += 1e-6;
+            }
+        }
+
+        // Normalize pivot row
+        double pivotValue = aug[i][i];
+        for (int j = 0; j < 2 * count; j++) {
+            aug[i][j] /= pivotValue;
+        }
+
+        // Eliminate other rows
+        for (int j = 0; j < count; j++) {
+            if (j != i) {
+                double factor = aug[j][i];
+                for (int k = 0; k < 2 * count; k++) {
+                    aug[j][k] -= factor * aug[i][k];
+                }
+            }
+        }
+    }
+
+    // Copy inverse back into M
+    for (int i = 0; i < count; i++) {
+        for (int j = 0; j < count; j++) {
+            M[i][j] = aug[i][j + count];
+        }
+    }
+
+    // Free memory
+    for (int i = 0; i < count; i++) {
+        delete[] aug[i];
+    }
+    delete[] aug;
+}
+
 QStringList Newton_Method(QStringList x_str, QString inp, double tol, int max)
 {
     int EndLoop = 0;
-    double del_f; double last_del_f;
     double diff = 0;
-    double alpha0 = 0;
-    double alpha1 = 0;
-
+    double row_total;
     int count = x_str.count();
-    if (count == 0) {
+    if (count == 0)
+    {
         qDebug() << "Error: No variables provided!";
         return QStringList();
     }
 
     QString func_lambda;
     QVector<double> x(count);
-    QVector<double> S(count);
-
-    double lambda = 1;  // Initial Guess for Line Search
+    QVector<double> p_derivatives(count);
+    double **H = new double*[count];
     for (int i = 0; i < count; i++)
     {
+        H[i] = new double[count];
         x[i] = x_str[i].toDouble();
     }
 
@@ -290,56 +356,59 @@ QStringList Newton_Method(QStringList x_str, QString inp, double tol, int max)
     while (EndLoop == 0 && iter < max)
     {
         qDebug() << ("iter loop: " + QString::number(iter));
-        x_2 = x;  // Store previous x values
         diff = 100;
+        x_2 = x;
         func_lambda = inp;
 
         for (int i = 0; i < count; i++)
         {
-            qDebug() << "gradients[" + QString::number(i) + "]: " << S[i];
-            func_lambda.replace("x" + QString::number(i + 1), "(" + QString::number(x[i]) + "-" + QString::number(S[i]) + "*x)");
-        }
-
-        for (int i = 0; i < count; i++)
-        {
             QVector<double> forward = x;
-            forward[i] = forward[i] + h;
+            forward[i] += h;
             QVector<double> backward = x;
-            backward[i] = backward[i] - h;
-
-            last_del_f = del_f;
-            del_f = (func_vec(inp, forward) - func_vec(inp, backward)) / (2 * h);
-            if (iter == 0)
-            {
-                S[i] = -del_f;
-            }
-            else
-            {
-                S[i] = -del_f + pow((del_f), 2) / pow((last_del_f), 2) * S[i];
-            }
-
-
-            qDebug() << "S[" + QString::number(i) + "]: " << S[i];
-            func_lambda.replace("x" + QString::number(i + 1), "(" + QString::number(x[i]) + "-" + QString::number(S[i]) + "*x)");
+            backward[i] -= h;
+            p_derivatives[i] = (func_vec(inp, forward) - func_vec(inp, backward)) / (2 * h);
         }
 
-
-        auto [f0, f1] = getInterval(func_lambda, alpha0, alpha1);
-        qDebug() << "func_lambda: " << func_lambda;
-        qDebug() << "f0: " << f0 << "  f1: " << f1;
-        lambda = GoldenSection(f0, f1, std::abs(f1 - f0)*phi + f0, func_lambda, 0.1, 30);
-        qDebug() << "lambda: " << lambda;
-
-        if (iter != 0)
-        {
-            lambda = -lambda;
-        }
-
+        //Fills Hessian
         for (int i = 0; i < count; i++)
         {
-            x[i] = x[i] - lambda * S[i];
-            qDebug() << "x[" + QString::number(i) + "]: " << lambda;
+            for (int j = 0; j < count; j++)
+            {
+                    QVector<double> f1 = x, f2 = x, f3 = x, f4 = x;
+                    f1[i] += h; f1[j] += h;
+                    f2[i] += h; f2[j] -= h;
+                    f3[i] -= h; f3[j] += h;
+                    f4[i] -= h; f4[j] -= h;
+
+                    double v1 = func_vec(inp, f1);
+                    double v2 = func_vec(inp, f2);
+                    double v3 = func_vec(inp, f3);
+                    double v4 = func_vec(inp, f4);
+
+                    H[i][j] = (v1 - v2 - v3 + v4) / (4 * h * h);
+
+                qDebug() << "H[" + QString::number(i) + "][" + QString::number(j) + "]: " + QString::number(H[i][j]);
+
+            }
         }
+
+        //Invert Hessian
+        invertMatrix(H, count);
+
+        //Evalute
+        for (int i = 0; i < count; i++)
+        {
+            row_total = 0;
+            for (int j = 0; j < count; j++)
+            {
+                row_total += p_derivatives[j] * H[i][j];
+            }
+            qDebug() << "row_total: " << row_total;
+            x[i] = x[i] - row_total;
+        }
+
+
+
 
         if (iter > 0)
         {
@@ -358,6 +427,12 @@ QStringList Newton_Method(QStringList x_str, QString inp, double tol, int max)
         qDebug() << "\n\n";
         iter++;
     }
+
+    for (int i = 0; i < count; i++)
+    {
+        delete[] H[i];
+    }
+    delete[] H;
 
     for (int i = 0; i < count; i++)
     {

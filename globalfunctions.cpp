@@ -85,8 +85,8 @@ double evaluateExpression(QString f)
 
     // Process addition '+' and subtraction '-'
     if (tokens.size() % 2 == 0) {
-        qWarning() << "Invalid expression format: tokens count is even.";
-        return 0;
+        qWarning() << "Tokens count is even.";
+        //return 0;
     }
     double result = tokens[0].toDouble();
     for (int i = 1; i + 1 < tokens.size(); i += 2) {
