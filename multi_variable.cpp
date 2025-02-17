@@ -100,7 +100,6 @@ QStringList Steep_Descent(QStringList x_str, QString inp, double tol, int max)
     QVector<double> x_2 = x;
     while (EndLoop == 0 && iter < max)
     {
-        qDebug() << ("iter loop: " + QString::number(iter));
         x_2 = x;  // Store previous x values
         diff = 100;
         func_lambda = inp;
@@ -113,21 +112,16 @@ QStringList Steep_Descent(QStringList x_str, QString inp, double tol, int max)
             backward[i] = backward[i] - h;
 
             p_derivatives[i] = (func_vec(inp, forward) - func_vec(inp, backward)) / (2 * h);
-            qDebug() << "gradients[" + QString::number(i) + "]: " << p_derivatives[i];
             func_lambda.replace("x" + QString::number(i + 1), "(" + QString::number(x[i]) + "-" + QString::number(p_derivatives[i]) + "*x)");
         }
 
 
         auto [f0, f1] = getInterval(func_lambda, alpha0, alpha1);
-        qDebug() << "func_lambda: " << func_lambda;
-        qDebug() << "f0: " << f0 << "  f1: " << f1;
-        lambda = GoldenSection(f0, f1, std::abs(f1 - f0)*phi + f0, func_lambda, 0.1, 30);
-        qDebug() << "lambda: " << lambda;
+        lambda = GoldenSection(f0, std::abs(f1 - f0)*phi + f0, f1, func_lambda, 0.1, 30);
 
         for (int i = 0; i < count; i++)
         {
             x[i] = x[i] - lambda * p_derivatives[i];
-            qDebug() << "x[" + QString::number(i) + "]: " << lambda;
         }
 
         if (iter > 0)
@@ -142,9 +136,6 @@ QStringList Steep_Descent(QStringList x_str, QString inp, double tol, int max)
             }
         }
 
-        qDebug() << "x1 is: " + QString::number(x[0]);
-        qDebug() << "x2 is: " + QString::number(x[1]);
-        qDebug() << "\n\n";
         iter++;
     }
 
@@ -159,10 +150,9 @@ QStringList Steep_Descent(QStringList x_str, QString inp, double tol, int max)
 QStringList Conjugate_Gradient(QStringList x_str, QString inp, double tol, int max)
 {
     int EndLoop = 0;
-    double del_f; double last_del_f;
+    double abs_del = 0;       // Will hold the sum of squares of the current gradient
+    double last_abs_del = 0;  // Sum of squares of the previous gradient
     double diff = 0;
-    double alpha0 = 0;
-    double alpha1 = 0;
 
     int count = x_str.count();
     if (count == 0) {
@@ -172,89 +162,95 @@ QStringList Conjugate_Gradient(QStringList x_str, QString inp, double tol, int m
 
     QString func_lambda;
     QVector<double> x(count);
+    QVector<double> p_derivatives(count);
     QVector<double> S(count);
 
-    double lambda = 1;  // Initial Guess for Line Search
-    for (int i = 0; i < count; i++)
-    {
+    double lambda = 1;  // Initial guess for the line search step length
+    // Load initial x values.
+    for (int i = 0; i < count; i++) {
         x[i] = x_str[i].toDouble();
     }
 
     int iter = 0;
     QVector<double> x_2 = x;
+
     while (EndLoop == 0 && iter < max)
     {
-        qDebug() << ("iter loop: " + QString::number(iter));
-        x_2 = x;  // Store previous x values
-        diff = 100;
+        x_2 = x;
+
+        last_abs_del = abs_del;
+        abs_del = 0;
         func_lambda = inp;
 
         for (int i = 0; i < count; i++)
         {
             QVector<double> forward = x;
-            forward[i] = forward[i] + h;
+            forward[i] += h;
             QVector<double> backward = x;
-            backward[i] = backward[i] - h;
+            backward[i] -= h;
 
-            last_del_f = del_f;
-            del_f = (func_vec(inp, forward) - func_vec(inp, backward)) / (2 * h);
-            if (iter == 0)
-            {
-                S[i] = -del_f;
-            }
-            else
-            {
-                S[i] = -del_f + pow((del_f), 2) / pow((last_del_f), 2) * S[i];
-            }
-
-
-            qDebug() << "S[" + QString::number(i) + "]: " << S[i];
-            func_lambda.replace("x" + QString::number(i + 1), "(" + QString::number(x[i]) + "-" + QString::number(S[i]) + "*x)");
+            p_derivatives[i] = (func_vec(inp, forward) - func_vec(inp, backward)) / (2 * h);
+            abs_del += pow(p_derivatives[i], 2);
+            qDebug() << "p_derivatives[" << i << "]: " << p_derivatives[i];
         }
 
+        qDebug() << "abs_del (current gradient norm^2): " << abs_del;
+        qDebug() << "last_abs_del: " << last_abs_del;
 
-        auto [f0, f1] = getInterval(func_lambda, alpha0, alpha1);
-        qDebug() << "func_lambda: " << func_lambda;
-        qDebug() << "f0: " << f0 << "  f1: " << f1;
-        lambda = GoldenSection(f0, f1, std::abs(f1 - f0)*phi + f0, func_lambda, 0.1, 30);
-        qDebug() << "lambda: " << lambda;
-
-        if (iter != 0)
-        {
-            lambda = -lambda;
-        }
 
         for (int i = 0; i < count; i++)
         {
-            x[i] = x[i] - lambda * S[i];
-            qDebug() << "x[" + QString::number(i) + "]: " << lambda;
-        }
-
-        if (iter > 0)
-        {
-            if (std::abs(x[0] - x_2[0]) < diff)
+            if (iter == 0 || last_abs_del == 0)
             {
-                diff = std::abs(x[0] - x_2[0]);
-                if (diff < tol)
-                {
-                    EndLoop = 1;
-                }
+                S[i] = -p_derivatives[i];
             }
+            else
+            {
+                S[i] = -p_derivatives[i] + abs_del / last_abs_del * S[i];
+            }
+
+            func_lambda.replace("x" + QString::number(i + 1), "(" + QString::number(x[i]) + "+" + QString::number(S[i]) + "*x)");
+            qDebug() << "S[" << i << "]: " << S[i];
         }
 
-        qDebug() << "x1 is: " + QString::number(x[0]);
-        qDebug() << "x2 is: " + QString::number(x[1]);
-        qDebug() << "\n\n";
+        qDebug() << "func lambda: " << func_lambda;
+
+
+        auto [f0, f1] = getInterval(func_lambda, 0, 5);
+        qDebug() << "f0: " << f0 << "f1: " << f1;
+        lambda = GoldenSection(f0, f0 + (f1 - f0)*phi, f1, func_lambda, 0.01, 50);
+        qDebug() << "lambda: " << lambda;
+
+
+        for (int i = 0; i < count; i++)
+        {
+            x[i] = x[i] + lambda * S[i];
+            qDebug() << "x[" << i << "]: " << x[i];
+        }
+
+
+        double norm_diff = 0;
+        for (int i = 0; i < count; i++)
+        {
+            norm_diff += pow(x[i] - x_2[i], 2);
+        }
+        norm_diff = sqrt(norm_diff);
+        qDebug() << "norm_diff: " << norm_diff;
+        if (norm_diff < tol)
+        {
+            EndLoop = 1;
+        }
+
         iter++;
     }
 
-    for (int i = 0; i < count; i++)
-    {
+    for (int i = 0; i < count; i++) {
         x_str[i] = QString::number(x[i]);
     }
 
-    return x_str;  // Return the final values as a QStringList
+    return x_str;
 }
+
 
 void invertMatrix(double **M, int count) {
     // Augmented matrix (M | I)
@@ -355,7 +351,6 @@ QStringList Newton_Method(QStringList x_str, QString inp, double tol, int max)
     QVector<double> x_2 = x;
     while (EndLoop == 0 && iter < max)
     {
-        qDebug() << ("iter loop: " + QString::number(iter));
         diff = 100;
         x_2 = x;
         func_lambda = inp;
@@ -374,6 +369,19 @@ QStringList Newton_Method(QStringList x_str, QString inp, double tol, int max)
         {
             for (int j = 0; j < count; j++)
             {
+                if (i == j) {
+                    QVector<double> forward = x, backward = x;
+                    forward[i] += h;
+                    backward[i] -= h;
+                    double v1 = func_vec(inp, forward);
+                    double v2 = func_vec(inp, backward);
+                    double v0 = func_vec(inp, x);  // Original function value
+
+                    H[i][j] = (v1 - 2 * v0 + v2) / pow(h, 2);
+
+                }
+                else
+                {
                     QVector<double> f1 = x, f2 = x, f3 = x, f4 = x;
                     f1[i] += h; f1[j] += h;
                     f2[i] += h; f2[j] -= h;
@@ -386,8 +394,7 @@ QStringList Newton_Method(QStringList x_str, QString inp, double tol, int max)
                     double v4 = func_vec(inp, f4);
 
                     H[i][j] = (v1 - v2 - v3 + v4) / (4 * h * h);
-
-                qDebug() << "H[" + QString::number(i) + "][" + QString::number(j) + "]: " + QString::number(H[i][j]);
+                }
 
             }
         }
@@ -403,7 +410,7 @@ QStringList Newton_Method(QStringList x_str, QString inp, double tol, int max)
             {
                 row_total += p_derivatives[j] * H[i][j];
             }
-            qDebug() << "row_total: " << row_total;
+
             x[i] = x[i] - row_total;
         }
 
@@ -422,9 +429,6 @@ QStringList Newton_Method(QStringList x_str, QString inp, double tol, int max)
             }
         }
 
-        qDebug() << "x1 is: " + QString::number(x[0]);
-        qDebug() << "x2 is: " + QString::number(x[1]);
-        qDebug() << "\n\n";
         iter++;
     }
 
@@ -441,6 +445,197 @@ QStringList Newton_Method(QStringList x_str, QString inp, double tol, int max)
 
     return x_str;  // Return the final values as a QStringList
 }
+
+QStringList BFGS(QStringList x_str, QString inp, double tol, int max)
+{
+    const double h = 1e-5;  // Small step for finite differences
+    const double phi = 2 - (1 + sqrt(5)) / 2;  // Golden ratio
+    int count = x_str.count();
+    if (count == 0) {
+        qDebug() << "Error: No variables provided!";
+        return QStringList();
+    }
+
+    QVector<double> x(count);
+    QVector<double> g(count), g_new(count), s(count), y(count);
+    QVector<QVector<double>> B_inv(count, QVector<double>(count, 0.0));
+
+    for (int i = 0; i < count; i++) {
+        x[i] = x_str[i].toDouble();
+        B_inv[i][i] = 1.0;  // Start with identity matrix for inverse Hessian
+    }
+
+    int iter = 0;
+    double diff = 1e9;
+    QVector<double> x_new = x;
+    QVector<double> S(count);
+
+    while (diff > tol && iter < max) {
+        // Compute Gradient g_k
+        for (int i = 0; i < count; i++) {
+            QVector<double> forward = x, backward = x;
+            forward[i] += h;
+            backward[i] -= h;
+            g[i] = (func_vec(inp, forward) - func_vec(inp, backward)) / (2 * h);
+        }
+
+        // Compute Search Direction p_k = -B_inv * g_k
+        QVector<double> p(count, 0.0);
+        for (int i = 0; i < count; i++) {
+            for (int j = 0; j < count; j++) {
+                p[i] -= B_inv[i][j] * g[j];
+            }
+        }
+
+        // Line search using Golden Section Search
+        double alpha0 = 0;
+        double alpha1 = 1;
+        QString func_lambda = inp;
+        for (int i = 0; i < count; i++) {
+            func_lambda.replace("x" + QString::number(i + 1), "(" + QString::number(x[i]) + "-" + QString::number(p[i]) + "*x)");
+        }
+        auto [f0, f1] = getInterval(func_lambda, alpha0, alpha1);
+        double lambda = GoldenSection(f0, std::abs(f1 - f0) * phi + f0, f1, func_lambda, 0.1, 30);
+
+        // Update x_k+1 = x_k + lambda * p_k
+        for (int i = 0; i < count; i++) {
+            x_new[i] = x[i] + lambda * p[i];
+        }
+
+        // Compute new gradient g_k+1
+        for (int i = 0; i < count; i++) {
+            QVector<double> forward = x_new, backward = x_new;
+            forward[i] += h;
+            backward[i] -= h;
+            g_new[i] = (func_vec(inp, forward) - func_vec(inp, backward)) / (2 * h);
+        }
+
+        // Compute s_k = x_k+1 - x_k and y_k = g_k+1 - g_k
+        for (int i = 0; i < count; i++) {
+            s[i] = x_new[i] - x[i];
+            y[i] = g_new[i] - g[i];
+        }
+
+        // Compute rho_k = 1 / (y_k^T * s_k)
+        double ys = 0.0, ss = 0.0;
+        for (int i = 0; i < count; i++) {
+            ys += y[i] * s[i];
+            ss += s[i] * s[i];
+        }
+        if (ys == 0) break;  // Avoid division by zero
+
+        double rho = 1.0 / ys;
+
+        // Update inverse Hessian B_k+1 using BFGS update formula
+        QVector<QVector<double>> B_inv_new = B_inv;
+
+        for (int i = 0; i < count; i++) {
+            for (int j = 0; j < count; j++) {
+                double term1 = (1.0 - rho * y[i] * s[j]) * B_inv[i][j] * (1.0 - rho * s[i] * y[j]);
+                double term2 = rho * s[i] * s[j];
+                B_inv_new[i][j] = term1 + term2;
+            }
+        }
+
+        // Update variables for next iteration
+        x = x_new;
+        B_inv = B_inv_new;
+        diff = ss;  // Check stopping condition ||s_k||
+
+        iter++;
+    }
+
+    // Convert final result to QStringList
+    for (int i = 0; i < count; i++) {
+        x_str[i] = QString::number(x[i], 'f', 8);
+    }
+
+    return x_str;  // Return final values
+}
+
+QStringList Hooke_Jeeves(QStringList x_str, QString inp, double tol, int max)
+{
+    const double h = 1e-5;  // Small step for function evaluation
+    int count = x_str.count();
+    if (count == 0) {
+        qDebug() << "Error: No variables provided!";
+        return QStringList();
+    }
+
+    QVector<double> x(count);
+    QVector<double> x_base(count);
+    QVector<double> x_new(count);
+    QVector<double> step(count, 0.5);  // Initial step size
+
+    for (int i = 0; i < count; i++) {
+        x[i] = x_str[i].toDouble();
+    }
+
+    int iter = 0;
+    double diff = 1e9;
+    x_base = x;  // Base point for pattern moves
+
+    while (diff > tol && iter < max)
+    {
+        x_new = x_base;  // Start from base point
+        bool improved = false;
+
+        // Exploratory search
+        for (int i = 0; i < count; i++) {
+            QVector<double> test_x = x_new;
+            test_x[i] += step[i];
+            double f1 = func_vec(inp, test_x);
+
+            test_x[i] = x_new[i] - step[i];
+            double f2 = func_vec(inp, test_x);
+
+            if (f1 < func_vec(inp, x_new)) {
+                x_new[i] += step[i];
+                improved = true;
+            }
+            else if (f2 < func_vec(inp, x_new)) {
+                x_new[i] -= step[i];
+                improved = true;
+            }
+        }
+
+        // Pattern move
+        if (improved) {
+            for (int i = 0; i < count; i++) {
+                x_new[i] = 2 * x_new[i] - x_base[i];  // Move in the same direction
+            }
+
+            if (func_vec(inp, x_new) < func_vec(inp, x_base)) {
+                x_base = x_new;  // Accept pattern move
+            }
+            else {
+                for (int i = 0; i < count; i++)
+                    step[i] /= 2.0;  // Reduce step size
+            }
+        }
+        else {
+            for (int i = 0; i < count; i++)
+                step[i] /= 2.0;  // Reduce step size
+        }
+
+        // Compute stopping condition
+        diff = 0;
+        for (int i = 0; i < count; i++) {
+            diff += pow(x_new[i] - x_base[i], 2);
+        }
+        diff = sqrt(diff);
+
+        iter++;
+    }
+
+    // Convert final result to QStringList
+    for (int i = 0; i < count; i++) {
+        x_str[i] = QString::number(x_base[i], 'f', 8);
+    }
+
+    return x_str;  // Return final values
+}
+
 
 void multi_variable::on_btnCalculate_clicked()
 {
@@ -466,11 +661,11 @@ void multi_variable::on_btnCalculate_clicked()
     }
     else if(ui->rbBFGS->isChecked())  // BFGS
     {
-        //result = BFGS(x, inp, tol, max);
+        result = BFGS(x, inp, tol, max);
     }
     else if(ui->rbHJ->isChecked())  // Hooke-Jeeves
     {
-        //result = Hooke_Jeeves(x, inp, tol, max);
+        result = Hooke_Jeeves(x, inp, tol, max);
     }
 
     // Join the vector with commas and set as output

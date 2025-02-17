@@ -16,6 +16,8 @@ double evaluateExpression(QString f)
         f = "0" + f;
     }
     f.replace("(-", "(0-");
+    f.replace("+-", "-");
+    f.replace("-+", "-");
 
     // Handle parenthesized expressions recursively
     int startPos = f.lastIndexOf("(");
