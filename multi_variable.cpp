@@ -111,7 +111,7 @@ QStringList Steep_Descent(QStringList x_str, QString inp, double tol, int max)
 
 
         auto [f0, f1] = getInterval(func_lambda, alpha0, alpha1);
-        lambda = GoldenSection(f0, std::abs(f1 - f0)*phi + f0, f1, func_lambda, 0.1, 30);
+        lambda = GoldenSection(f0, std::abs(f1 - f0)*phi + f0, f1, func_lambda, 0.001, 50);
 
         for (int i = 0; i < count; i++)
         {
@@ -204,7 +204,7 @@ QStringList Conjugate_Gradient(QStringList x_str, QString inp, double tol, int m
         }
 
         auto [f0, f1] = getInterval(func_lambda, 0, 5);
-        lambda = GoldenSection(f0, f0 + (f1 - f0)*phi, f1, func_lambda, 0.01, 50);
+        lambda = GoldenSection(f0, f0 + (f1 - f0)*phi, f1, func_lambda, 0.001, 50);
 
         for (int i = 0; i < count; i++)
         {
