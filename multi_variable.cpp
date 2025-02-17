@@ -48,12 +48,10 @@ std::pair<double,double> getInterval(QString func_lambda, double alphaLow, doubl
     double fLow  = func(func_lambda, alphaLow);
     double fHigh = func(func_lambda, alphaHigh);
 
-    // If we already bracket a minimum:
     if (fHigh > fLow) {
         return std::make_pair(alphaLow, alphaHigh);
     }
 
-    // Exponential expansion: up to 20 expansions
     for (int i = 0; i < 20; i++)
     {
         double oldAlpha = alphaHigh;
@@ -61,15 +59,11 @@ std::pair<double,double> getInterval(QString func_lambda, double alphaLow, doubl
         alphaHigh *= 2.0;
         fHigh = func(func_lambda, alphaHigh);
 
-        // If we see fHigh > oldVal, bracket found
         if (fHigh > oldVal) {
             return {oldAlpha, alphaHigh};
         }
     }
 
-    // If we get here, the function never went up,
-    // so it's likely decreasing or nearly flat.
-    // Return the biggest range we have.
     return {alphaHigh/2, alphaHigh};
 }
 
@@ -194,9 +188,6 @@ QStringList Conjugate_Gradient(QStringList x_str, QString inp, double tol, int m
             qDebug() << "p_derivatives[" << i << "]: " << p_derivatives[i];
         }
 
-        qDebug() << "abs_del (current gradient norm^2): " << abs_del;
-        qDebug() << "last_abs_del: " << last_abs_del;
-
 
         for (int i = 0; i < count; i++)
         {
@@ -210,22 +201,14 @@ QStringList Conjugate_Gradient(QStringList x_str, QString inp, double tol, int m
             }
 
             func_lambda.replace("x" + QString::number(i + 1), "(" + QString::number(x[i]) + "+" + QString::number(S[i]) + "*x)");
-            qDebug() << "S[" << i << "]: " << S[i];
         }
 
-        qDebug() << "func lambda: " << func_lambda;
-
-
         auto [f0, f1] = getInterval(func_lambda, 0, 5);
-        qDebug() << "f0: " << f0 << "f1: " << f1;
         lambda = GoldenSection(f0, f0 + (f1 - f0)*phi, f1, func_lambda, 0.01, 50);
-        qDebug() << "lambda: " << lambda;
-
 
         for (int i = 0; i < count; i++)
         {
             x[i] = x[i] + lambda * S[i];
-            qDebug() << "x[" << i << "]: " << x[i];
         }
 
 
@@ -235,7 +218,6 @@ QStringList Conjugate_Gradient(QStringList x_str, QString inp, double tol, int m
             norm_diff += pow(x[i] - x_2[i], 2);
         }
         norm_diff = sqrt(norm_diff);
-        qDebug() << "norm_diff: " << norm_diff;
         if (norm_diff < tol)
         {
             EndLoop = 1;
@@ -253,12 +235,10 @@ QStringList Conjugate_Gradient(QStringList x_str, QString inp, double tol, int m
 
 
 void invertMatrix(double **M, int count) {
-    // Augmented matrix (M | I)
     double **aug = new double*[count];
     for (int i = 0; i < count; i++) {
         aug[i] = new double[2 * count];
 
-        // Copy M into the left side of aug and identity matrix into the right
         for (int j = 0; j < count; j++) {
             aug[i][j] = M[i][j];
         }
@@ -267,9 +247,7 @@ void invertMatrix(double **M, int count) {
         }
     }
 
-    // Perform Gaussian elimination
     for (int i = 0; i < count; i++) {
-        // Find the pivot row
         int pivot = i;
         for (int j = i + 1; j < count; j++) {
             if (fabs(aug[j][i]) > fabs(aug[pivot][i])) {
@@ -277,7 +255,6 @@ void invertMatrix(double **M, int count) {
             }
         }
 
-        // Manually swap rows using a temporary variable (since swap() is not allowed)
         if (pivot != i) {
             for (int j = 0; j < 2 * count; j++) {
                 double temp = aug[i][j];
@@ -286,7 +263,6 @@ void invertMatrix(double **M, int count) {
             }
         }
 
-        // Check if matrix is singular
         if (fabs(aug[i][i]) < 1e-9) {
             qDebug() << "Hessian is singular, adding small identity matrix perturbation.";
             for (int i = 0; i < count; i++) {
@@ -294,13 +270,11 @@ void invertMatrix(double **M, int count) {
             }
         }
 
-        // Normalize pivot row
         double pivotValue = aug[i][i];
         for (int j = 0; j < 2 * count; j++) {
             aug[i][j] /= pivotValue;
         }
 
-        // Eliminate other rows
         for (int j = 0; j < count; j++) {
             if (j != i) {
                 double factor = aug[j][i];
@@ -311,14 +285,12 @@ void invertMatrix(double **M, int count) {
         }
     }
 
-    // Copy inverse back into M
     for (int i = 0; i < count; i++) {
         for (int j = 0; j < count; j++) {
             M[i][j] = aug[i][j + count];
         }
     }
 
-    // Free memory
     for (int i = 0; i < count; i++) {
         delete[] aug[i];
     }
@@ -375,7 +347,7 @@ QStringList Newton_Method(QStringList x_str, QString inp, double tol, int max)
                     backward[i] -= h;
                     double v1 = func_vec(inp, forward);
                     double v2 = func_vec(inp, backward);
-                    double v0 = func_vec(inp, x);  // Original function value
+                    double v0 = func_vec(inp, x);
 
                     H[i][j] = (v1 - 2 * v0 + v2) / pow(h, 2);
 
@@ -399,10 +371,8 @@ QStringList Newton_Method(QStringList x_str, QString inp, double tol, int max)
             }
         }
 
-        //Invert Hessian
         invertMatrix(H, count);
 
-        //Evalute
         for (int i = 0; i < count; i++)
         {
             row_total = 0;
@@ -443,7 +413,7 @@ QStringList Newton_Method(QStringList x_str, QString inp, double tol, int max)
         x_str[i] = QString::number(x[i]);
     }
 
-    return x_str;  // Return the final values as a QStringList
+    return x_str;
 }
 
 QStringList BFGS(QStringList x_str, QString inp, double tol, int max)
@@ -458,17 +428,15 @@ QStringList BFGS(QStringList x_str, QString inp, double tol, int max)
     QVector<double> x(count), grad(count), grad_old(count), s(count), y(count);
     QVector<QVector<double>> B_inv(count, QVector<double>(count, 0));
 
-    // Initialize x and identity inverse Hessian
     for (int i = 0; i < count; i++)
     {
         x[i] = x_str[i].toDouble();
-        B_inv[i][i] = 1.0;  // Identity matrix
+        B_inv[i][i] = 1.0;
     }
 
     int iter = 0;
     while (iter < max)
     {
-        // Compute gradient
         for (int i = 0; i < count; i++)
         {
             QVector<double> forward = x, backward = x;
@@ -477,7 +445,6 @@ QStringList BFGS(QStringList x_str, QString inp, double tol, int max)
             grad[i] = (func_vec(inp, forward) - func_vec(inp, backward)) / (2 * h);
         }
 
-        // Compute search direction: p = - B_inv * grad
         QVector<double> p(count, 0);
         for (int i = 0; i < count; i++)
         {
@@ -487,7 +454,6 @@ QStringList BFGS(QStringList x_str, QString inp, double tol, int max)
             }
         }
 
-        // Line search: approximate step size (simplified)
         double alpha = 1.0;
         QVector<double> x_new = x;
         for (int i = 0; i < count; i++)
@@ -495,24 +461,21 @@ QStringList BFGS(QStringList x_str, QString inp, double tol, int max)
             x_new[i] = x[i] + alpha * p[i];
         }
 
-        // Compute new gradient
         for (int i = 0; i < count; i++)
         {
             QVector<double> forward = x_new, backward = x_new;
             forward[i] += h;
             backward[i] -= h;
-            grad_old[i] = grad[i]; // Store old gradient
+            grad_old[i] = grad[i];
             grad[i] = (func_vec(inp, forward) - func_vec(inp, backward)) / (2 * h);
         }
 
-        // Compute s = x_new - x and y = grad_new - grad_old
         for (int i = 0; i < count; i++)
         {
             s[i] = x_new[i] - x[i];
             y[i] = grad[i] - grad_old[i];
         }
 
-        // Update inverse Hessian B_inv using BFGS formula
         double sy = 0, yBy = 0;
         QVector<double> By(count, 0);
         for (int i = 0; i < count; i++)
@@ -529,8 +492,7 @@ QStringList BFGS(QStringList x_str, QString inp, double tol, int max)
             yBy += y[i] * By[i];
         }
 
-        // BFGS update
-        if (sy > 1e-10)  // Avoid division by zero
+        if (sy > 1e-10)
         {
             for (int i = 0; i < count; i++)
             {
@@ -541,12 +503,11 @@ QStringList BFGS(QStringList x_str, QString inp, double tol, int max)
             }
         }
 
-        // Check for convergence
         double norm = 0;
         for (int i = 0; i < count; i++)
         {
             norm += fabs(x_new[i] - x[i]);
-            x[i] = x_new[i];  // Update x
+            x[i] = x_new[i];
         }
 
         if (norm < tol)
@@ -557,7 +518,6 @@ QStringList BFGS(QStringList x_str, QString inp, double tol, int max)
         iter++;
     }
 
-    // Convert result to QStringList
     for (int i = 0; i < count; i++)
     {
         x_str[i] = QString::number(x[i]);
@@ -647,7 +607,7 @@ void multi_variable::on_btnCalculate_clicked()
     QString inp = ui->txtFunc->text();
     QStringList x = ui->txtX->text().replace(" ", "").split(",");
     double tol = ui->txtTol->text().toDouble();
-    int max = ui->txtIter->text().toInt();  // Ensure `txtMaxIter` exists in the UI
+    int max = ui->txtIter->text().toInt();
 
     QLineEdit *sol = ui->txtSol;
     QStringList result;
@@ -673,7 +633,6 @@ void multi_variable::on_btnCalculate_clicked()
         result = Hooke_Jeeves(x, inp, tol, max);
     }
 
-    // Join the vector with commas and set as output
     sol->setText(result.join(", "));
 }
 
