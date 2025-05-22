@@ -1,0 +1,10 @@
+{
+    "files": [
+        "menu.py",
+        "menu.ui",
+        "linear.ui",
+        "linear.py",
+        "ui_linear.py",
+        "ui_menu.py"
+    ]
+}
