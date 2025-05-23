@@ -3,14 +3,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # === User settings ===
-num_vars = 2
-num_iterations = 5
+f_str = "x0**2 + 3*x1**2 - x0*x1 + 2*x0 - 4*x1 + 1"  # Function as string
 initial_guess = [0.5, -1.0]
+num_iterations = 5
 
 # === Symbolic setup ===
+num_vars = len(initial_guess)
 x_syms = sp.symbols(f'x0:{num_vars}')
-f_expr = x_syms[0]**2 + 3*x_syms[1]**2 - x_syms[0]*x_syms[1] + 2*x_syms[0] - 4*x_syms[1] + 1
+f_expr = sp.sympify(f_str)
 
+# Gradient and lambdified functions
 grad_syms = [sp.diff(f_expr, xi) for xi in x_syms]
 f_num = sp.lambdify(x_syms, f_expr, 'numpy')
 grad_num = sp.lambdify(x_syms, grad_syms, 'numpy')
@@ -38,8 +40,8 @@ def line_search(f, grad, x, p):
 
 trajectory = [x.copy()]
 
-# === BFGS iterations ===
-for k in range(1, num_iterations+1):
+# === BFGS Iterations ===
+for k in range(1, num_iterations + 1):
     gx = np.array(grad_num(*x), dtype=float)
     pk = -Hk.dot(gx)
 
@@ -51,7 +53,7 @@ for k in range(1, num_iterations+1):
     yk = gx_new - gx
     syk = np.dot(yk, sk)
 
-    if syk > 1e-12:
+    if syk > 1e-12:  # Update Hessian approximation
         rho_k = 1.0 / syk
         I = np.eye(n)
         Vk = I - rho_k * np.outer(sk, yk)
@@ -71,7 +73,6 @@ for k in range(1, num_iterations+1):
     trajectory.append(x.copy())
 
 # === Plotting ===
-# Contour setup
 x0, x1 = x_syms
 f_plot = sp.lambdify((x0, x1), f_expr, 'numpy')
 x_vals = np.linspace(-2, 2, 200)
@@ -79,16 +80,16 @@ y_vals = np.linspace(-2, 2, 200)
 X, Y = np.meshgrid(x_vals, y_vals)
 Z = f_plot(X, Y)
 
-plt.figure(figsize=(8,6))
+plt.figure(figsize=(8, 6))
 contours = plt.contour(X, Y, Z, levels=50, cmap='viridis')
 plt.clabel(contours, inline=True, fontsize=8)
 
-# Trajectory
+# Trajectory path
 traj = np.array(trajectory)
-plt.plot(traj[:,0], traj[:,1], marker='o', color='red', label='BFGS Path')
-plt.quiver(traj[:-1,0], traj[:-1,1],
-           traj[1:,0] - traj[:-1,0],
-           traj[1:,1] - traj[:-1,1],
+plt.plot(traj[:, 0], traj[:, 1], marker='o', color='red', label='BFGS Path')
+plt.quiver(traj[:-1, 0], traj[:-1, 1],
+           traj[1:, 0] - traj[:-1, 0],
+           traj[1:, 1] - traj[:-1, 1],
            angles='xy', scale_units='xy', scale=1, color='red')
 
 plt.title("BFGS Optimization Path on f(x₀, x₁)")

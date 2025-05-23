@@ -4,7 +4,8 @@
         "menu.ui",
         "linear.ui",
         "linear.py",
-        "ui_linear.py",
-        "ui_menu.py"
+        "multivariable.ui",
+        "multivariable.py",
+        "ga.ui"
     ]
 }

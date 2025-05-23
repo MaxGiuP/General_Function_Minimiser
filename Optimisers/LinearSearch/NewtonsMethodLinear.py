@@ -1,46 +1,57 @@
 import sympy as sp
 import numpy as np
+import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
-formula_str = "-x**5 + 2*x**4 - x**2 - 5"
+def newtons_method(f_str, current_x, num_iterations=1, plot=False):
+    # Parse and detect variable
+    f_expr = sp.sympify(f_str)
+    syms = list(f_expr.free_symbols)
+    if len(syms) != 1:
+        raise ValueError(f"Expected exactly one variable in '{f_str}', found {syms}")
+    var = syms[0]
 
-x = sp.symbols('x')
+    # Symbolic derivatives
+    df_expr  = sp.diff(f_expr, var)
+    ddf_expr = sp.diff(df_expr, var)
 
-f_expr = sp.sympify(formula_str, {"x": x})
+    # Numeric lambdas
+    f_num   = sp.lambdify(var, f_expr,  'numpy')
+    df_num  = sp.lambdify(var, df_expr, 'numpy')
+    ddf_num = sp.lambdify(var, ddf_expr,'numpy')
 
-df_expr  = sp.diff(f_expr, x)
-ddf_expr = sp.diff(df_expr, x)
+    # Optional plot
+    if plot:
+        # choose a window around current_x
+        a = current_x - 1.0
+        b = current_x + 1.0
+        xs = np.linspace(a, b, 400)
+        plt.plot(xs, f_num(xs), label=f_str)
+        plt.title("Newton's Method")
+        plt.xlabel(str(var))
+        plt.ylabel(f_str)
+        plt.grid(True)
+        plt.axhline(0, color='black', linewidth=0.5)
+        plt.legend()
+        plt.show()
 
-f   = sp.lambdify(x, f_expr,  modules="numpy")
-df  = sp.lambdify(x, df_expr, modules="numpy")
-ddf = sp.lambdify(x, ddf_expr,modules="numpy")
+    results = []
+    x_val = current_x
+    for i in range(1, num_iterations + 1):
+        f_val   = f_num(x_val)
+        df_val  = df_num(x_val)
+        ddf_val = ddf_num(x_val)
 
-#Plot f(x)
-x_vals = np.linspace(-1, 2, 400)
-plt.plot(x_vals, f_num(x_vals), label="f(x)")
-plt.title("Newton's Method")
-plt.xlabel("x")
-plt.ylabel("f(x)")
-plt.grid(True)
-plt.axhline(0, color='black', linewidth=0.5)
-plt.legend()
-plt.show()
+        if ddf_val == 0:
+            print(f"Iteration {i}: second derivative zero at {var} = {x_val:.6f}. Stopping.")
+            break
 
+        # Newton update
+        x_val = x_val - df_val / ddf_val
+        f_val = f_num(x_val)
 
+        print(f"Iteration {i}: {var}{i+1} = {x_val:.6f}, f({var}{i+1}) = {f_val:.6f}")
+        results.append((i, x_val, f_val))
 
-for i in range(1, num_iterations+2):
-    fx   = f_num(current_x)
-    dfx  = df_num(current_x)
-    ddfx = ddf_num(current_x)
-
-    if ddfx == 0:
-        print(f"Iteration {i - 1}: second derivative zero at x = {current_x:.6f}. Stopping.")
-        break
-
-    if i > 1:
-        print(f"Iteration {i - 1}: x = {current_x:.6f},  f(x) = {fx:.6f}")
-
-    current_x = current_x - dfx / ddfx
-
-fx = f_num(current_x)
-print(f"After {i - 1} iterations: x = {current_x:.6f},  f(x) = {fx:.6f}")
+    return results

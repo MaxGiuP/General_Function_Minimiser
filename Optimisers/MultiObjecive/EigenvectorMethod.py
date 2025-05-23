@@ -1,3 +1,12 @@
+"""
+3. The eigenvector method is to be used to assign objective
+function weights to a problem with three goals. Goal 1 is
+considered to be twice as important as goal 2, which in turn is
+three times as important as goal 3. By assuming the appropriate
+largest eigenvalue for consistent input data, derive the resulting
+normalized weight vector.
+"""
+
 import numpy as np
 
 def eigenvector_weights(P):
@@ -27,7 +36,7 @@ def compute_ahp_weights(relative_importance):
     return P, w, λ
 
 
-P, w, λ = compute_ahp_weights([1, 1/2, 1/6])
+P, w, λ = compute_ahp_weights([1, 1/1.97, 1/(1.43*1.97)])
 print("Pairwise matrix P =\n", P, "\n")
-print("Normalized weights w =", np.round(w,4))
-print("Principal eigenvalue λ_max =", round(λ,4))
+print("Normalized weights w =", np.round(w,8))
+print("Principal eigenvalue λ_max =", round(λ,8))

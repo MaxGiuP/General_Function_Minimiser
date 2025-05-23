@@ -27,7 +27,7 @@
      <string>Linear</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="btnMultivariable">
     <property name="geometry">
      <rect>
       <x>160</x>
@@ -37,23 +37,23 @@
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Multi-Variable</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="btnGA">
     <property name="geometry">
      <rect>
-      <x>320</x>
+      <x>310</x>
       <y>10</y>
       <width>141</width>
       <height>71</height>
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Genetic Algorithm</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="btnConstrained">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -63,7 +63,46 @@
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Constrained</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnMultiobjective">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>120</y>
+      <width>141</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Multi-Objective</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnWing">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>340</y>
+      <width>181</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Wing Question</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnManufacturing">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>420</y>
+      <width>181</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Manufacturing Question</string>
     </property>
    </widget>
   </widget>

@@ -11,10 +11,10 @@ import numpy as np
 import pandas as pd
 
 # GA settings
-lower, upper = -1, 1
+lower, upper = 0, 1
 bits = 6
-parents = [-0.42857, 0.04762]
-random_nums = [0.3772, 0.1397, 0.8425]  # crossover, mutation1, mutation2
+parents = [0.599, 0.888]
+random_nums = [0, 0.3035, 0.6789]  # crossover, mutation1, mutation2
 
 # Encoding and decoding functions
 def encode(val):

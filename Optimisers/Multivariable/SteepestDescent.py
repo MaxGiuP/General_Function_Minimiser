@@ -2,29 +2,25 @@ import sympy as sp
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Symbolic setup
 x = sp.symbols('x:2')
 l = sp.Symbol('l')
 
-#INPUTS
-f_expr = x[0] - x[1] + 2*x[0]**2 + 2*x[0]*x[1] + x[1]**3
+# INPUTS
+f_str = "x0 - x1 + 2*x0**2 + 2*x0*x1 + x1**3"  # function as string
 num_iterations = 1
+#NEED TO HAVE DECIMAL POINT AND 0 for starting points
 x_k = np.array([0.0, 1.0])
 
 
+f_expr = sp.sympify(f_str)
 grad_expr = [sp.diff(f_expr, x[0]), sp.diff(f_expr, x[1])]
 
-# Convert to numerical function for plotting
 f_lambdified = sp.lambdify((x[0], x[1]), f_expr, 'numpy')
 
-# Grid for contour plot
 x0_vals = np.linspace(-13, 10, 200)
 x1_vals = np.linspace(-13, 10, 200)
-
 X0, X1 = np.meshgrid(x0_vals, x1_vals)
 Z = f_lambdified(X0, X1)
-
-# Start steepest descent
 
 trajectory = [x_k.copy()]
 

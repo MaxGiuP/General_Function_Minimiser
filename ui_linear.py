@@ -25,36 +25,37 @@ class Ui_wLinear(object):
     def setupUi(self, wLinear):
         if not wLinear.objectName():
             wLinear.setObjectName(u"wLinear")
-        wLinear.resize(469, 310)
+        wLinear.resize(724, 403)
         self.centralwidget = QWidget(wLinear)
         self.centralwidget.setObjectName(u"centralwidget")
         self.btnCalculate = QPushButton(self.centralwidget)
         self.btnCalculate.setObjectName(u"btnCalculate")
-        self.btnCalculate.setGeometry(QRect(170, 120, 97, 71))
+        self.btnCalculate.setGeometry(QRect(320, 280, 151, 41))
         self.verticalLayoutWidget = QWidget(self.centralwidget)
         self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
-        self.verticalLayoutWidget.setGeometry(QRect(10, 120, 160, 86))
+        self.verticalLayoutWidget.setGeometry(QRect(10, 120, 244, 86))
         self.verticalLayout = QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.rbGolden = QRadioButton(self.verticalLayoutWidget)
         self.rbGolden.setObjectName(u"rbGolden")
+        self.rbGolden.setChecked(True)
 
         self.verticalLayout.addWidget(self.rbGolden)
 
-        self.radioButton_2 = QRadioButton(self.verticalLayoutWidget)
-        self.radioButton_2.setObjectName(u"radioButton_2")
+        self.rbInverse = QRadioButton(self.verticalLayoutWidget)
+        self.rbInverse.setObjectName(u"rbInverse")
 
-        self.verticalLayout.addWidget(self.radioButton_2)
+        self.verticalLayout.addWidget(self.rbInverse)
 
-        self.radioButton_3 = QRadioButton(self.verticalLayoutWidget)
-        self.radioButton_3.setObjectName(u"radioButton_3")
+        self.rbNewton = QRadioButton(self.verticalLayoutWidget)
+        self.rbNewton.setObjectName(u"rbNewton")
 
-        self.verticalLayout.addWidget(self.radioButton_3)
+        self.verticalLayout.addWidget(self.rbNewton)
 
-        self.textEdit = QTextEdit(self.centralwidget)
-        self.textEdit.setObjectName(u"textEdit")
-        self.textEdit.setGeometry(QRect(280, 120, 181, 91))
+        self.txtOutput = QTextEdit(self.centralwidget)
+        self.txtOutput.setObjectName(u"txtOutput")
+        self.txtOutput.setGeometry(QRect(250, 120, 371, 141))
         self.cbPlot = QCheckBox(self.centralwidget)
         self.cbPlot.setObjectName(u"cbPlot")
         self.cbPlot.setGeometry(QRect(20, 210, 121, 24))
@@ -64,10 +65,10 @@ class Ui_wLinear(object):
         self.gridLayout = QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
-        self.lineEdit_2 = QLineEdit(self.gridLayoutWidget)
-        self.lineEdit_2.setObjectName(u"lineEdit_2")
+        self.txtx1 = QLineEdit(self.gridLayoutWidget)
+        self.txtx1.setObjectName(u"txtx1")
 
-        self.gridLayout.addWidget(self.lineEdit_2, 1, 2, 1, 1)
+        self.gridLayout.addWidget(self.txtx1, 1, 2, 1, 1)
 
         self.label_2 = QLabel(self.gridLayoutWidget)
         self.label_2.setObjectName(u"label_2")
@@ -85,25 +86,25 @@ class Ui_wLinear(object):
 
         self.gridLayout.addWidget(self.label_4, 1, 3, 1, 1)
 
-        self.lineEdit = QLineEdit(self.gridLayoutWidget)
-        self.lineEdit.setObjectName(u"lineEdit")
+        self.txtFunction = QLineEdit(self.gridLayoutWidget)
+        self.txtFunction.setObjectName(u"txtFunction")
 
-        self.gridLayout.addWidget(self.lineEdit, 0, 2, 1, 5)
+        self.gridLayout.addWidget(self.txtFunction, 0, 2, 1, 5)
 
-        self.lineEdit_5 = QLineEdit(self.gridLayoutWidget)
-        self.lineEdit_5.setObjectName(u"lineEdit_5")
+        self.txtx3 = QLineEdit(self.gridLayoutWidget)
+        self.txtx3.setObjectName(u"txtx3")
 
-        self.gridLayout.addWidget(self.lineEdit_5, 1, 6, 1, 1)
+        self.gridLayout.addWidget(self.txtx3, 1, 6, 1, 1)
 
-        self.lineEdit_4 = QLineEdit(self.gridLayoutWidget)
-        self.lineEdit_4.setObjectName(u"lineEdit_4")
+        self.txtx2 = QLineEdit(self.gridLayoutWidget)
+        self.txtx2.setObjectName(u"txtx2")
 
-        self.gridLayout.addWidget(self.lineEdit_4, 1, 4, 1, 1)
+        self.gridLayout.addWidget(self.txtx2, 1, 4, 1, 1)
 
-        self.lineEdit_3 = QLineEdit(self.gridLayoutWidget)
-        self.lineEdit_3.setObjectName(u"lineEdit_3")
+        self.txtIterations = QLineEdit(self.gridLayoutWidget)
+        self.txtIterations.setObjectName(u"txtIterations")
 
-        self.gridLayout.addWidget(self.lineEdit_3, 2, 2, 1, 1)
+        self.gridLayout.addWidget(self.txtIterations, 2, 2, 1, 1)
 
         self.label_6 = QLabel(self.gridLayoutWidget)
         self.label_6.setObjectName(u"label_6")
@@ -125,11 +126,11 @@ class Ui_wLinear(object):
 
         self.btnBack = QPushButton(self.centralwidget)
         self.btnBack.setObjectName(u"btnBack")
-        self.btnBack.setGeometry(QRect(190, 230, 97, 26))
+        self.btnBack.setGeometry(QRect(40, 280, 97, 26))
         wLinear.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(wLinear)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 469, 23))
+        self.menubar.setGeometry(QRect(0, 0, 724, 23))
         self.menuLinear_Search = QMenu(self.menubar)
         self.menuLinear_Search.setObjectName(u"menuLinear_Search")
         wLinear.setMenuBar(self.menubar)
@@ -145,15 +146,20 @@ class Ui_wLinear(object):
     # setupUi
 
     def retranslateUi(self, wLinear):
-        wLinear.setWindowTitle(QCoreApplication.translate("wLinear", u"MainWindow", None))
+        wLinear.setWindowTitle(QCoreApplication.translate("wLinear", u"Linear Search", None))
         self.btnCalculate.setText(QCoreApplication.translate("wLinear", u"Calculate", None))
         self.rbGolden.setText(QCoreApplication.translate("wLinear", u"Golden Search", None))
-        self.radioButton_2.setText(QCoreApplication.translate("wLinear", u"RadioButton", None))
-        self.radioButton_3.setText(QCoreApplication.translate("wLinear", u"RadioButton", None))
+        self.rbInverse.setText(QCoreApplication.translate("wLinear", u"Inverse Parabolic Interpolation", None))
+        self.rbNewton.setText(QCoreApplication.translate("wLinear", u"Netwon's Method", None))
         self.cbPlot.setText(QCoreApplication.translate("wLinear", u"Plot function", None))
+        self.txtx1.setText(QCoreApplication.translate("wLinear", u"0.5", None))
         self.label_2.setText(QCoreApplication.translate("wLinear", u"Starting Points", None))
         self.label_5.setText(QCoreApplication.translate("wLinear", u"x3", None))
         self.label_4.setText(QCoreApplication.translate("wLinear", u"x2", None))
+        self.txtFunction.setText(QCoreApplication.translate("wLinear", u"x**5 - 2*(x**3) - 10*x + 5", None))
+        self.txtx3.setText(QCoreApplication.translate("wLinear", u"2", None))
+        self.txtx2.setText(QCoreApplication.translate("wLinear", u"1", None))
+        self.txtIterations.setText(QCoreApplication.translate("wLinear", u"2", None))
         self.label_6.setText(QCoreApplication.translate("wLinear", u"x1", None))
         self.label.setText(QCoreApplication.translate("wLinear", u"Function", None))
         self.label_3.setText(QCoreApplication.translate("wLinear", u"Number of Iterations", None))

@@ -4,17 +4,21 @@ x = sp.symbols('x', positive=True, real=True)
 
 # === User inputs ===
 # Symbol for the decision variable
-funcs      = [1/x, x**2]
+func_strs = ["1.137/x", "0.923*(x**2)"]
+funcs = [sp.sympify(s) for s in func_strs]
 thresholds = [(0.5, 2.0), (0.5, 2.0)]
 # ===================
 
 def fuzzy_best_worst(funcs, thresholds):
     acc, unacc = thresholds[0]
 
-    mu_total = sum((unacc - f)/(unacc - acc) for f in funcs)
-
-    dmu = sp.diff(mu_total, x)
-    sols = sp.solve(sp.simplify(dmu), x)
+    mu_total = 0
+    for f in funcs:
+        mu = (unacc - f) / (unacc - acc)
+        mu_total += mu
+    dmu = sp.diff(mu_total, "x")
+    sols = sp.solve(sp.simplify(dmu), "x")
+    
     crit = [s.evalf() for s in sols 
             if s.is_real and acc < s < sp.sqrt(unacc)]
     if not crit:

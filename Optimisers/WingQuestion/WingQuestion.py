@@ -1,14 +1,32 @@
+"""
+2. The lift coefficient of an aircraft wing, CL , is given by 0.09(α+2)
+where α is the angle of attack in degrees. The drag coefficient,
+CD , is given by 0.02+0.055CL
+2
+. If the lift to drag ratio is to be
+maximized what is the optimal angle of attack the aircraft should
+fly at and what then is the lift to drag ratio.
+If the cruise speed is 40 m/s and the landing speed is 15 m/s,
+while the maximum angle of attack is constrained by stall limits to
+be no more than 14°, what is the best cruise lift to drag ratio that
+can actually be achieved without changing the wing geometry for
+landing.
+The coefficients are found from the lift and drag by dividing by
+½ρV2
+A where the symbols have their usual meanings.
+"""
+
 import sympy as sp
 import numpy as np
 
 # === User inputs ===
-cl_coeff            = 0.09    # coefficient in CL = cl_coeff*(alpha + cl_offset)
-cl_offset           = 2.0     # offset in the CL expression
-cd_const            = 0.02    # constant term in CD = cd_const + cd_quad*CL**2
+cl_coeff            = 0.093    # coefficient in CL = cl_coeff*(alpha + cl_offset)
+cl_offset           = 1.0     # offset in the CL expression
+cd_const            = 0.032    # constant term in CD = cd_const + cd_quad*CL**2
 cd_quad             = 0.055   # quadratic term coefficient in CD
 initial_guess_alpha = 5.0     # initial guess (°) for Newton solve
-stall_limit_alpha   = 14.0    # maximum allowable angle of attack (degrees)
-V_cruise            = 40.0    # cruise speed (m/s)
+stall_limit_alpha   = 12.0    # maximum allowable angle of attack (degrees)
+V_cruise            = 33.0    # cruise speed (m/s)
 V_landing           = 15.0    # landing speed (m/s)
 # ====================
 
