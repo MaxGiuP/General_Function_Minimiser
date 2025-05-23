@@ -6,6 +6,11 @@
         "linear.py",
         "multivariable.ui",
         "multivariable.py",
-        "ga.ui"
+        "ga.ui",
+        "constrained.ui",
+        "multiobjective.ui",
+        "ga.py",
+        "multiobjective.py",
+        "constrained.py"
     ]
 }
