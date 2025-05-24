@@ -5,6 +5,10 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
 def newtons_method(f_str, current_x, num_iterations=1, plot=False):
+    """
+    Perform Newton’s method on a single‐variable function, capturing all console
+    output into a returned string instead of printing.
+    """
     # Parse and detect variable
     f_expr = sp.sympify(f_str)
     syms = list(f_expr.free_symbols)
@@ -23,7 +27,6 @@ def newtons_method(f_str, current_x, num_iterations=1, plot=False):
 
     # Optional plot
     if plot:
-        # choose a window around current_x
         a = current_x - 1.0
         b = current_x + 1.0
         xs = np.linspace(a, b, 400)
@@ -36,22 +39,23 @@ def newtons_method(f_str, current_x, num_iterations=1, plot=False):
         plt.legend()
         plt.show()
 
-    results = []
+    logs = []
     x_val = current_x
+
     for i in range(1, num_iterations + 1):
         f_val   = f_num(x_val)
         df_val  = df_num(x_val)
         ddf_val = ddf_num(x_val)
 
         if ddf_val == 0:
-            print(f"Iteration {i}: second derivative zero at {var} = {x_val:.6f}. Stopping.")
+            logs.append(f"Iteration {i}: second derivative zero at {var} = {x_val:.6f}. Stopping.\n")
             break
 
         # Newton update
         x_val = x_val - df_val / ddf_val
         f_val = f_num(x_val)
 
-        print(f"Iteration {i}: {var}{i+1} = {x_val:.6f}, f({var}{i+1}) = {f_val:.6f}")
-        results.append((i, x_val, f_val))
+        logs.append(f"Iteration {i}: {var}{i+1} = {x_val:.6f}, f({var}{i+1}) = {f_val:.6f}\n")
 
-    return results
+    result = "".join(logs)
+    return result

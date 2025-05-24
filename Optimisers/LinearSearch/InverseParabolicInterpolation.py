@@ -29,32 +29,30 @@ def inverse_parabolic_interpolation(f_str, x1, x2, x3, num_iterations=1, plot=Fa
         plt.legend()
         plt.show()
 
-    results = []
+    logs = []
     next_label = 4
 
     for i in range(1, num_iterations + 1):
-        print(f"\n--------- Iteration {i} ---------")
+        logs.append(f"\n--------- Iteration {i} ---------\n")
+
         # current evaluations
         f1, f2, f3 = f(x1), f(x2), f(x3)
-        print(f"Bracket points:")
-        print(f"  Lower = {x1:.6f}, f = {f1:.6f}")
-        print(f"  Middle = {x2:.6f}, f = {f2:.6f}")
-        print(f"  Upper = {x3:.6f}, f = {f3:.6f}")
+        logs.append("Bracket points:\n")
+        logs.append(f"  Lower  = {x1:.6f}, f = {f1:.6f}\n")
+        logs.append(f"  Middle = {x2:.6f}, f = {f2:.6f}\n")
+        logs.append(f"  Upper  = {x3:.6f}, f = {f3:.6f}\n")
 
         # compute new estimate
         num = (x2 - x1)**2 * (f2 - f3) - (x2 - x3)**2 * (f2 - f1)
         den = (x2 - x1) * (f2 - f3)   - (x2 - x3) * (f2 - f1)
         if den == 0:
-            print("Interpolation failed: denominator = 0.")
+            logs.append("Interpolation failed: denominator = 0.\n")
             break
 
         x_min = x2 - 0.5 * num / den
         f_min = f(x_min)
-        print(f"\nComputed new point:")
-        print(f"  x{next_label} = {x_min:.6f}, f = {f_min:.6f}")
-
-        # store results
-        results.append((i, next_label, x_min, f_min, (x1, x2, x3)))
+        logs.append("\nComputed new point:\n")
+        logs.append(f"  x{next_label} = {x_min:.6f}, f = {f_min:.6f}\n")
 
         # pick the best three of {x1,x2,x3,x_min} by f-value
         pts = sorted(
@@ -65,10 +63,11 @@ def inverse_parabolic_interpolation(f_str, x1, x2, x3, num_iterations=1, plot=Fa
         pts.sort(key=lambda p: p[0])
         x1, x2, x3 = pts[0][0], pts[1][0], pts[2][0]
 
-        print(f"\nUpdated bracket:")
-        print(f"  Lower = {x1:.6f}, Middle = {x2:.6f}, Upper = {x3:.6f}")
-        print(f"------------------------------")
+        logs.append(f"\nUpdated bracket:\n")
+        logs.append(f"  Lower  = {x1:.6f}, Middle = {x2:.6f}, Upper = {x3:.6f}\n")
+        logs.append("------------------------------\n")
 
         next_label += 1
 
-    return results
+    result = "".join(logs)
+    return result

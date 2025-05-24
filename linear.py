@@ -37,19 +37,19 @@ class LinearWindow(QMainWindow):
 
         if self.ui.rbGolden.isChecked():
             print("Starting Golden Section")
-            results = GoldenSection.golden_section_search(Function, x1, x2, x3, Iterations, ShowPlot)
+            result = GoldenSection.golden_section_search(Function, x1, x2, x3, Iterations, ShowPlot)
             print("Finished Golden Section")
         elif self.ui.rbInverse.isChecked():
             print("Starting Inverse Parabolic")
-            results = InverseParabolicInterpolation.inverse_parabolic_interpolation(Function, x1, x2, x3, Iterations, ShowPlot)
+            result = InverseParabolicInterpolation.inverse_parabolic_interpolation(Function, x1, x2, x3, Iterations, ShowPlot)
             print("Finished Inverse Parabolic")
         elif self.ui.rbNewton.isChecked():
             print("Starting Newton's Method")
-            results = NewtonsMethodLinear.newtons_method(Function, x1, Iterations, ShowPlot)
+            result = NewtonsMethodLinear.newtons_method(Function, x1, Iterations, ShowPlot)
             print("Finished Newton's Method")
 
-        for i in range(1, len(results)):
-            self.ui.txtOutput.setText(str(self.ui.txtOutput) + str(results[i]))
+        self.ui.txtOutput.setText(result)
+
 
     def btnBack_clicked(self):
         from menu import MainWindow
