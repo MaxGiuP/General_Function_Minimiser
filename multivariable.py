@@ -41,27 +41,26 @@ class MultiVariableWindow(QMainWindow):
 
         if self.ui.rbSteepest.isChecked():
             print("Starting Steepest")
-            results = SteepestDescent.steepest_descent(Function, start, Iterations, ShowPlot)
+            result = SteepestDescent.steepest_descent(Function, start, Iterations, ShowPlot)
             print("Finished Steepest")
         elif self.ui.rbConjugate.isChecked():
             print("Starting Conjugate")
-            results = ConjugateGradient.conjugate_gradient(Function, start, Iterations, ShowPlot)
+            result = ConjugateGradient.conjugate_gradient(Function, start, Iterations, ShowPlot)
             print("Finished Conjugate")
         elif self.ui.rbNewton.isChecked():
             print("Starting Newton's Method")
-            results = NewtonsMethodMulti.newton_multivariate(Function, start, Iterations, ShowPlot)
+            result = NewtonsMethodMulti.newton_multivariate(Function, start, Iterations, ShowPlot)
             print("Finished Newton's Method")
         elif self.ui.rbBFGS.isChecked():
             print("Starting BFGS")
-            results = BFGS.bfgs(Function, start, Iterations, ShowPlot)
+            result = BFGS.bfgs(Function, start, Iterations, ShowPlot)
             print("Finished BFGS")
         elif self.ui.rbHJ.isChecked():
             print("Starting Hooke and Jeeves")
-            results = HookeandJeeves.hooke_jeeves(Function, start, h, Iterations, ShowPlot)
+            result = HookeandJeeves.hooke_jeeves(Function, start, h, Iterations, ShowPlot)
             print("Finished Hooke and Jeeves")
 
-        for i in range(1, len(results)):
-            self.ui.txtOutput.setText(str(self.ui.txtOutput) + str(results[i]))
+        self.ui.txtOutput.setText(result)
 
     def btnBack_clicked(self):
         from menu import MainWindow

@@ -76,7 +76,7 @@
      <item row="1" column="2">
       <widget class="QLineEdit" name="txtx">
        <property name="text">
-        <string>0.5</string>
+        <string>0</string>
        </property>
       </widget>
      </item>
@@ -107,7 +107,7 @@
      <item row="0" column="2" colspan="5">
       <widget class="QLineEdit" name="txtFunction">
        <property name="text">
-        <string>x**5 - 2*(x**3) - 10*x + 5</string>
+        <string>x1 - x2 + 2*(x1**2) + 2*x1*x2 + x2**3</string>
        </property>
       </widget>
      </item>
