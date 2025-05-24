@@ -2,21 +2,20 @@
 import sys
 
 from PySide6.QtWidgets import QApplication, QMainWindow
-from Optimisers.GeneticAlgorithms import GA_Crossover
-from Optimisers.GeneticAlgorithms import GA_Roulette
-from Optimisers.GeneticAlgorithms import GA_Combined
+from Optimisers.WingQuestion import WingQuestion
 
 # Important:
 # You need to run the following command to generate the ui_form.py file
 #     pyside6-uic form.ui -o ui_form.py, or
 #     pyside2-uic form.ui -o ui_form.py
 
-from ui_ga import Ui_wGA
+from ui_wing import Ui_wWing
 
-class GAWindow(QMainWindow):
+
+class WingWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.ui = Ui_wGA()
+        self.ui = Ui_wWing()
         self.ui.setupUi(self)
 
         self.ui.btnCalculate.clicked.connect(self.btnCalculate_clicked)
@@ -29,15 +28,18 @@ class GAWindow(QMainWindow):
         if self.ui.cbPlot.isChecked():
             ShowPlot = True
 
-        Function = str(self.ui.txtFunction.text())
-        Iterations = int(self.ui.txtIterations.text())
-        x1 = float(self.ui.txtx1.text())
-        x2 = float(self.ui.txtx2.text())
-        x3 = float(self.ui.txtx3.text())
+        cl_coeff = self.ui.txtCLCoeff.text()
+        cl_offset = self.ui.txtCLOff.text()
+        cd_const = self.ui.txtCLConst.text()
+        cd_quad = self.ui.txtCLQuad.text()
+        initial_guess_alpha = self.ui.txtAlphaGuess.text()
+        stall_limit = self.ui.txtStallLimit.text()
+        V_cruise = self.ui.txtCruise.text()
+        V_landing = self.ui.txtLanding.text()
 
-        if self.ui.rbGolden.isChecked():
-            print("Starting Golden Section")
-            results = GA_Roulette.roulette
+
+        results = WingQuestion.optimise_wing(cl_coeff, cl_offset, cd_const, cd_quad, initial_guess_alpha, stall_limit, V_cruise, V_landing, ShowPlot)
+
 
         for i in range(1, len(results)):
             self.ui.txtOutput.setText(str(self.ui.txtOutput) + str(results[i]))
@@ -52,6 +54,6 @@ class GAWindow(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    widget = GAWindow()
+    widget = WingWindow()
     widget.show()
     sys.exit(app.exec())

@@ -14,27 +14,29 @@ range 0-1: 0.0975, 0.2785, 0.5469, 0.9575 and 0.9649.
 import numpy as np
 import pandas as pd
 
-values  = np.array([1, 3, 6, 7, 11])
-fitness = np.array([0.1, 0.55, 0.4, 0.2, 0.15])
-rand_nums = np.array([0.0975, 0.2785, 0.5469, 0.9575, 0.9649])
 
-idx_sorted       = np.argsort(fitness)
-sorted_values    = values[idx_sorted]
-sorted_fitness   = fitness[idx_sorted]
+def roulette(values, fitness, rand_nums):
+    values   = np.asarray(values)
+    fitness  = np.asarray(fitness)
+    rand_nums = np.asarray(rand_nums)
 
-ranks = np.arange(1, len(values) + 1)
+    # 1) Rank individuals by fitness, ascending (worst first)
+    idx_sorted     = np.argsort(fitness)
+    sorted_values  = values[idx_sorted]
+    # 2) Assign ranks 1..N to sorted list, compute selection probs
+    N = len(values)
+    ranks = np.arange(1, N+1)
+    probs = ranks / ranks.sum()
+    cum_probs = np.cumsum(probs)
 
-probs      = ranks / ranks.sum()
-cum_probs  = np.cumsum(probs)
+    # 3) For each random number, find the first cum_prob ≥ r
+    picks = np.searchsorted(cum_probs, rand_nums, side='right')
+    mating_pool = sorted_values[picks]
 
+    # 4) Build a DataFrame for clarity
+    df = pd.DataFrame({
+        'Random Number': rand_nums,
+        'Selected Value': mating_pool
+    })
 
-mating_pool = []
-for r in rand_nums:
-    pick = np.where(cum_probs >= r)[0][0]
-    mating_pool.append(sorted_values[pick])
-
-result = pd.DataFrame({
-    'Random Number': rand_nums,
-    'Selected Value (THESE VALUES)': mating_pool
-})
-print(result)
+    return mating_pool, df

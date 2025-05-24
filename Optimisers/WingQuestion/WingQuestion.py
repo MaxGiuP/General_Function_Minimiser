@@ -15,50 +15,94 @@ The coefficients are found from the lift and drag by dividing by
 ½ρV2
 A where the symbols have their usual meanings.
 """
-
 import sympy as sp
 import numpy as np
+import matplotlib
+matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt
 
-# === User inputs ===
-cl_coeff            = 0.093    # coefficient in CL = cl_coeff*(alpha + cl_offset)
-cl_offset           = 1.0     # offset in the CL expression
-cd_const            = 0.032    # constant term in CD = cd_const + cd_quad*CL**2
-cd_quad             = 0.055   # quadratic term coefficient in CD
-initial_guess_alpha = 5.0     # initial guess (°) for Newton solve
-stall_limit_alpha   = 12.0    # maximum allowable angle of attack (degrees)
-V_cruise            = 33.0    # cruise speed (m/s)
-V_landing           = 15.0    # landing speed (m/s)
-# ====================
+def optimise_wing(
+    cl_coeff,
+    cl_offset,
+    cd_const,
+    cd_quad,
+    initial_guess_alpha,
+    stall_limit_alpha,
+    V_cruise,
+    V_landing,
+    plot=False
+):
+    # 1) symbolic variable
+    alpha = sp.symbols('alpha', real=True)
 
-# Define symbolic variable
-alpha = sp.symbols('alpha', real=True)
+    # 2) define CL, CD, L/D
+    CL = cl_coeff * (alpha + cl_offset)
+    CD = cd_const + cd_quad * CL**2
+    LD = CL / CD
 
-# Lift and drag coefficients
-CL = cl_coeff * (alpha + cl_offset)
-CD = cd_const + cd_quad * CL**2
+    # 3) find unconstrained α* by solving d(L/D)/dα = 0
+    dLD = sp.diff(LD, alpha)
+    alpha_opt = float(sp.nsolve(dLD, initial_guess_alpha))
+    CL_opt    = float(CL.subs(alpha, alpha_opt))
+    LD_opt    = float(LD.subs(alpha, alpha_opt))
 
-# Lift-to-drag ratio
-LD = CL / CD
+    # 4) stall‐limited cruise α_cr
+    CL_max = cl_coeff * (stall_limit_alpha + cl_offset)
+    CL_cr  = CL_max * (V_landing / V_cruise)**2
+    alpha_cr = float(CL_cr / cl_coeff - cl_offset)
+    CD_cr = float((cd_const + cd_quad * CL_cr**2))
+    LD_cr = CL_cr / CD_cr
 
-# Find unconstrained optimum by solving d(L/D)/dα = 0
-dLD = sp.diff(LD, alpha)
-alpha_opt = float(sp.nsolve(dLD, initial_guess_alpha))
-CL_opt    = float(CL.subs(alpha, alpha_opt))
-LD_opt    = float(LD.subs(alpha, alpha_opt))
+    results = {
+        'unconstrained': {
+            'alpha': alpha_opt,
+            'CL':     CL_opt,
+            'LD':     LD_opt
+        },
+        'cruise_limited': {
+            'alpha': alpha_cr,
+            'CL':     CL_cr,
+            'LD':     LD_cr
+        }
+    }
 
-print("Unconstrained optimum:")
-print(f" α*    = {alpha_opt:.6f}°")
-print(f" C_L*  = {CL_opt:.6f}")
-print(f"(L/D)* = {LD_opt:.6f}\n")
+    # 5) optional plot
+    if plot:
+        alphas = np.linspace(0, stall_limit_alpha, 300)
+        LD_vals = (cl_coeff * (alphas + cl_offset)) / (
+                    cd_const + cd_quad * (cl_coeff*(alphas + cl_offset))**2
+                  )
+        plt.plot(alphas, LD_vals, '-', label='L/D vs α')
+        plt.axvline(alpha_opt, color='green', linestyle='--', label='α* unconstrained')
+        plt.axvline(alpha_cr,  color='red',   linestyle='--', label='α_cr cruise limit')
+        plt.xlabel("α (degrees)")
+        plt.ylabel("L/D")
+        plt.title("Lift-to-Drag Ratio vs Angle of Attack")
+        plt.legend()
+        plt.grid(True)
+        plt.show()
 
-# Stall-limited cruise performance
-CL_max  = cl_coeff * (stall_limit_alpha + cl_offset)
-CL_cr   = CL_max * (V_landing / V_cruise)**2
-alpha_cr = CL_cr / cl_coeff - cl_offset
-CD_cr   = cd_const + cd_quad * CL_cr**2
-LD_cr   = CL_cr / CD_cr
+    return results
 
-print("Constraint-limited cruise:")
-print(f" α_cr  = {alpha_cr:.6f}°")
-print(f" C_L   = {CL_cr:.6f}")
-print(f"(L/D)  = {LD_cr:.6f}")
+
+"""
+# Example usage:
+if __name__ == "__main__":
+    res = optimize_lift_drag(
+        cl_coeff=0.093,
+        cl_offset=1.0,
+        cd_const=0.032,
+        cd_quad=0.055,
+        initial_guess_alpha=5.0,
+        stall_limit_alpha=14.0,
+        V_cruise=40.0,
+        V_landing=15.0,
+        plot=True
+    )
+    print("Unconstrained optimum:")
+    print(f" α*    = {res['unconstrained']['alpha']:.4f}°")
+    print(f" L/D*  = {res['unconstrained']['LD']:.4f}")
+    print("\nStall-limited cruise:")
+    print(f" α_cr  = {res['cruise_limited']['alpha']:.4f}°")
+    print(f" L/D_cr = {res['cruise_limited']['LD']:.4f}")
+"""

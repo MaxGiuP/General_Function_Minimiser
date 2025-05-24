@@ -127,6 +127,12 @@ class Ui_wLinear(object):
         self.btnBack = QPushButton(self.centralwidget)
         self.btnBack.setObjectName(u"btnBack")
         self.btnBack.setGeometry(QRect(40, 280, 97, 26))
+        self.btnCalculate_2 = QPushButton(self.centralwidget)
+        self.btnCalculate_2.setObjectName(u"btnCalculate_2")
+        self.btnCalculate_2.setGeometry(QRect(460, 380, 151, 41))
+        self.btnBack_2 = QPushButton(self.centralwidget)
+        self.btnBack_2.setObjectName(u"btnBack_2")
+        self.btnBack_2.setGeometry(QRect(180, 380, 97, 26))
         wLinear.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(wLinear)
         self.menubar.setObjectName(u"menubar")
@@ -164,6 +170,8 @@ class Ui_wLinear(object):
         self.label.setText(QCoreApplication.translate("wLinear", u"Function", None))
         self.label_3.setText(QCoreApplication.translate("wLinear", u"Number of Iterations", None))
         self.btnBack.setText(QCoreApplication.translate("wLinear", u"Back", None))
+        self.btnCalculate_2.setText(QCoreApplication.translate("wLinear", u"Calculate", None))
+        self.btnBack_2.setText(QCoreApplication.translate("wLinear", u"Back", None))
         self.menuLinear_Search.setTitle("")
     # retranslateUi
 

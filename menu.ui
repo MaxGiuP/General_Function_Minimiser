@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="btnShowLinear">
+   <widget class="QPushButton" name="btnLinear">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -27,7 +27,7 @@
      <string>Linear</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnMultivariable">
+   <widget class="QPushButton" name="btnMultiVariable">
     <property name="geometry">
      <rect>
       <x>160</x>
@@ -66,7 +66,7 @@
      <string>Constrained</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnMultiobjective">
+   <widget class="QPushButton" name="btnMultiObjective">
     <property name="geometry">
      <rect>
       <x>160</x>

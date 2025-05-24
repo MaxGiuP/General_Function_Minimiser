@@ -20,12 +20,12 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QGridLayout, QLabel,
     QRadioButton, QSizePolicy, QStatusBar, QTextEdit,
     QVBoxLayout, QWidget)
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        if not MainWindow.objectName():
-            MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(800, 600)
-        self.centralwidget = QWidget(MainWindow)
+class Ui_wMultiVariable(object):
+    def setupUi(self, wMultiVariable):
+        if not wMultiVariable.objectName():
+            wMultiVariable.setObjectName(u"wMultiVariable")
+        wMultiVariable.resize(800, 600)
+        self.centralwidget = QWidget(wMultiVariable)
         self.centralwidget.setObjectName(u"centralwidget")
         self.cbPlot = QCheckBox(self.centralwidget)
         self.cbPlot.setObjectName(u"cbPlot")
@@ -45,10 +45,10 @@ class Ui_MainWindow(object):
         self.gridLayout = QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
-        self.txtx1 = QLineEdit(self.gridLayoutWidget)
-        self.txtx1.setObjectName(u"txtx1")
+        self.txtx = QLineEdit(self.gridLayoutWidget)
+        self.txtx.setObjectName(u"txtx")
 
-        self.gridLayout.addWidget(self.txtx1, 1, 2, 1, 1)
+        self.gridLayout.addWidget(self.txtx, 1, 2, 1, 1)
 
         self.label_2 = QLabel(self.gridLayoutWidget)
         self.label_2.setObjectName(u"label_2")
@@ -71,15 +71,15 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.txtFunction, 0, 2, 1, 5)
 
-        self.txtx3 = QLineEdit(self.gridLayoutWidget)
-        self.txtx3.setObjectName(u"txtx3")
+        self.txth = QLineEdit(self.gridLayoutWidget)
+        self.txth.setObjectName(u"txth")
 
-        self.gridLayout.addWidget(self.txtx3, 1, 6, 1, 1)
+        self.gridLayout.addWidget(self.txth, 1, 6, 1, 1)
 
-        self.txtx2 = QLineEdit(self.gridLayoutWidget)
-        self.txtx2.setObjectName(u"txtx2")
+        self.txty = QLineEdit(self.gridLayoutWidget)
+        self.txty.setObjectName(u"txty")
 
-        self.gridLayout.addWidget(self.txtx2, 1, 4, 1, 1)
+        self.gridLayout.addWidget(self.txty, 1, 4, 1, 1)
 
         self.txtIterations = QLineEdit(self.gridLayoutWidget)
         self.txtIterations.setObjectName(u"txtIterations")
@@ -136,40 +136,40 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.rbHJ)
 
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QMenuBar(MainWindow)
+        wMultiVariable.setCentralWidget(self.centralwidget)
+        self.menubar = QMenuBar(wMultiVariable)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 800, 23))
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QStatusBar(MainWindow)
+        wMultiVariable.setMenuBar(self.menubar)
+        self.statusbar = QStatusBar(wMultiVariable)
         self.statusbar.setObjectName(u"statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        wMultiVariable.setStatusBar(self.statusbar)
 
-        self.retranslateUi(MainWindow)
+        self.retranslateUi(wMultiVariable)
 
-        QMetaObject.connectSlotsByName(MainWindow)
+        QMetaObject.connectSlotsByName(wMultiVariable)
     # setupUi
 
-    def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.cbPlot.setText(QCoreApplication.translate("MainWindow", u"Plot function", None))
-        self.btnCalculate.setText(QCoreApplication.translate("MainWindow", u"Calculate", None))
-        self.btnBack.setText(QCoreApplication.translate("MainWindow", u"Back", None))
-        self.txtx1.setText(QCoreApplication.translate("MainWindow", u"0.5", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Starting Points", None))
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"x3", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"x2", None))
-        self.txtFunction.setText(QCoreApplication.translate("MainWindow", u"x**5 - 2*(x**3) - 10*x + 5", None))
-        self.txtx3.setText(QCoreApplication.translate("MainWindow", u"2", None))
-        self.txtx2.setText(QCoreApplication.translate("MainWindow", u"1", None))
-        self.txtIterations.setText(QCoreApplication.translate("MainWindow", u"2", None))
-        self.label_6.setText(QCoreApplication.translate("MainWindow", u"x1", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Function", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Number of Iterations", None))
-        self.rbSteepest.setText(QCoreApplication.translate("MainWindow", u"Steepest Descent", None))
-        self.rbConjugate.setText(QCoreApplication.translate("MainWindow", u"Conjugate Gradient", None))
-        self.rbNewton.setText(QCoreApplication.translate("MainWindow", u"Netwon's Method", None))
-        self.rbBFGS.setText(QCoreApplication.translate("MainWindow", u"BFGS", None))
-        self.rbHJ.setText(QCoreApplication.translate("MainWindow", u"Hooke and Jeeves", None))
+    def retranslateUi(self, wMultiVariable):
+        wMultiVariable.setWindowTitle(QCoreApplication.translate("wMultiVariable", u"MainWindow", None))
+        self.cbPlot.setText(QCoreApplication.translate("wMultiVariable", u"Plot function", None))
+        self.btnCalculate.setText(QCoreApplication.translate("wMultiVariable", u"Calculate", None))
+        self.btnBack.setText(QCoreApplication.translate("wMultiVariable", u"Back", None))
+        self.txtx.setText(QCoreApplication.translate("wMultiVariable", u"0.5", None))
+        self.label_2.setText(QCoreApplication.translate("wMultiVariable", u"Starting Points", None))
+        self.label_5.setText(QCoreApplication.translate("wMultiVariable", u"h", None))
+        self.label_4.setText(QCoreApplication.translate("wMultiVariable", u"y", None))
+        self.txtFunction.setText(QCoreApplication.translate("wMultiVariable", u"x**5 - 2*(x**3) - 10*x + 5", None))
+        self.txth.setText(QCoreApplication.translate("wMultiVariable", u"2", None))
+        self.txty.setText(QCoreApplication.translate("wMultiVariable", u"1", None))
+        self.txtIterations.setText(QCoreApplication.translate("wMultiVariable", u"2", None))
+        self.label_6.setText(QCoreApplication.translate("wMultiVariable", u"x", None))
+        self.label.setText(QCoreApplication.translate("wMultiVariable", u"Function", None))
+        self.label_3.setText(QCoreApplication.translate("wMultiVariable", u"Number of Iterations", None))
+        self.rbSteepest.setText(QCoreApplication.translate("wMultiVariable", u"Steepest Descent", None))
+        self.rbConjugate.setText(QCoreApplication.translate("wMultiVariable", u"Conjugate Gradient", None))
+        self.rbNewton.setText(QCoreApplication.translate("wMultiVariable", u"Netwon's Method", None))
+        self.rbBFGS.setText(QCoreApplication.translate("wMultiVariable", u"BFGS", None))
+        self.rbHJ.setText(QCoreApplication.translate("wMultiVariable", u"Hooke and Jeeves", None))
     # retranslateUi
 

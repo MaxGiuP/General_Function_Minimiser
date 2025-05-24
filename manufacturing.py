@@ -2,21 +2,18 @@
 import sys
 
 from PySide6.QtWidgets import QApplication, QMainWindow
-from Optimisers.GeneticAlgorithms import GA_Crossover
-from Optimisers.GeneticAlgorithms import GA_Roulette
-from Optimisers.GeneticAlgorithms import GA_Combined
-
+from Optimisers.ManufacturingQuestion import ManuPerf
 # Important:
 # You need to run the following command to generate the ui_form.py file
 #     pyside6-uic form.ui -o ui_form.py, or
 #     pyside2-uic form.ui -o ui_form.py
 
-from ui_ga import Ui_wGA
+from ui_manufacturing import Ui_wManufacturing
 
-class GAWindow(QMainWindow):
+class ManufacturingWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.ui = Ui_wGA()
+        self.ui = Ui_wManufacturing()
         self.ui.setupUi(self)
 
         self.ui.btnCalculate.clicked.connect(self.btnCalculate_clicked)
@@ -30,14 +27,11 @@ class GAWindow(QMainWindow):
             ShowPlot = True
 
         Function = str(self.ui.txtFunction.text())
-        Iterations = int(self.ui.txtIterations.text())
-        x1 = float(self.ui.txtx1.text())
-        x2 = float(self.ui.txtx2.text())
-        x3 = float(self.ui.txtx3.text())
+        min = float(self.ui.txtMin)
+        max = float(self.ui.txtMax.text())
 
-        if self.ui.rbGolden.isChecked():
-            print("Starting Golden Section")
-            results = GA_Roulette.roulette
+        results = ManuPerf.manufacturing(Function, min, max, ShowPlot)
+
 
         for i in range(1, len(results)):
             self.ui.txtOutput.setText(str(self.ui.txtOutput) + str(results[i]))
@@ -52,6 +46,6 @@ class GAWindow(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    widget = GAWindow()
+    widget = ManufacturingWindow()
     widget.show()
     sys.exit(app.exec())

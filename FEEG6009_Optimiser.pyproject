@@ -7,10 +7,14 @@
         "multivariable.ui",
         "multivariable.py",
         "ga.ui",
-        "constrained.ui",
-        "multiobjective.ui",
         "ga.py",
+        "constrained.ui",
+        "constrained.py",
+        "multiobjective.ui",
         "multiobjective.py",
-        "constrained.py"
+        "wing.py",
+        "manufacturing.py",
+        "wing.ui",
+        "manufacturing.ui"
     ]
 }
