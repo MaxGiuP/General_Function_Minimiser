@@ -1,12 +1,12 @@
 # FEEG6009_Optimiser
-Performs function minimisation using:
+Desktop application that performs function minimisation using:
 
 LINE SEARCH
 1. Golden Section Search
 2. Inverse Parabolic Search
 3. Newton's Method (Linear)
 
-MULTIVARIABLE SEARCH
+MULTI-VARIABLE SEARCH
 1. Steepest Descent Search
 2. Conjugate Gradient Search
 3. Newton's Method (Multivariable)
@@ -33,4 +33,4 @@ MUTLI-OBJECTIVE
 
 
 
-Completed for the "FEEG6009 - Design Search and Optimisation (DSO) - Principles, Methods, Parameterizations and Case Studies" module taught by Dr. Andrew Keane at the University of Southampton.
+Completed for the "FEEG6009 - Design Search and Optimisation (DSO) - Principles, Methods, Parameterizations and Case Studies" module taught by the GOAT Dr. Andrew Keane at the University of Southampton.
