@@ -33,4 +33,4 @@ MUTLI-OBJECTIVE
 
 
 
-Completed for the "FEEG6009 - Design, Search and Optimisation Search" module taught by Dr. Andrew Keane at the University of Southampton.
+Completed for the "FEEG6009 - Design Search and Optimisation (DSO) - Principles, Methods, Parameterizations and Case Studies" module taught by Dr. Andrew Keane at the University of Southampton.
