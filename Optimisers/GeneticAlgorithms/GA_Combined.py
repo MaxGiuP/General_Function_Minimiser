@@ -64,6 +64,7 @@ def reproduce_parametric(
     lower, upper,
     bits,
     crossover_point: int = None,      # int ∈[1..bits-1], or None to draw
+    isbit: bool = False,
     mutation_positions: list = None,  # [pos1,pos2] ∈[0..bits-1], or None to draw
     rng: np.random.Generator = None
 ):
@@ -84,9 +85,11 @@ def reproduce_parametric(
         lst = list(bs)
         lst[pos] = "1" if lst[pos]=="0" else "0"
         return "".join(lst)
-
+        
     pA, pB = parents
-    bA, bB  = encode(pA), encode(pB)
+    if isbit:
+        bA, bB = pA, pB
+    else: bA, bB  = encode(pA), encode(pB)
 
     # crossover point
     if crossover_point is None:
@@ -100,18 +103,22 @@ def reproduce_parametric(
     c1_pre = bB[:cp] + bA[cp:]
     c2_pre = bA[:cp] + bB[cp:]
 
-    # mutation positions
-    if mutation_positions is None:
-        pos1 = int(rng.random() * bits)
-        pos2 = int(rng.random() * bits)
-    else:
-        pos1, pos2 = mutation_positions
-    if not (0 <= pos1 < bits and 0 <= pos2 < bits):
-        raise ValueError(f"mutation_positions must be in [0..{bits-1}]")
-
     # mutate
-    c1_mut = mutate(c1_pre, pos1)
-    c2_mut = mutate(c2_pre, pos2)
+    if mutation_positions == []:
+        c1_mut = c1_pre
+        c2_mut = c2_pre
+    else:
+        # mutation positions
+        if mutation_positions is None:
+            pos1 = int(rng.random() * bits)
+            pos2 = int(rng.random() * bits)
+        else:
+            pos1, pos2 = mutation_positions
+        if not (0 <= pos1 < bits and 0 <= pos2 < bits):
+            raise ValueError(f"mutation_positions must be in [0..{bits-1}]")
+        c1_mut = mutate(c1_pre, pos1)
+        c2_mut = mutate(c2_pre, pos2)
+
 
     # decode
     child1 = decode(c1_mut)

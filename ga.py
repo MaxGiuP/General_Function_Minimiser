@@ -87,12 +87,16 @@ class GAWindow(QMainWindow):
     def btnReproduction_clicked(self):
         form = self.ui
 
-        parents = [float(form.txtParent1.text()), float(form.txtParent2.text())]
         lower = float(form.txtRepLow.text())
         upper = float(form.txtRepUp.text())
         bits = int(form.txtBits.text())
-        crossover_point = int(float(form.txtRepCross.text()) * (bits - 1))
-        mutation_positions = [int(float(form.txtRepMut1.text())*bits), int(float(form.txtRepMut2.text())*bits)]
+        crossover_point = int(float(form.txtRepCross.text()) * (bits - 1)) + 1
+
+        if form.txtRepMut1.text() != "" and form.txtRepMut2.text() != "":
+            mutation_positions = [int(float(form.txtRepMut1.text())*bits), int(float(form.txtRepMut2.text())*bits)]
+        else: mutation_positions = []
+
+        parents = [float(form.txtParent1.text()), float(form.txtParent2.text())]
 
         c1, c2 = GA_Combined.reproduce_parametric(
             parents            = parents,
@@ -100,9 +104,10 @@ class GAWindow(QMainWindow):
             upper              = upper,
             bits               = bits,
             crossover_point    = crossover_point,
+            isbit              = form.cbIsBit.isChecked(),
             mutation_positions = mutation_positions
         )
-        form.txtReproduction.setText("Children: " + str(round(c1,5)) + " " + str(round(c2,5)))
+        form.txtReproduction.setText("Children: \nLeft + Right:" + str(round(c1,5)) + " \nRight + Left" + str(round(c2,5)))
 
     def btnBack_clicked(self):
         from menu import MainWindow
