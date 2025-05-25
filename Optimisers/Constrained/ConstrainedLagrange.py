@@ -1,111 +1,103 @@
-import sympy as sp
 import numpy as np
+import sympy as sp
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import itertools
 
 def lagrange(f_str, eq_strs=None, ineq_strs=None, plot=False):
-    eq_strs   = eq_strs   or []
-    ineq_strs = ineq_strs or []
+    """
+    Solve a constrained optimization via KKT active‐set enumeration,
+    returning all console‐style output as a single string.  Supports any
+    symbol names (e.g. x0, x1, x2, …).
+    """
+    # 0) Clean up empty lines from UI inputs
+    eq_strs   = [s.strip() for s in (eq_strs or [])   if s.strip()]
+    ineq_strs = [s.strip() for s in (ineq_strs or []) if s.strip()]
 
-    # 1) Parse expressions
+    logs = []
+
+    # 1) Parse objective and constraints
     f      = sp.sympify(f_str)
     eqs    = [sp.sympify(s) for s in eq_strs]
-    hs     = [sp.sympify(s) for s in ineq_strs]
+    ineqs  = [sp.sympify(s) for s in ineq_strs]
 
-    # 2) Auto-detect variables
+    # 2) Auto‐detect variables (could be x0,x1,... or any names)
     vars_syms = sorted(
         f.free_symbols
          .union(*(g.free_symbols for g in eqs))
-         .union(*(h.free_symbols for h in hs)),
+         .union(*(h.free_symbols for h in ineqs)),
         key=lambda s: s.name
     )
-    n = len(vars_syms)
-    if n < 1:
+    if not vars_syms:
         raise ValueError("No decision variables detected.")
-    # limit plotting to 2D
-    x_sym, y_sym = (vars_syms + [None])[:2]
 
     # 3) Enumerate active‐set combinations
-    best        = None
-    best_fval   = np.inf
-    best_active = None
-    all_solutions = []
+    best      = None
+    best_fval = np.inf
 
-    for r in range(len(hs)+1):
-        for active in itertools.combinations(range(len(hs)), r):
-            # multipliers
+    for r in range(len(ineqs)+1):
+        for active in itertools.combinations(range(len(ineqs)), r):
             lam_eq   = sp.symbols(f"lam_eq0:{len(eqs)}", real=True)
             lam_ineq = sp.symbols(f"lam_i0:{r}",   real=True) if r>0 else ()
 
-            # Lagrangian
+            # build Lagrangian L = f + sum λ_eq·eq + sum λ_ineq·h_active
             L = f
             for j, g in enumerate(eqs):
                 L += lam_eq[j] * g
             for k, idx in enumerate(active):
-                L += lam_ineq[k] * hs[idx]
+                L += lam_ineq[k] * ineqs[idx]
 
-            # KKT equations: stationarity + active constraints
-            stationarity = [sp.diff(L, v) for v in vars_syms]
-            constraint_eqs = eqs + [hs[i] for i in active]
-            eqns = stationarity + constraint_eqs
+            # stationarity + active constraints
+            stat_eqs     = [sp.diff(L, v) for v in vars_syms]
+            constraint_eqs = eqs + [ineqs[i] for i in active]
+            eqns = stat_eqs + constraint_eqs
 
-            # unknowns = decision vars + multipliers
             unknowns = tuple(vars_syms) + lam_eq + lam_ineq
             sols = sp.solve(eqns, unknowns, dict=True)
 
             for sol in sols:
-                # check real
+                # require real solutions
                 if not all(sol[v].is_real for v in vars_syms):
                     continue
                 # inactive inequalities must satisfy h>0
-                feasible = True
-                for j in set(range(len(hs))) - set(active):
-                    if float(hs[j].subs(sol)) <= 0:
-                        feasible = False
+                feas = True
+                for j in set(range(len(ineqs))) - set(active):
+                    if float(ineqs[j].subs(sol)) <= 0:
+                        feas = False
                         break
-                if not feasible:
+                if not feas:
                     continue
 
-                all_solutions.append(sol)
                 fval = float(f.subs(sol))
                 if fval < best_fval:
-                    best_fval   = fval
-                    best        = sol
-                    best_active = active
+                    best_fval = fval
+                    best      = sol
 
     if best is None:
         raise RuntimeError("No feasible KKT solution found.")
 
-    # Prepare output dict of numeric values
+    # 4) Extract numeric best‐values
     best_vals = {str(v): float(best[v]) for v in vars_syms}
 
-    # Optional 2D plot
-    if plot and n == 2:
-        # build grid around solutions
-        pts = np.array([[float(sol[v]) for v in vars_syms] for sol in all_solutions])
-        mins = pts.min(axis=0) - 1
-        maxs = pts.max(axis=0) + 1
-        xs = np.linspace(mins[0], maxs[0], 200)
-        ys = np.linspace(mins[1], maxs[1], 200)
-        X, Y = np.meshgrid(xs, ys)
-        f_num = sp.lambdify((x_sym, y_sym), f, 'numpy')
-        Z = f_num(X, Y)
+    # 5) Build the result log
+    logs.append("Optimal solution:\n")
+    for v in vars_syms:
+        logs.append(f"  {v} = {best_vals[str(v)]:.4f}\n")
+    logs.append(f"  f = {best_fval:.4f}\n")
 
-        plt.contour(X, Y, Z, levels=40, cmap='viridis')
-        # mark all KKT candidates
-        for sol in all_solutions:
-            px, py = float(sol[x_sym]), float(sol[y_sym])
-            plt.plot(px, py, 'kx', alpha=0.5)
-        # highlight the best
-        bx, by = best_vals[str(x_sym)], best_vals[str(y_sym)]
-        plt.plot(bx, by, 'ro', label='Optimal')
-        plt.title("KKT Solutions for " + f_str)
-        plt.xlabel(str(x_sym))
-        plt.ylabel(str(y_sym))
-        plt.legend()
-        plt.grid(True)
-        plt.show()
+    # 6) Return concatenated log
+    result = "".join(logs)
+    return result
 
-    return best_vals, best_fval, best_active, all_solutions
+"""
+# Example usage:
+if __name__ == "__main__":
+    # Solve min 5/(x0 * x1**2)  s.t.  x0**2 + x1**2 = 4
+    f_str      = "5/(x0 * x1**2)"
+    eq_lines   = ["x0**2 + x1**2 - 4"]
+    ineq_lines = []
+
+    result_str = lagrange(f_str, eq_lines, ineq_lines)
+    print(result_str)
+"""

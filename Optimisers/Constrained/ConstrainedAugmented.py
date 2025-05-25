@@ -1,105 +1,120 @@
-import sympy as sp
-import itertools
 import numpy as np
-import matplotlib
-matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
+import sympy as sp
+from scipy.optimize import minimize
 
-def augmented(f_str, eq_strs=None, ineq_strs=None, plot=False):
-    eq_strs = eq_strs or []
-    ineq_strs  = ineq_strs  or []
+def augmented(
+    f_str,
+    eq_strs=None,
+    ineq_strs=None,
+    lambda0=None,
+    r0: float = 1.0,
+    tau: float = 10.0,
+    max_outer: int = 6,
+    tol: float = 1e-6,
+    initial_guess=None,
+    method: str = 'BFGS'
+):
+    """
+    Augmented Lagrangian (method of multipliers) for h_j(x)=0 only.
+    Returns all console‐style logs as one string.
+    """
+    eq_strs = [s for s in (eq_strs or []) if s.strip()]
+    ineq_strs = [s for s in (ineq_strs or []) if s.strip()]
+    logs = []
 
-    # 1) parse everything
+    # 1) Parse
     f_expr   = sp.sympify(f_str)
     eq_exprs = [sp.sympify(s) for s in eq_strs]
-    ineq_exprs  = [sp.sympify(s) for s in ineq_strs]
 
-    # 2) detect variables from all expressions
+    # 2) Detect variables dynamically
     vars_syms = sorted(
         f_expr.free_symbols
-         .union(*(e.free_symbols for e in eq_exprs))
-         .union(*(h.free_symbols for h in ineq_exprs)),
+         .union(*(e.free_symbols for e in eq_exprs)),
         key=lambda s: s.name
     )
     n = len(vars_syms)
     if n == 0:
-        raise ValueError("No decision variables found in your strings.")
+        raise ValueError("No decision vars found in your strings.")
 
-    # 3) do active‐set enumeration
-    best       = None
-    best_fval  = np.inf
-    best_active= None
-    all_sols   = []
+    logs.append(f"Detected variables: {[str(v) for v in vars_syms]}\n")
+    logs.append(f"Equality constraints: {eq_strs}\n\n")
 
-    # for each subset of inequalities assumed active
-    for r in range(len(ineq_exprs)+1):
-        for active_idxs in itertools.combinations(range(len(ineq_exprs)), r):
-            # multipliers
-            lam_eq   = sp.symbols(f"lam_eq0:{len(eq_exprs)}", real=True)
-            lam_ineq = sp.symbols(f"lam_i0:{r}", real=True) if r>0 else ()
-            # build L = f - Σ λ_eq·eq_expr - Σ λ_ineq·h_expr(active)
-            L = f_expr
-            for j, g in enumerate(eq_exprs):
-                L -= lam_eq[j] * g
-            for k, idx in enumerate(active_idxs):
-                L -= lam_ineq[k] * ineq_exprs[idx]
-            # stationarity + enforce eqs + active hs = 0
-            stat_eqs   = [sp.diff(L, v) for v in vars_syms]
-            constraint_eqs = eq_exprs + [ineq_exprs[i] for i in active_idxs]
-            eqns = stat_eqs + constraint_eqs
-            unknowns = tuple(vars_syms) + lam_eq + lam_ineq
+    # 3) Lambdify
+    f_num   = sp.lambdify(tuple(vars_syms),       f_expr,    'numpy')
+    eq_funcs= [sp.lambdify(tuple(vars_syms), e,  'numpy') for e in eq_exprs]
 
-            sols = sp.solve(eqns, unknowns, dict=True)
-            for sol in sols:
-                # only real decision‐var solutions
-                if not all(sol[v].is_real for v in vars_syms):
-                    continue
-                # inactive inequalities must be ≥ 0
-                feasible = True
-                for j in set(range(len(ineq_exprs))) - set(active_idxs):
-                    if float(ineq_exprs[j].subs(sol)) <= 0:
-                        feasible = False
-                        break
-                if not feasible:
-                    continue
+    # 4) Init multipliers & R
+    m = len(eq_funcs)
+    if lambda0 is None:
+        lam = np.zeros(m)
+    else:
+        lam = np.array(lambda0, float)
+        if lam.size != m:
+            raise ValueError("lambda0 length must match number of eqs")
+    R = r0
 
-                all_sols.append(sol)
-                fval = float(f_expr.subs(sol))
-                if fval < best_fval:
-                    best_fval   = fval
-                    best        = sol
-                    best_active = active_idxs
+    # 5) Initial x
+    if initial_guess is None:
+        xk = np.ones(n)
+    else:
+        xk = np.array(initial_guess, float)
+        if xk.size != n:
+            raise ValueError("initial_guess length mismatch")
 
-    if best is None:
-        raise RuntimeError("No feasible KKT solution found.")
+    # 6) Outer loop
+    for k in range(1, max_outer+1):
+        logs.append(f"--- Outer iter {k}, R={R:.3g} ---\n")
 
-    # package best decision‐vars into a dict
-    best_vals = {str(v): float(best[v]) for v in vars_syms}
+        # build augmented Lagrangian A(x)
+        def A(x):
+            val = f_num(*x)
+            for j, hj in enumerate(eq_funcs):
+                hval = hj(*x)
+                val += lam[j]*hval + 0.5*R*(hval**2)
+            return val
 
-    # optional 2D plot
-    if plot and n == 2:
-        x_sym, y_sym = vars_syms
-        # grid around all solutions
-        pts = np.array([[float(sol[x_sym]), float(sol[y_sym])] for sol in all_sols])
-        mins = pts.min(axis=0) - 1
-        maxs = pts.max(axis=0) + 1
-        xs = np.linspace(mins[0], maxs[0], 200)
-        ys = np.linspace(mins[1], maxs[1], 200)
-        X, Y = np.meshgrid(xs, ys)
-        f_num = sp.lambdify((x_sym, y_sym), f_expr, 'numpy')
-        Z = f_num(X, Y)
-        plt.contour(X, Y, Z, levels=40, cmap='viridis')
-        # mark every KKT candidate
-        for sol in all_sols:
-            plt.plot(float(sol[x_sym]), float(sol[y_sym]), 'kx', alpha=0.5)
-        # highlight the best
-        bx, by = best_vals[str(x_sym)], best_vals[str(y_sym)]
-        plt.plot(bx, by, 'ro', label='Optimal')
-        plt.title("KKT Active‐Set Solutions for\n" + f_str)
-        plt.xlabel(str(x_sym))
-        plt.ylabel(str(y_sym))
-        plt.legend()
-        plt.grid(True)
-        plt.show()
+        # unconstrained minimize A(x)
+        res = minimize(A, xk, method=method)
+        xk = res.x
+        fx = f_num(*xk)
 
-    return best_vals, best_fval, best_active, all_sols
+        # eval constraints
+        hvals = np.array([hj(*xk) for hj in eq_funcs])
+
+        logs.append(f" x = {dict(zip([str(v) for v in vars_syms], xk.tolist()))}\n")
+        logs.append(f" f = {fx:.6f}\n")
+        logs.append(f" h = {hvals.tolist()}\n")
+
+        # check convergence
+        if np.all(np.abs(hvals) < tol):
+            logs.append("All |h_j| < tol; stopping early.\n\n")
+            break
+
+        # 7) Update multipliers & R
+        lam = lam + R*hvals
+        R   = R*tau
+        logs.append(f" Updated λ = {lam.tolist()}\n\n")
+
+    # 8) Final summary
+    logs.append("=== Final solution ===\n")
+    logs.append(f" x = {dict(zip([str(v) for v in vars_syms], xk.tolist()))}\n")
+    logs.append(f" f = {fx:.6f}\n")
+    logs.append(f" h = {hvals.tolist()}\n")
+    return "".join(logs)
+
+"""
+# Example usage
+if __name__ == "__main__":
+    f_str    = "5/(x0*x1**2)"
+    eq_strs  = ["x0**2 + x1**2 - 4"]
+    print(augmented_lagrangian(
+        f_str,
+        eq_strs=eq_strs,
+        r0=1.0,
+        tau=10.0,
+        max_outer=6,
+        tol=1e-6,
+        initial_guess=[1.0,1.0],
+        method='BFGS'
+    ))
+"""

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>ConstrainedWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="gridLayoutWidget">
@@ -27,12 +27,19 @@
      <item row="0" column="1" colspan="2">
       <widget class="QLineEdit" name="txtFunction">
        <property name="text">
-        <string>x**5 - 2*(x**3) - 10*x + 5</string>
+        <string>5 / (x1*(x2**2))</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QTextEdit" name="txtEq"/>
+      <widget class="QTextEdit" name="txtEq">
+       <property name="documentTitle">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>x1**2 + x2**2 - 4</string>
+       </property>
+      </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
@@ -72,8 +79,8 @@
    <widget class="QTextEdit" name="txtOutput">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>190</y>
+      <x>210</x>
+      <y>240</y>
       <width>281</width>
       <height>141</height>
      </rect>
@@ -92,7 +99,7 @@
      <item>
       <widget class="QRadioButton" name="rbLagrange">
        <property name="text">
-        <string>Lagrange</string>
+        <string>Lagrange Multipliers</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -107,14 +114,14 @@
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="rbVaryingSL">
+      <widget class="QRadioButton" name="rbVaryingDoC">
        <property name="text">
         <string>Varying DoC</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="rbVaryingSL_2">
+      <widget class="QRadioButton" name="rbVaryingSL">
        <property name="text">
         <string>Varying SL</string>
        </property>
@@ -132,8 +139,8 @@
    <widget class="QPushButton" name="btnCalculate">
     <property name="geometry">
      <rect>
-      <x>260</x>
-      <y>350</y>
+      <x>270</x>
+      <y>190</y>
       <width>151</width>
       <height>41</height>
      </rect>
@@ -158,8 +165,8 @@
    <widget class="QPushButton" name="btnBack">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>360</y>
+      <x>10</x>
+      <y>380</y>
       <width>97</width>
       <height>26</height>
      </rect>

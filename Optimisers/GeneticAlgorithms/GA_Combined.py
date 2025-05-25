@@ -61,6 +61,7 @@ def reproduce_binary(parents, bounds, bits, random_numbers,
     # Decode
     return decode(c1m), decode(c2m)
 
+"""
 if __name__ == "__main__":
     # Example 1: selection
     values  = [1, 3, 6, 7, 11]
@@ -75,3 +76,4 @@ if __name__ == "__main__":
     rnd_rep = [0.3772, 0.1397, 0.8425]
     child1, child2 = reproduce_binary(parents, bounds, bits, rnd_rep)
     print("Offspring:", (round(child1,5), round(child2,5)))
+"""

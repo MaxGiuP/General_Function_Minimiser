@@ -1,18 +1,24 @@
-import sympy as sp
 import numpy as np
-import matplotlib
-matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
+import sympy as sp
 from scipy.optimize import minimize
 
-def fixed_penalty(f_str, eq_strs=None, ineq_strs=None, R=1e3, initial_guess=None, method='BFGS', plot=False):
-    eq_strs   = eq_strs or []
-    ineq_strs    = ineq_strs  or []
+def fixed_penalty(f_str, eq_strs=None, ineq_strs=None,
+                  R=1e3, initial_guess=None, method='BFGS', plot=False):
+    """
+    Fixed‐penalty unconstrained reformulation, returning all console‐style
+    output as a single string.
+    """
+    # sanitize inputs
+    eq_strs   = [s for s in (eq_strs or [])   if s.strip()]
+    ineq_strs = [s for s in (ineq_strs or []) if s.strip()]
+    logs = []
+
     # 1) parse
-    f_expr = sp.sympify(f_str)
-    eq_exprs = [sp.sympify(s) for s in eq_strs]
-    ineq_exprs  = [sp.sympify(s) for s in ineq_strs]
-    # 2) detect vars
+    f_expr     = sp.sympify(f_str)
+    eq_exprs   = [sp.sympify(s) for s in eq_strs]
+    ineq_exprs = [sp.sympify(s) for s in ineq_strs]
+
+    # 2) detect variables
     vars_syms = sorted(
         f_expr.free_symbols
          .union(*(e.free_symbols for e in eq_exprs))
@@ -20,45 +26,78 @@ def fixed_penalty(f_str, eq_strs=None, ineq_strs=None, R=1e3, initial_guess=None
         key=lambda s: s.name
     )
     n = len(vars_syms)
-    # 3) lambdify
-    f_num  = sp.lambdify(vars_syms, f_expr,  'numpy')
-    eq_num = [sp.lambdify(vars_syms, e,      'numpy') for e in eq_exprs]
-    ineq_num  = [sp.lambdify(vars_syms, h,      'numpy') for h in ineq_exprs]
+
+    # 3) lambdify (use tuple, not list)
+    f_num    = sp.lambdify(tuple(vars_syms),             f_expr,    'numpy')
+    eq_funcs = [sp.lambdify(tuple(vars_syms), e,        'numpy') for e in eq_exprs]
+    ineq_funcs = [sp.lambdify(tuple(vars_syms), h,       'numpy') for h in ineq_exprs]
+
     # 4) penalty objective
     def F(x):
         val = f_num(*x)
-        for e in eq_num:
-            if abs(e(*x)) > 1e-8:
+        for ef in eq_funcs:
+            if abs(ef(*x)) > 1e-8:
                 val += R
-        for h in ineq_num:
-            if h(*x) < 0:
+        for hf in ineq_funcs:
+            if hf(*x) < 0:
                 val += R
         return val
+
     # 5) initial guess
     if initial_guess is None:
-        x0 = np.zeros(n)
+        x0 = np.ones(n)
     else:
         x0 = np.array(initial_guess, dtype=float)
+
     # 6) minimize
+    res = minimize(F, x0, method=method)
+
+
+    # 6) solve
     res = minimize(F, x0, method=method)
     sol = res.x
     f_star = f_num(*sol)
-    sol_dict = {str(v): sol[i] for i,v in enumerate(vars_syms)}
+
+    # 7) build solution dict (string keys!)
+    sol_dict = { str(v): sol[i] for i, v in enumerate(vars_syms) }
     sol_dict['f*'] = f_star
-    # 7) broken constraints
-    broken_eq  = [s for s,e in zip(eq_strs, eq_num) if abs(e(*sol))>1e-8]
-    broken_ineq = [s for s,h in zip(ineq_strs, ineq_num) if h(*sol)<0]
-    # 8) optional plot
-    if plot and n==2:
-        x_sym, y_sym = vars_syms
-        # contour
-        xs = np.linspace(sol[0]-1, sol[0]+1, 200)
-        ys = np.linspace(sol[1]-1, sol[1]+1, 200)
-        X,Y = np.meshgrid(xs, ys)
-        Z = f_num(X,Y)
-        plt.contour(X,Y,Z,levels=50,cmap='viridis')
-        plt.plot(sol[0], sol[1], 'ro', label='Solution')
-        plt.title("Penalty Method Solution")
-        plt.xlabel(str(x_sym)); plt.ylabel(str(y_sym))
-        plt.legend(); plt.grid(True); plt.show()
-    return sol_dict, {'equalities': broken_eq, 'inequalities': broken_ineq}
+
+    # 8) check broken constraints
+    broken_eq   = [s for s,ef in zip(eq_strs,   eq_funcs)   if abs(ef(*sol))>1e-8]
+    broken_ineq = [s for s,hf in zip(ineq_strs, ineq_funcs) if hf(*sol)<0]
+
+    # 9) log output (index with str(v))
+    logs.append("Optimal solution:\n")
+    for v in vars_syms:
+        logs.append(f"  {v} = {sol_dict[str(v)]:.6f}\n")
+    logs.append(f"  f*  = {sol_dict['f*']:.6f}\n\n")
+
+    if broken_eq or broken_ineq:
+        logs.append("Broken constraints:\n")
+        for s in broken_eq:
+            logs.append(f"  equality:   {s} = 0\n")
+        for s in broken_ineq:
+            logs.append(f"  inequality: {s} >= 0\n")
+    else:
+        logs.append("No constraints broken.\n")
+
+    return "".join(logs)
+
+
+"""
+# Example
+if __name__ == "__main__":
+    f_str     = "x**2 + y**2"
+    eq_strs   = ["x + y - 1"]
+    ineq_strs = ["x - 0.2", "y - 0.3"]
+    initial   = [0.5, 0.5]
+
+    print(fixed_penalty(
+        f_str,
+        eq_strs=eq_strs,
+        ineq_strs=ineq_strs,
+        R=1e3,
+        initial_guess=initial,
+        method='BFGS'
+    ))
+"""

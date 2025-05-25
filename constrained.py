@@ -32,11 +32,12 @@ class ConstrainedWindow(QMainWindow):
             ShowPlot = True
 
         Function = str(self.ui.txtFunction.text())
-        Equalities = str(self.ui.txtEq.text())
-        Inequalities = str(self.ui.txtIneq.text())
+        Equalities = str(self.ui.txtEq.toPlainText()).split("\n")
+        print(Equalities)
+        Inequalities = str(self.ui.txtIneq.toPlainText()).split("\n")
 
-        start = None
-        R = 0.001
+        start = [1,1]
+        R = 0.01
         method = 'BFGS'
 
         scale = 10
@@ -46,27 +47,26 @@ class ConstrainedWindow(QMainWindow):
 
         if self.ui.rbLagrange.isChecked():
             print("Starting Lagrange")
-            results = ConstrainedLagrange.lagrange(Function, Equalities, Inequalities, ShowPlot)
+            result = ConstrainedLagrange.lagrange(Function, Equalities, Inequalities, ShowPlot)
             print("End Lagrange")
         elif self.ui.rbFixedPenalty.isChecked():
             print("Starting fixed penalty")
-            results = ConstrainedPenaltyFixed.fixed_penalty(Function, Equalities, Inequalities, R, start, method, ShowPlot)
+            result = ConstrainedPenaltyFixed.fixed_penalty(Function, Equalities, Inequalities, R, start, method, ShowPlot)
             print("Finished fixed penalty")
         elif self.ui.rbVaryingSL.isChecked():
             print("Starting Varying SL")
-            results = ConstrainedPenaltyVaryingSL.varying_sl(Function, Equalities, Inequalities, R, scale, max_round, tol, start, method, ShowPlot)
+            result = ConstrainedPenaltyVaryingSL.varying_sl(Function, Equalities, Inequalities, R, scale, max_round, tol, start, method, ShowPlot)
             print("Finished Varying SL")
         elif self.ui.rbVaryingDoC.isChecked():
             print("Starting Varying DoC")
-            results = ConstrainedPenaltyVaryingDoC.varying_doc(Function, Equalities, Inequalities, R, start, method, ShowPlot)
+            result = ConstrainedPenaltyVaryingDoC.varying_doc(Function, Equalities, Inequalities, R, start, method, ShowPlot)
             print("Finished Varying DoC")
         elif self.ui.rbAugmented.isChecked():
             print("Starting Augmented")
-            results = ConstrainedAugmented.augmented(Function, Equalities, Inequalities, ShowPlot)
+            result = ConstrainedAugmented.augmented(Function, Equalities, Inequalities)
             print("Finished Augmented")
 
-        for i in range(1, len(results)):
-            self.ui.txtOutput.setText(str(self.ui.txtOutput) + str(results[i]))
+        self.ui.txtOutput.setText(result)
 
     def btnBack_clicked(self):
         from menu import MainWindow

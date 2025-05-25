@@ -68,7 +68,7 @@ class Ui_wConstrained(object):
 
         self.txtOutput = QTextEdit(self.centralwidget)
         self.txtOutput.setObjectName(u"txtOutput")
-        self.txtOutput.setGeometry(QRect(200, 190, 281, 141))
+        self.txtOutput.setGeometry(QRect(210, 240, 281, 141))
         self.verticalLayoutWidget = QWidget(self.centralwidget)
         self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
         self.verticalLayoutWidget.setGeometry(QRect(10, 190, 181, 146))
@@ -86,15 +86,15 @@ class Ui_wConstrained(object):
 
         self.verticalLayout.addWidget(self.rbFixedPenalty)
 
+        self.rbVaryingDoC = QRadioButton(self.verticalLayoutWidget)
+        self.rbVaryingDoC.setObjectName(u"rbVaryingDoC")
+
+        self.verticalLayout.addWidget(self.rbVaryingDoC)
+
         self.rbVaryingSL = QRadioButton(self.verticalLayoutWidget)
         self.rbVaryingSL.setObjectName(u"rbVaryingSL")
 
         self.verticalLayout.addWidget(self.rbVaryingSL)
-
-        self.rbVaryingSL_2 = QRadioButton(self.verticalLayoutWidget)
-        self.rbVaryingSL_2.setObjectName(u"rbVaryingSL_2")
-
-        self.verticalLayout.addWidget(self.rbVaryingSL_2)
 
         self.rbAugmented = QRadioButton(self.verticalLayoutWidget)
         self.rbAugmented.setObjectName(u"rbAugmented")
@@ -103,13 +103,13 @@ class Ui_wConstrained(object):
 
         self.btnCalculate = QPushButton(self.centralwidget)
         self.btnCalculate.setObjectName(u"btnCalculate")
-        self.btnCalculate.setGeometry(QRect(260, 350, 151, 41))
+        self.btnCalculate.setGeometry(QRect(270, 190, 151, 41))
         self.cbPlot = QCheckBox(self.centralwidget)
         self.cbPlot.setObjectName(u"cbPlot")
         self.cbPlot.setGeometry(QRect(490, 10, 121, 24))
         self.btnBack = QPushButton(self.centralwidget)
         self.btnBack.setObjectName(u"btnBack")
-        self.btnBack.setGeometry(QRect(70, 360, 97, 26))
+        self.btnBack.setGeometry(QRect(10, 380, 97, 26))
         wConstrained.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(wConstrained)
         self.menubar.setObjectName(u"menubar")
@@ -125,15 +125,17 @@ class Ui_wConstrained(object):
     # setupUi
 
     def retranslateUi(self, wConstrained):
-        wConstrained.setWindowTitle(QCoreApplication.translate("wConstrained", u"MainWindow", None))
-        self.txtFunction.setText(QCoreApplication.translate("wConstrained", u"x**5 - 2*(x**3) - 10*x + 5", None))
+        wConstrained.setWindowTitle(QCoreApplication.translate("wConstrained", u"ConstrainedWindow", None))
+        self.txtFunction.setText(QCoreApplication.translate("wConstrained", u"5 / (x1*(x2**2))", None))
+        self.txtEq.setDocumentTitle("")
+        self.txtEq.setPlaceholderText(QCoreApplication.translate("wConstrained", u"x1**2 + x2**2 - 4", None))
         self.label_2.setText(QCoreApplication.translate("wConstrained", u"Equality Constraints", None))
         self.label.setText(QCoreApplication.translate("wConstrained", u"Function", None))
         self.label_3.setText(QCoreApplication.translate("wConstrained", u"Inequality Constraints", None))
-        self.rbLagrange.setText(QCoreApplication.translate("wConstrained", u"Lagrange", None))
+        self.rbLagrange.setText(QCoreApplication.translate("wConstrained", u"Lagrange Multipliers", None))
         self.rbFixedPenalty.setText(QCoreApplication.translate("wConstrained", u"Fixed Penalty", None))
-        self.rbVaryingSL.setText(QCoreApplication.translate("wConstrained", u"Varying DoC", None))
-        self.rbVaryingSL_2.setText(QCoreApplication.translate("wConstrained", u"Varying SL", None))
+        self.rbVaryingDoC.setText(QCoreApplication.translate("wConstrained", u"Varying DoC", None))
+        self.rbVaryingSL.setText(QCoreApplication.translate("wConstrained", u"Varying SL", None))
         self.rbAugmented.setText(QCoreApplication.translate("wConstrained", u"Augmented Lagrange", None))
         self.btnCalculate.setText(QCoreApplication.translate("wConstrained", u"Calculate", None))
         self.cbPlot.setText(QCoreApplication.translate("wConstrained", u"Plot function", None))
