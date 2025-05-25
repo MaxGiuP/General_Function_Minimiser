@@ -104,7 +104,6 @@ class GAWindow(QMainWindow):
             upper              = upper,
             bits               = bits,
             crossover_point    = crossover_point,
-            isbit              = form.cbIsBit.isChecked(),
             mutation_positions = mutation_positions
         )
         form.txtReproduction.setText("Children: \nLeft + Right:" + str(round(c1,5)) + " \nRight + Left" + str(round(c2,5)))

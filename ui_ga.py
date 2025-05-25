@@ -15,10 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QGridLayout,
-    QLabel, QLineEdit, QMainWindow, QMenuBar,
-    QPushButton, QSizePolicy, QStatusBar, QTextEdit,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QGridLayout, QLabel,
+    QLineEdit, QMainWindow, QMenuBar, QPushButton,
+    QSizePolicy, QStatusBar, QTextEdit, QWidget)
 
 class Ui_wGA(object):
     def setupUi(self, wGA):
@@ -38,7 +37,7 @@ class Ui_wGA(object):
         self.btnBack.setGeometry(QRect(20, 370, 97, 26))
         self.gridLayoutWidget = QWidget(self.centralwidget)
         self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
-        self.gridLayoutWidget.setGeometry(QRect(580, 0, 291, 188))
+        self.gridLayoutWidget.setGeometry(QRect(590, 0, 291, 188))
         self.gridLayout = QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setObjectName(u"gridLayout")
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -322,13 +321,10 @@ class Ui_wGA(object):
 
         self.btnReproduction = QPushButton(self.centralwidget)
         self.btnReproduction.setObjectName(u"btnReproduction")
-        self.btnReproduction.setGeometry(QRect(580, 200, 151, 41))
+        self.btnReproduction.setGeometry(QRect(650, 200, 151, 41))
         self.txtReproduction = QTextEdit(self.centralwidget)
         self.txtReproduction.setObjectName(u"txtReproduction")
-        self.txtReproduction.setGeometry(QRect(610, 260, 201, 81))
-        self.cbIsBit = QCheckBox(self.centralwidget)
-        self.cbIsBit.setObjectName(u"cbIsBit")
-        self.cbIsBit.setGeometry(QRect(750, 210, 121, 24))
+        self.txtReproduction.setGeometry(QRect(630, 260, 201, 81))
         wGA.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(wGA)
         self.menubar.setObjectName(u"menubar")
@@ -409,6 +405,5 @@ class Ui_wGA(object):
         self.cmbSelRep.setItemText(1, QCoreApplication.translate("wGA", u"No", None))
 
         self.btnReproduction.setText(QCoreApplication.translate("wGA", u"Test Reproduction", None))
-        self.cbIsBit.setText(QCoreApplication.translate("wGA", u"Enter as Bits?", None))
     # retranslateUi
 

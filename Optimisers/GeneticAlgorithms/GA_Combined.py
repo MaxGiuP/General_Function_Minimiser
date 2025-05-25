@@ -64,7 +64,6 @@ def reproduce_parametric(
     lower, upper,
     bits,
     crossover_point: int = None,      # int ∈[1..bits-1], or None to draw
-    isbit: bool = False,
     mutation_positions: list = None,  # [pos1,pos2] ∈[0..bits-1], or None to draw
     rng: np.random.Generator = None
 ):
@@ -87,9 +86,7 @@ def reproduce_parametric(
         return "".join(lst)
         
     pA, pB = parents
-    if isbit:
-        bA, bB = pA, pB
-    else: bA, bB  = encode(pA), encode(pB)
+    bA, bB  = encode(pA), encode(pB)
 
     # crossover point
     if crossover_point is None:
