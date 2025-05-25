@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Wing Question</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="btnCalculate">
@@ -192,7 +192,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QCheckBox" name="rbPlot">
+   <widget class="QCheckBox" name="cbPlot">
     <property name="geometry">
      <rect>
       <x>350</x>

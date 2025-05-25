@@ -6,131 +6,30 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>401</height>
+    <width>635</width>
+    <height>542</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="gridLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>451</width>
-      <height>111</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="1" column="2">
-      <widget class="QLineEdit" name="txtx1">
-       <property name="text">
-        <string>0.5</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Starting Points</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="5">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>x3</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="3">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>x2</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2" colspan="5">
-      <widget class="QLineEdit" name="txtFunction">
-       <property name="text">
-        <string>x**5 - 2*(x**3) - 10*x + 5</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="6">
-      <widget class="QLineEdit" name="txtx3">
-       <property name="text">
-        <string>2</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="4">
-      <widget class="QLineEdit" name="txtx2">
-       <property name="text">
-        <string>1</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QLineEdit" name="txtIterations">
-       <property name="text">
-        <string>2</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>x1</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0" colspan="2">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Function</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0" colspan="2">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Number of Iterations</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
    <widget class="QTextEdit" name="txtOutput">
     <property name="geometry">
      <rect>
-      <x>240</x>
-      <y>110</y>
+      <x>220</x>
+      <y>170</y>
       <width>371</width>
-      <height>141</height>
+      <height>181</height>
      </rect>
     </property>
    </widget>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>110</y>
-      <width>244</width>
+      <x>10</x>
+      <y>170</y>
+      <width>201</width>
       <height>116</height>
      </rect>
     </property>
@@ -172,7 +71,7 @@
     <property name="geometry">
      <rect>
       <x>310</x>
-      <y>270</y>
+      <y>380</y>
       <width>151</width>
       <height>41</height>
      </rect>
@@ -184,8 +83,8 @@
    <widget class="QCheckBox" name="cbPlot">
     <property name="geometry">
      <rect>
-      <x>460</x>
-      <y>0</y>
+      <x>30</x>
+      <y>310</y>
       <width>121</width>
       <height>24</height>
      </rect>
@@ -197,8 +96,8 @@
    <widget class="QPushButton" name="btnBack">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>270</y>
+      <x>70</x>
+      <y>390</y>
       <width>97</width>
       <height>26</height>
      </rect>
@@ -207,13 +106,67 @@
      <string>Back</string>
     </property>
    </widget>
+   <widget class="QWidget" name="formLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>311</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="1" column="0" colspan="2">
+      <widget class="QTextEdit" name="txtFunctions"/>
+     </item>
+     <item row="0" column="0" colspan="2">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Functions</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>10</y>
+      <width>160</width>
+      <height>141</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="1">
+      <widget class="QTextEdit" name="txtRight"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QTextEdit" name="txtLeft"/>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Min</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Max</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>635</width>
      <height>23</height>
     </rect>
    </property>

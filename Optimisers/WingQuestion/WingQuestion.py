@@ -21,6 +21,7 @@ import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
+
 def optimise_wing(
     cl_coeff,
     cl_offset,
@@ -32,6 +33,21 @@ def optimise_wing(
     V_landing,
     plot=False
 ):
+    """
+    Compute unconstrained and stall‐limited L/D optimums,
+    but instead of printing to console, returns a single string
+    with all the results.
+    """
+    # 0) ensure numeric
+    cl_coeff            = float(cl_coeff)
+    cl_offset           = float(cl_offset)
+    cd_const            = float(cd_const)
+    cd_quad             = float(cd_quad)
+    initial_guess_alpha = float(initial_guess_alpha)
+    stall_limit_alpha   = float(stall_limit_alpha)
+    V_cruise            = float(V_cruise)
+    V_landing           = float(V_landing)
+
     # 1) symbolic variable
     alpha = sp.symbols('alpha', real=True)
 
@@ -40,33 +56,33 @@ def optimise_wing(
     CD = cd_const + cd_quad * CL**2
     LD = CL / CD
 
-    # 3) find unconstrained α* by solving d(L/D)/dα = 0
+    # 3) unconstrained optimum
     dLD = sp.diff(LD, alpha)
     alpha_opt = float(sp.nsolve(dLD, initial_guess_alpha))
     CL_opt    = float(CL.subs(alpha, alpha_opt))
     LD_opt    = float(LD.subs(alpha, alpha_opt))
 
-    # 4) stall‐limited cruise α_cr
-    CL_max = cl_coeff * (stall_limit_alpha + cl_offset)
-    CL_cr  = CL_max * (V_landing / V_cruise)**2
+    # 4) stall‐limited cruise
+    CL_max   = cl_coeff * (stall_limit_alpha + cl_offset)
+    CL_cr    = CL_max * (V_landing / V_cruise)**2
     alpha_cr = float(CL_cr / cl_coeff - cl_offset)
-    CD_cr = float((cd_const + cd_quad * CL_cr**2))
-    LD_cr = CL_cr / CD_cr
+    CD_cr    = cd_const + cd_quad * CL_cr**2
+    LD_cr    = CL_cr / CD_cr
 
-    results = {
-        'unconstrained': {
-            'alpha': alpha_opt,
-            'CL':     CL_opt,
-            'LD':     LD_opt
-        },
-        'cruise_limited': {
-            'alpha': alpha_cr,
-            'CL':     CL_cr,
-            'LD':     LD_cr
-        }
-    }
+    # 5) build result string
+    lines = []
+    lines.append("Unconstrained optimum:\n")
+    lines.append(f"  α*    = {alpha_opt:.6f}°\n")
+    lines.append(f"  C_L*  = {CL_opt:.6f}\n")
+    lines.append(f"  (L/D)* = {LD_opt:.6f}\n\n")
+    lines.append("Stall‐limited cruise:\n")
+    lines.append(f"  α_cr   = {alpha_cr:.6f}°\n")
+    lines.append(f"  C_L    = {CL_cr:.6f}\n")
+    lines.append(f"  (L/D)  = {LD_cr:.6f}\n")
 
-    # 5) optional plot
+    result = "".join(lines)
+
+    # 6) optional plot
     if plot:
         alphas = np.linspace(0, stall_limit_alpha, 300)
         LD_vals = (cl_coeff * (alphas + cl_offset)) / (
@@ -77,12 +93,12 @@ def optimise_wing(
         plt.axvline(alpha_cr,  color='red',   linestyle='--', label='α_cr cruise limit')
         plt.xlabel("α (degrees)")
         plt.ylabel("L/D")
-        plt.title("Lift-to-Drag Ratio vs Angle of Attack")
+        plt.title("Lift‐to‐Drag Ratio vs Angle of Attack")
         plt.legend()
         plt.grid(True)
         plt.show()
 
-    return results
+    return result
 
 
 """

@@ -27,14 +27,12 @@ class ManufacturingWindow(QMainWindow):
             ShowPlot = True
 
         Function = str(self.ui.txtFunction.text())
-        min = float(self.ui.txtMin)
+        min = float(self.ui.txtMin.text())
         max = float(self.ui.txtMax.text())
+        h = float(self.ui.txtStep.text())
 
-        results = ManuPerf.manufacturing(Function, min, max, ShowPlot)
+        self.ui.txtOutput.setText(ManuPerf.manufacturing(Function, min, max, h, ShowPlot))
 
-
-        for i in range(1, len(results)):
-            self.ui.txtOutput.setText(str(self.ui.txtOutput) + str(results[i]))
 
     def btnBack_clicked(self):
         from menu import MainWindow

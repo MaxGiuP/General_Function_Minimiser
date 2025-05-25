@@ -61,10 +61,10 @@ class Ui_wManufacturing(object):
 
         self.gridLayout.addWidget(self.txtFunction, 0, 2, 1, 4)
 
-        self.txtIterations = QLineEdit(self.gridLayoutWidget)
-        self.txtIterations.setObjectName(u"txtIterations")
+        self.txtStep = QLineEdit(self.gridLayoutWidget)
+        self.txtStep.setObjectName(u"txtStep")
 
-        self.gridLayout.addWidget(self.txtIterations, 2, 2, 1, 1)
+        self.gridLayout.addWidget(self.txtStep, 2, 2, 1, 1)
 
         self.label_4 = QLabel(self.gridLayoutWidget)
         self.label_4.setObjectName(u"label_4")
@@ -115,7 +115,7 @@ class Ui_wManufacturing(object):
         self.label_3.setText(QCoreApplication.translate("wManufacturing", u"Step Size", None))
         self.label_6.setText(QCoreApplication.translate("wManufacturing", u"Min", None))
         self.txtFunction.setText(QCoreApplication.translate("wManufacturing", u"x + 1/x", None))
-        self.txtIterations.setText(QCoreApplication.translate("wManufacturing", u"0.25", None))
+        self.txtStep.setText(QCoreApplication.translate("wManufacturing", u"0.25", None))
         self.label_4.setText(QCoreApplication.translate("wManufacturing", u"Max", None))
         self.txtMin.setText(QCoreApplication.translate("wManufacturing", u"0.5", None))
         self.label.setText(QCoreApplication.translate("wManufacturing", u"Function", None))

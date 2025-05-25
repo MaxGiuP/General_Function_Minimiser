@@ -127,9 +127,9 @@ class Ui_wWing(object):
 
         self.gridLayout.addWidget(self.txtLanding, 7, 1, 1, 1)
 
-        self.rbPlot = QCheckBox(self.centralwidget)
-        self.rbPlot.setObjectName(u"rbPlot")
-        self.rbPlot.setGeometry(QRect(350, 270, 97, 24))
+        self.cbPlot = QCheckBox(self.centralwidget)
+        self.cbPlot.setObjectName(u"cbPlot")
+        self.cbPlot.setGeometry(QRect(350, 270, 97, 24))
         wWing.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(wWing)
         self.menubar.setObjectName(u"menubar")
@@ -145,7 +145,7 @@ class Ui_wWing(object):
     # setupUi
 
     def retranslateUi(self, wWing):
-        wWing.setWindowTitle(QCoreApplication.translate("wWing", u"MainWindow", None))
+        wWing.setWindowTitle(QCoreApplication.translate("wWing", u"Wing Question", None))
         self.btnCalculate.setText(QCoreApplication.translate("wWing", u"Calculate", None))
         self.btnBack.setText(QCoreApplication.translate("wWing", u"Back", None))
         self.txtCLCoeff.setText(QCoreApplication.translate("wWing", u"0.093", None))
@@ -164,6 +164,6 @@ class Ui_wWing(object):
         self.txtStallLimit.setText(QCoreApplication.translate("wWing", u"14", None))
         self.txtCruise.setText(QCoreApplication.translate("wWing", u"40", None))
         self.txtLanding.setText(QCoreApplication.translate("wWing", u"15", None))
-        self.rbPlot.setText(QCoreApplication.translate("wWing", u"Show Plot", None))
+        self.cbPlot.setText(QCoreApplication.translate("wWing", u"Show Plot", None))
     # retranslateUi
 

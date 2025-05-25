@@ -31,36 +31,54 @@ class MultiObjectiveWindow(QMainWindow):
         if self.ui.cbPlot.isChecked():
             ShowPlot = True
 
-        Functions = str(self.ui.txtFunction.text())
-        Iterations = int(self.ui.txtIterations.text())
-        x_coord = float(self.ui.txtx1.text())
-        y_coord = float(self.ui.txtx2.text())
-        start = [x_coord, y_coord]
+        Functions = str(self.ui.txtFunctions.toPlainText()).split("\n")
+        print(Functions)
 
-        thresholds = [0, 1]
-        weights = 100
-        samples = []
         x_values = []
+        thresholds = []
+        Left, Right = [], []
+
+        if self.ui.txtLeft.toPlainText().strip():
+            Left = self.ui.txtLeft.toPlainText().split("\n")
+
+        if self.ui.txtRight.toPlainText().strip():
+            Right = self.ui.txtRight.toPlainText().split("\n")
+
+        if Right and Left:
+            for i in range(len(Left)):
+                thresholds.append((float(Left[i]), float(Right[i])))
+        elif Left:
+            for val in Left:
+                val = val.strip()
+                if val:
+                    x_values.append(float(val))
+
+        print(thresholds)
+
+        samples = []
+        for i in range (1, len(x_values) + 1):
+            samples.append(i)
+
+
 
         if self.ui.rbEigenvectors.isChecked():
             print("Starting eigenvectors")
-            results = EigenvectorMethod.eigenvector_weights(Functions)
+            result = EigenvectorMethod.eigenvector_weights(Functions)
             print("Finished eigenvectors")
         elif self.ui.rbFuzzyLogic.isChecked():
             print("Starting fuzzy logic")
-            results = FuzzyLogic.fuzzy(Functions, thresholds)
+            result = FuzzyLogic.fuzzy(Functions, thresholds)
             print("Finished fuzzy logic")
         elif self.ui.rbPareto.isChecked():
             print("Starting Pareto")
-            results = ParetoDominance(Functions, weights, ShowPlot)
+            result = ParetoDominance.pareto_front(Functions, ShowPlot)
             print("Finished Pareto")
         elif self.ui.rbParetoTable.isChecked():
             print("Starting Pareto Table")
-            results = ParetoDominanceTable(samples. x_values, Functions, ShowPlot)
+            result = ParetoDominanceTable.pareto_analysis(Functions, x_values, samples, ShowPlot)
             print("Finished Pareto Table")
 
-        for i in range(1, len(results)):
-            self.ui.txtOutput.setText(str(self.ui.txtOutput) + str(results[i]))
+        self.ui.txtOutput.setText(str(result))
 
     def btnBack_clicked(self):
         from menu import MainWindow

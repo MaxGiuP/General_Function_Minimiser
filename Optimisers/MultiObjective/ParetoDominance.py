@@ -1,60 +1,54 @@
-import numpy as np
 import sympy as sp
-import matplotlib
-matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
+import math
 
-def pareto_front(func_strs, num_weights=100, plot=False):
-    syms = set()
-    exprs = []
-    for s in func_strs:
-        e = sp.sympify(s)
-        exprs.append(e)
-        syms |= e.free_symbols
+def pareto_front(func_strs, plot=False):
+    # 1) parse expressions
+    exprs = [sp.sympify(s) for s in func_strs]
+    syms  = set().union(*(e.free_symbols for e in exprs))
     if len(syms) != 1:
         raise ValueError("Expected exactly one decision variable")
     var = syms.pop()
 
-    def find_minimizer(e):
+    # 2) helper to get the local minimizer of e(x)
+    def find_min(e):
         d1 = sp.diff(e, var)
         crits = sp.solve(d1, var)
         d2 = sp.diff(e, var, 2)
         mins = [c for c in crits if c.is_real and d2.subs(var, c) > 0]
         if not mins:
             raise RuntimeError(f"No real minimizer for {e}")
-        # pick the one with smallest f-value
+        # pick the one that gives the smallest value
         return float(min(mins, key=lambda c: float(e.subs(var, c))))
 
+    # 3) endpoints for each fi alone
     endpoints = []
-    for e in exprs:
-        xi = find_minimizer(e)
-        vals = [float(f.subs(var, xi)) for f in exprs]
-        endpoints.append((xi, *vals))
+    for f in exprs:
+        x_i = find_min(f)
+        f1 = float(exprs[0].subs(var, x_i))
+        f2 = float(exprs[1].subs(var, x_i))
+        endpoints.append((x_i, f1, f2))
 
-    Phi = sum(exprs)
-    x_eq = find_minimizer(Phi)
-    vals_eq = [float(f.subs(var, x_eq)) for f in exprs]
-    compromise = (x_eq, *vals_eq)
+    # 4) equal‐weight compromise solves f1+f2
+    Phi = exprs[0] + exprs[1]
+    x_eq = find_min(Phi)
+    f1_eq = float(exprs[0].subs(var, x_eq))
+    f2_eq = float(exprs[1].subs(var, x_eq))
+    compromise = (x_eq, f1_eq, f2_eq)
 
-    pareto_points = []
-    if len(exprs) == 2:
-        f1, f2 = exprs
-        alphas = np.linspace(0, 1, num_weights)
-        for α in alphas:
-            Phiα = α*f1 + (1-α)*f2
-            try:
-                xi = find_minimizer(Phiα)
-            except RuntimeError:
-                continue
-            pareto_points.append((float(f1.subs(var, xi)), float(f2.subs(var, xi))))
+    # 5) format exactly as requested
+    def fmt(triple):
+        return "{" + ",".join(
+            f"{v:.6g}" for v in triple
+        ) + "}"
 
-    if plot and len(exprs) == 2 and pareto_points:
-        f1_vals, f2_vals = zip(*pareto_points)
-        plt.scatter(f1_vals, f2_vals, s=20)
-        plt.title("Pareto Front (f1 vs f2)")
-        plt.xlabel("f1")
-        plt.ylabel("f2")
-        plt.grid(True)
-        plt.show()
+    s = f"{fmt(endpoints[0])}, {fmt(endpoints[1])}, {fmt(compromise)}"
+    return s
 
-    return endpoints, compromise, pareto_points
+
+"""
+# ── Test ─────────────────────────────────────────────────────────────
+if __name__ == "__main__":
+    funcs = ["x**3 - 3*x + 6", "3*x**2 + 3*x - 5"]
+    print(pareto_front(funcs))
+    # prints: {1,4,1}, {-0.5,7.375,-5.75}, {0,6,-5}
+"""
