@@ -13,10 +13,10 @@ MULTI-VARIABLE SEARCH
 4. Broyden–Fletcher–Goldfarb–Shanno (BFGS) Search
 5. Hooke and Jeeves
 
-GENETIC ALGORITHMS
+GENETIC ALGORITHM
 1. Standard
-2. Roulette, Rank-Based Search
-3. Crossover
+1.1 Selection Testing Feature
+1.2 Reproduction Testing Feature
 
 CONSTRAINED
 1. Langrange Multiplier
