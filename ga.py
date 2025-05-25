@@ -2,8 +2,6 @@
 import sys
 
 from PySide6.QtWidgets import QApplication, QMainWindow
-from Optimisers.GeneticAlgorithms import GA_Crossover
-from Optimisers.GeneticAlgorithms import GA_Roulette
 from Optimisers.GeneticAlgorithms import GA_Combined
 
 # Important:
@@ -20,27 +18,91 @@ class GAWindow(QMainWindow):
         self.ui.setupUi(self)
 
         self.ui.btnCalculate.clicked.connect(self.btnCalculate_clicked)
+        self.ui.btnSelection.clicked.connect(self.btnSelection_clicked)
+        self.ui.btnReproduction.clicked.connect(self.btnReproduction_clicked)
+
         self.ui.btnBack.clicked.connect(self.btnBack_clicked)
         print("Initialised")
 
     def btnCalculate_clicked(self):
         print("Clicked")
-        ShowPlot = False
-        if self.ui.cbPlot.isChecked():
-            ShowPlot = True
 
-        Function = str(self.ui.txtFunction.text())
-        Iterations = int(self.ui.txtIterations.text())
-        x1 = float(self.ui.txtx1.text())
-        x2 = float(self.ui.txtx2.text())
-        x3 = float(self.ui.txtx3.text())
+        form = self.ui
 
-        if self.ui.rbGolden.isChecked():
-            print("Starting Golden Section")
-            results = GA_Roulette.roulette
+        fitness_fn = form.txtFunction.text()
+        lower = float(form.txtLow.text())
+        upper = float(form.txtUp.text())
+        bits = int(form.txtBits.text())
+        pop_size = int(form.txtPop.text())
+        generations = int(form.txtGens.text())
+        crossover_rate = float(form.txtCross.text())
+        mutation_rate = float(form.txtMut.text())
+        order = form.cmbOrder.currentText()
+        method = form.cmbMethod.currentText()
+        rank_power = float(form.txtRank.text())
 
-        for i in range(1, len(results)):
-            self.ui.txtOutput.setText(str(self.ui.txtOutput) + str(results[i]))
+        ga = GA_Combined.GeneticAlgorithm(
+            fitness_fn    = fitness_fn,
+            lower         = lower,
+            upper         = upper,
+            bits          = bits,
+            pop_size      = pop_size,
+            generations   = generations,
+            select_params = {"method": method,"order": order,"rank_power": rank_power},
+            crossover_rate= crossover_rate,
+            mutation_rate = mutation_rate,
+            rng           = None #np.random.default_rng()
+        )
+
+        x, f = ga.run()
+        results = "Best x value is : " + str(x) + "\nBest f value is: " + str(f)
+        form.txtOutput.setText(results)
+
+
+    def btnSelection_clicked(self):
+        form = self.ui
+
+        values = [float(x) for x in form.txtValues.text().strip().split(",")]
+        fitness = [float(x) for x in form.txtFitness.text().strip().split(",")]
+        rands = [float(x) for x in form.txtRands.text().strip().split(",")]
+        order = form.cmbSelOrder.currentText()
+        method = form.cmbMethod.currentText()
+        rank_power = float(form.txtSelRank.text())
+        if form.cmbSelRep.currentText() == "Yes":
+            replacement = True
+        else: replacement = False
+
+        idxs = GA_Combined.roulette_selection_indices(
+            fitness    = fitness,
+            num_select = len(values),
+            method     = method,
+            order      = order,
+            rank_power = rank_power,
+            replacement= replacement,
+            rands      = rands
+        )
+        pool = [values[i] for i in idxs]
+        form.txtSelection.setText("Roulette Pool: " + str(pool))
+
+    def btnReproduction_clicked(self):
+        form = self.ui
+
+        parents = [float(form.txtParent1.text()), float(form.txtParent2.text())]
+        lower = float(form.txtRepLow.text())
+        upper = float(form.txtRepUp.text())
+        bits = int(form.txtBits.text())
+        crossover_point = int(float(form.txtRepCross.text()) * (bits - 1))
+        mutation_positions = [int(float(form.txtRepMut1.text())*bits), int(float(form.txtRepMut2.text())*bits)]
+
+        c1, c2 = GA_Combined.reproduce_parametric(
+            parents            = parents,
+            lower              = lower,
+            upper              = upper,
+            bits               = bits,
+            crossover_point    = crossover_point,
+            mutation_positions = mutation_positions
+        )
+        form.txtReproduction.setText("Children: " + str(round(c1,5)) + " " + str(round(c2,5)))
 
     def btnBack_clicked(self):
         from menu import MainWindow

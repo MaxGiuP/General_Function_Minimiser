@@ -1,5 +1,5 @@
 # FEEG6009_Optimiser
-Desktop application that performs function minimisation using:
+Desktop application written with Qt Creator Python that performs function minimisation using:
 
 LINE SEARCH
 1. Golden Section Search
@@ -26,7 +26,7 @@ CONSTRAINED
 5. Varying Penalty Function as a Function of Search Duration
 
 MUTLI-OBJECTIVE
-1. Eigenvector Method
+1. Eigenvectors
 2. Fuzzy Logic
 3. Pareto Dominance
 4. Pareto Dominance From Inputs
