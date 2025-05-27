@@ -14,7 +14,7 @@ MULTI-VARIABLE SEARCH
 5. Hooke and Jeeves
 
 GENETIC ALGORITHM
-1. Standard
+1.  Full GA Engine
 1.1 Selection Testing Feature
 1.2 Reproduction Testing Feature
 
@@ -32,5 +32,6 @@ MUTLI-OBJECTIVE
 4. Pareto Dominance From Inputs
 
 
+NOTE: Input functions require Python-style formatting
 
 Completed for the "FEEG6009 - Design Search and Optimisation (DSO) - Principles, Methods, Parameterizations and Case Studies" module taught by the GOAT Dr. Andrew Keane at the University of Southampton.
