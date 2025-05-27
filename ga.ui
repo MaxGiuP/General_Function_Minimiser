@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>410</y>
+      <y>420</y>
       <width>301</width>
       <height>81</height>
      </rect>
@@ -28,7 +28,7 @@
     <property name="geometry">
      <rect>
       <x>150</x>
-      <y>360</y>
+      <y>370</y>
       <width>151</width>
       <height>41</height>
      </rect>
@@ -41,7 +41,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>370</y>
+      <y>380</y>
       <width>97</width>
       <height>26</height>
      </rect>
@@ -54,7 +54,7 @@
     <property name="geometry">
      <rect>
       <x>590</x>
-      <y>0</y>
+      <y>10</y>
       <width>291</width>
       <height>188</height>
      </rect>
@@ -68,11 +68,7 @@
       </widget>
      </item>
      <item row="5" column="2">
-      <widget class="QLineEdit" name="txtRepMut2">
-       <property name="text">
-        <string>0.8425</string>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="txtRepMut2"/>
      </item>
      <item row="5" column="0">
       <widget class="QLabel" name="label_14">
@@ -82,18 +78,10 @@
       </widget>
      </item>
      <item row="3" column="2">
-      <widget class="QLineEdit" name="txtParent2">
-       <property name="text">
-        <string>0.04762</string>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="txtParent2"/>
      </item>
      <item row="3" column="1">
-      <widget class="QLineEdit" name="txtParent1">
-       <property name="text">
-        <string>-0.42857</string>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="txtParent1"/>
      </item>
      <item row="4" column="0">
       <widget class="QLabel" name="label_2">
@@ -117,11 +105,7 @@
       </widget>
      </item>
      <item row="5" column="1">
-      <widget class="QLineEdit" name="txtRepMut1">
-       <property name="text">
-        <string>0.1397</string>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="txtRepMut1"/>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label_23">
@@ -145,18 +129,10 @@
       </widget>
      </item>
      <item row="2" column="1" colspan="2">
-      <widget class="QLineEdit" name="txtRepBits">
-       <property name="text">
-        <string>6</string>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="txtRepBits"/>
      </item>
      <item row="4" column="1" colspan="2">
-      <widget class="QLineEdit" name="txtRepCross">
-       <property name="text">
-        <string>0.3772</string>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="txtRepCross"/>
      </item>
     </layout>
    </widget>
@@ -164,7 +140,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>0</y>
+      <y>10</y>
       <width>301</width>
       <height>351</height>
      </rect>
@@ -181,13 +157,6 @@
       <widget class="QLineEdit" name="txtUp">
        <property name="text">
         <string>1</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="txtFunction">
-       <property name="text">
-        <string>-(x-0.3)**2 + 1</string>
        </property>
       </widget>
      </item>
@@ -338,13 +307,16 @@
        </item>
       </widget>
      </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="txtFunction"/>
+     </item>
     </layout>
    </widget>
    <widget class="QPushButton" name="btnSelection">
     <property name="geometry">
      <rect>
       <x>370</x>
-      <y>240</y>
+      <y>250</y>
       <width>151</width>
       <height>41</height>
      </rect>
@@ -357,7 +329,7 @@
     <property name="geometry">
      <rect>
       <x>350</x>
-      <y>290</y>
+      <y>300</y>
       <width>201</width>
       <height>81</height>
      </rect>
@@ -366,9 +338,9 @@
    <widget class="QWidget" name="gridLayoutWidget_4">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>0</y>
-      <width>233</width>
+      <x>330</x>
+      <y>10</y>
+      <width>241</width>
       <height>220</height>
      </rect>
     </property>
@@ -383,7 +355,10 @@
      <item row="0" column="1">
       <widget class="QLineEdit" name="txtValues">
        <property name="text">
-        <string>1, 3, 6, 7, 11</string>
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>Comma separated</string>
        </property>
       </widget>
      </item>
@@ -425,7 +400,10 @@
      <item row="1" column="1">
       <widget class="QLineEdit" name="txtFitness">
        <property name="text">
-        <string>0.1, 0.55, 0.4, 0.2, 0.15</string>
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>Comma separated</string>
        </property>
       </widget>
      </item>
@@ -467,7 +445,7 @@
      <item row="2" column="1">
       <widget class="QLineEdit" name="txtRands">
        <property name="text">
-        <string>0.0975, 0.2785, 0.5469, 0.9575, 0.9649</string>
+        <string/>
        </property>
       </widget>
      </item>
@@ -498,7 +476,7 @@
     <property name="geometry">
      <rect>
       <x>650</x>
-      <y>200</y>
+      <y>210</y>
       <width>151</width>
       <height>41</height>
      </rect>
@@ -511,7 +489,7 @@
     <property name="geometry">
      <rect>
       <x>630</x>
-      <y>260</y>
+      <y>270</y>
       <width>201</width>
       <height>81</height>
      </rect>

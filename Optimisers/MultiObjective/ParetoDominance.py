@@ -2,14 +2,12 @@ import sympy as sp
 import math
 
 def pareto_front(func_strs, plot=False):
-    # 1) parse expressions
     exprs = [sp.sympify(s) for s in func_strs]
     syms  = set().union(*(e.free_symbols for e in exprs))
     if len(syms) != 1:
         raise ValueError("Expected exactly one decision variable")
     var = syms.pop()
 
-    # 2) helper to get the local minimizer of e(x)
     def find_min(e):
         d1 = sp.diff(e, var)
         crits = sp.solve(d1, var)
@@ -17,10 +15,8 @@ def pareto_front(func_strs, plot=False):
         mins = [c for c in crits if c.is_real and d2.subs(var, c) > 0]
         if not mins:
             raise RuntimeError(f"No real minimizer for {e}")
-        # pick the one that gives the smallest value
         return float(min(mins, key=lambda c: float(e.subs(var, c))))
 
-    # 3) endpoints for each fi alone
     endpoints = []
     for f in exprs:
         x_i = find_min(f)
@@ -28,14 +24,12 @@ def pareto_front(func_strs, plot=False):
         f2 = float(exprs[1].subs(var, x_i))
         endpoints.append((x_i, f1, f2))
 
-    # 4) equal‐weight compromise solves f1+f2
     Phi = exprs[0] + exprs[1]
     x_eq = find_min(Phi)
     f1_eq = float(exprs[0].subs(var, x_eq))
     f2_eq = float(exprs[1].subs(var, x_eq))
     compromise = (x_eq, f1_eq, f2_eq)
 
-    # 5) format exactly as requested
     def fmt(triple):
         return "{" + ",".join(
             f"{v:.6g}" for v in triple

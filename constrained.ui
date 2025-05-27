@@ -25,19 +25,12 @@
     </property>
     <layout class="QGridLayout" name="gridLayout">
      <item row="0" column="1" colspan="2">
-      <widget class="QLineEdit" name="txtFunction">
-       <property name="text">
-        <string>5 / (x1*(x2**2))</string>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="txtFunction"/>
      </item>
      <item row="1" column="1">
       <widget class="QTextEdit" name="txtEq">
        <property name="documentTitle">
         <string/>
-       </property>
-       <property name="placeholderText">
-        <string>x1**2 + x2**2 - 4</string>
        </property>
       </widget>
      </item>
@@ -79,7 +72,7 @@
    <widget class="QTextEdit" name="txtOutput">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>230</x>
       <y>240</y>
       <width>281</width>
       <height>141</height>
@@ -91,8 +84,8 @@
      <rect>
       <x>10</x>
       <y>190</y>
-      <width>181</width>
-      <height>146</height>
+      <width>311</width>
+      <height>212</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -107,9 +100,18 @@
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="rbFixedPenalty">
+      <widget class="QRadioButton" name="rbFixedPenaltyAny">
        <property name="text">
-        <string>Fixed Penalty</string>
+        <string>Fixed Penalty for 
+ANY broken constraint</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="rbFixedPenaltyEach">
+       <property name="text">
+        <string>Fixed Penalty for 
+EACH broken constraint</string>
        </property>
       </widget>
      </item>
@@ -165,8 +167,8 @@
    <widget class="QPushButton" name="btnBack">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>380</y>
+      <x>310</x>
+      <y>390</y>
       <width>97</width>
       <height>26</height>
      </rect>

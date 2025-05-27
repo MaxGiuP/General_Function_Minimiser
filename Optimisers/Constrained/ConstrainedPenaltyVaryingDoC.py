@@ -5,19 +5,16 @@ import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
-def varying_doc(f_str, eq_strs=None, ineq_strs=None,
-                R=1e3, initial_guess=None, method='BFGS', plot=False):
-    # 0) Clean empty inputs
+def varying_doc(f_str, eq_strs=None, ineq_strs=None, R=1e3, initial_guess=None, method='BFGS', plot=False):
+
     eq_strs   = [s for s in (eq_strs or [])   if s.strip()]
     ineq_strs = [s for s in (ineq_strs or []) if s.strip()]
     logs = []
 
-    # 1) Parse objective & constraints
     f_expr     = sp.sympify(f_str)
     eq_exprs   = [sp.sympify(s) for s in eq_strs]
     ineq_exprs = [sp.sympify(s) for s in ineq_strs]
 
-    # 2) Auto‐detect variables
     vars_syms = sorted(
         f_expr.free_symbols
          .union(*(e.free_symbols for e in eq_exprs))
@@ -28,38 +25,30 @@ def varying_doc(f_str, eq_strs=None, ineq_strs=None,
     if n == 0:
         raise ValueError("No decision variables found.")
 
-    # 3) Lambdify
     f_num    = sp.lambdify(tuple(vars_syms),             f_expr,    'numpy')
     eq_funcs = [sp.lambdify(tuple(vars_syms), e,        'numpy') for e in eq_exprs]
     ineq_funcs= [sp.lambdify(tuple(vars_syms), h,       'numpy') for h in ineq_exprs]
 
-    # 4) Penalty objective: R*(violation)^2
     def F(x):
         val = f_num(*x)
-        # equality: penalty = R*(h(x))^2
         for ef in eq_funcs:
             v = ef(*x)
             val += R * (v**2)
-        # inequality: penalty = R*max(0,-g(x))^2
         for hf in ineq_funcs:
             v = hf(*x)
             if v < 0:
                 val += R * ((-v)**2)
         return val
 
-    # 5) Initial guess: avoid zero divide
     x0 = np.ones(n) if initial_guess is None else np.array(initial_guess, dtype=float)
 
-    # 6) Unconstrained solve
     res = minimize(F, x0, method=method)
     sol = res.x
     f_star = f_num(*sol)
 
-    # 7) Constraint evaluations
     eq_viol = [ef(*sol) for ef in eq_funcs]
     ineq_viol = [hf(*sol) for hf in ineq_funcs]
 
-    # 8) Build logs
     logs.append("Optimal solution:\n")
     for v, xi in zip(vars_syms, sol):
         logs.append(f"  {v} = {xi:.6f}\n")
@@ -74,7 +63,6 @@ def varying_doc(f_str, eq_strs=None, ineq_strs=None,
         for s, rv in zip(ineq_strs, ineq_viol):
             logs.append(f"  {s} = {rv:.6e}\n")
 
-    # 9) Optional plot if 2D
     if plot and n == 2:
         x_sym, y_sym = vars_syms
         xs = np.linspace(sol[0]-1, sol[0]+1, 200)

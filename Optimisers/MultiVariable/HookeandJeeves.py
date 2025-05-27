@@ -5,7 +5,7 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
 def hooke_jeeves(func_str, initial_base, h=0.1, num_iterations=1, plot=False):
-    # Symbolic setup
+
     base = np.array(initial_base, dtype=float)
     n = len(base)
     x_syms = sorted(sp.sympify(func_str).free_symbols, key=lambda s: s.name)
@@ -27,26 +27,24 @@ def hooke_jeeves(func_str, initial_base, h=0.1, num_iterations=1, plot=False):
         logs.append("--------------\n")
         logs.append(f"Base start       = {prev_base.tolist()}, f = {f_base:.6f}\n")
 
-        # Exploratory moves
         for i, xi in enumerate(x_syms):
             for direction in (+1, -1):
                 trial = explored.copy()
                 trial[i] += direction * h
                 f_trial = f(trial)
-                logs.append(f" Trial {xi.name} {'+' if direction>0 else '-'}h → {trial.tolist()}, f={f_trial:.6f}")
+                logs.append(f" Trial {xi.name} {'+' if direction>0 else '-'}h -> {trial.tolist()}, f={f_trial:.6f}")
                 if f_trial < f_base:
-                    logs.append("  → Accept\n")
+                    logs.append("  -> Accept\n")
                     f_base = f_trial
                     explored = trial
                     break
                 else:
-                    logs.append("  → Reject\n")
-            if f_base != f(prev_base):  # if improved, skip to next coordinate
+                    logs.append("  -> Reject\n")
+            if f_base != f(prev_base):
                 continue
 
         logs.append(f" After exploratory  = {explored.tolist()}, f = {f_base:.6f}\n")
 
-        # Pattern move
         pattern = explored + (explored - prev_base)
         f_pattern = f(pattern)
         logs.append(f" Pattern point     = {pattern.tolist()}, f = {f_pattern:.6f}")
@@ -64,7 +62,6 @@ def hooke_jeeves(func_str, initial_base, h=0.1, num_iterations=1, plot=False):
         base = next_base.copy()
         trajectory.append(base.copy())
 
-    # Optional 2D plot
     if plot and n == 2:
         mins = np.min(trajectory, axis=0) - h
         maxs = np.max(trajectory, axis=0) + h

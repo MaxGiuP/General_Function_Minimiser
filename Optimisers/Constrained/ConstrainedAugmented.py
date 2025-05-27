@@ -14,19 +14,14 @@ def augmented(
     initial_guess=None,
     method: str = 'BFGS'
 ):
-    """
-    Augmented Lagrangian (method of multipliers) for h_j(x)=0 only.
-    Returns all console‐style logs as one string.
-    """
+
     eq_strs = [s for s in (eq_strs or []) if s.strip()]
     ineq_strs = [s for s in (ineq_strs or []) if s.strip()]
     logs = []
 
-    # 1) Parse
     f_expr   = sp.sympify(f_str)
     eq_exprs = [sp.sympify(s) for s in eq_strs]
 
-    # 2) Detect variables dynamically
     vars_syms = sorted(
         f_expr.free_symbols
          .union(*(e.free_symbols for e in eq_exprs)),
@@ -39,11 +34,9 @@ def augmented(
     logs.append(f"Detected variables: {[str(v) for v in vars_syms]}\n")
     logs.append(f"Equality constraints: {eq_strs}\n\n")
 
-    # 3) Lambdify
     f_num   = sp.lambdify(tuple(vars_syms),       f_expr,    'numpy')
     eq_funcs= [sp.lambdify(tuple(vars_syms), e,  'numpy') for e in eq_exprs]
 
-    # 4) Init multipliers & R
     m = len(eq_funcs)
     if lambda0 is None:
         lam = np.zeros(m)
@@ -53,7 +46,6 @@ def augmented(
             raise ValueError("lambda0 length must match number of eqs")
     R = r0
 
-    # 5) Initial x
     if initial_guess is None:
         xk = np.ones(n)
     else:
@@ -61,11 +53,9 @@ def augmented(
         if xk.size != n:
             raise ValueError("initial_guess length mismatch")
 
-    # 6) Outer loop
     for k in range(1, max_outer+1):
         logs.append(f"--- Outer iter {k}, R={R:.3g} ---\n")
 
-        # build augmented Lagrangian A(x)
         def A(x):
             val = f_num(*x)
             for j, hj in enumerate(eq_funcs):
@@ -73,29 +63,24 @@ def augmented(
                 val += lam[j]*hval + 0.5*R*(hval**2)
             return val
 
-        # unconstrained minimize A(x)
         res = minimize(A, xk, method=method)
         xk = res.x
         fx = f_num(*xk)
 
-        # eval constraints
         hvals = np.array([hj(*xk) for hj in eq_funcs])
 
         logs.append(f" x = {dict(zip([str(v) for v in vars_syms], xk.tolist()))}\n")
         logs.append(f" f = {fx:.6f}\n")
         logs.append(f" h = {hvals.tolist()}\n")
 
-        # check convergence
         if np.all(np.abs(hvals) < tol):
             logs.append("All |h_j| < tol; stopping early.\n\n")
             break
 
-        # 7) Update multipliers & R
         lam = lam + R*hvals
         R   = R*tau
         logs.append(f" Updated λ = {lam.tolist()}\n\n")
 
-    # 8) Final summary
     logs.append("=== Final solution ===\n")
     logs.append(f" x = {dict(zip([str(v) for v in vars_syms], xk.tolist()))}\n")
     logs.append(f" f = {fx:.6f}\n")

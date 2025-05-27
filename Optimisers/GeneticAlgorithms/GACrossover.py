@@ -17,19 +17,7 @@ def reproduce(
     upper: float = 1.0,
     bits: int = 6
 ):
-    """
-    GA reproduction with user‐specified single‐point crossover and one‐bit mutation,
-    returning all steps in one formatted string.
-
-    parents           : list[float] of length 2
-    crossover_point   : int in [1..bits-1]
-    mutation_rands    : tuple[float,float] for the two mutation draws
-    lower, upper      : real mapping bounds
-    bits              : number of bits for encoding
-    """
-    # ── Helpers ──────────────────────────────────────────────────────
     def encode(val):
-        # map val∈[lower,upper] → [0..2^bits-1] → binary
         m = round((val - lower) / (upper - lower) * (2**bits - 1))
         return format(int(m), f"0{bits}b")
     def decode(bin_str):
@@ -41,27 +29,22 @@ def reproduce(
         lst[pos] = "1" if lst[pos]=="0" else "0"
         return "".join(lst), pos
 
-    # ── 1) Encode parents ────────────────────────────────────────────
     pA, pB = parents
     bA, bB = encode(pA), encode(pB)
 
-    # ── 2) Single‐point crossover ────────────────────────────────────
     cp = crossover_point
     if not (1 <= cp < bits):
         raise ValueError(f"crossover_point must be in [1..{bits-1}]")
     c1_pre = bB[:cp] + bA[cp:]
     c2_pre = bA[:cp] + bB[cp:]
 
-    # ── 3) One‐bit mutation ──────────────────────────────────────────
     r2, r3 = mutation_rands
     c1_mut, pos1 = mutate(c1_pre, r2)
     c2_mut, pos2 = mutate(c2_pre, r3)
 
-    # ── 4) Decode children ──────────────────────────────────────────
     child1 = round(decode(c1_mut), 5)
     child2 = round(decode(c2_mut), 5)
 
-    # ── 5) Build the single output string ───────────────────────────
     lines = []
     lines.append(f"{'Step':<24}| Result\n")
     lines.append(f"{'-'*24}|{'-'*12}\n")
@@ -83,16 +66,12 @@ def reproduce(
 
 
 if __name__ == "__main__":
-    # Question 4 data:
     parents      = [-0.42857, 0.04762]
-    # r1 for crossover, r2 and r3 for the two one-bit mutations:
     r1, r2, r3   = 0.3772, 0.1397, 0.8425
 
-    # compute integer cut-point from r1:
     bits         = 6
     crossover_pt = int(r1 * (bits - 1)) + 1  # = 2
 
-    # call the function:
     output = reproduce(
         parents           = parents,
         crossover_point   = crossover_pt,

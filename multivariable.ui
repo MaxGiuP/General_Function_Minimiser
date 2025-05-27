@@ -74,11 +74,7 @@
     </property>
     <layout class="QGridLayout" name="gridLayout">
      <item row="1" column="2">
-      <widget class="QLineEdit" name="txtx">
-       <property name="text">
-        <string>0</string>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="txtx"/>
      </item>
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
@@ -107,28 +103,27 @@
      <item row="0" column="2" colspan="5">
       <widget class="QLineEdit" name="txtFunction">
        <property name="text">
-        <string>x1 - x2 + 2*(x1**2) + 2*x1*x2 + x2**3</string>
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>Python style input</string>
        </property>
       </widget>
      </item>
      <item row="1" column="6">
       <widget class="QLineEdit" name="txth">
-       <property name="text">
-        <string>2</string>
+       <property name="placeholderText">
+        <string>Step Size</string>
        </property>
       </widget>
      </item>
      <item row="1" column="4">
-      <widget class="QLineEdit" name="txty">
-       <property name="text">
-        <string>1</string>
-       </property>
-      </widget>
+      <widget class="QLineEdit" name="txty"/>
      </item>
      <item row="2" column="2">
       <widget class="QLineEdit" name="txtIterations">
        <property name="text">
-        <string>2</string>
+        <string>1</string>
        </property>
       </widget>
      </item>

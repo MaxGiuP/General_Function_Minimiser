@@ -6,23 +6,15 @@ import matplotlib.pyplot as plt
 import itertools
 
 def lagrange(f_str, eq_strs=None, ineq_strs=None, plot=False):
-    """
-    Solve a constrained optimization via KKT active‐set enumeration,
-    returning all console‐style output as a single string.  Supports any
-    symbol names (e.g. x0, x1, x2, …).
-    """
-    # 0) Clean up empty lines from UI inputs
     eq_strs   = [s.strip() for s in (eq_strs or [])   if s.strip()]
     ineq_strs = [s.strip() for s in (ineq_strs or []) if s.strip()]
 
     logs = []
 
-    # 1) Parse objective and constraints
     f      = sp.sympify(f_str)
     eqs    = [sp.sympify(s) for s in eq_strs]
     ineqs  = [sp.sympify(s) for s in ineq_strs]
 
-    # 2) Auto‐detect variables (could be x0,x1,... or any names)
     vars_syms = sorted(
         f.free_symbols
          .union(*(g.free_symbols for g in eqs))
@@ -32,7 +24,6 @@ def lagrange(f_str, eq_strs=None, ineq_strs=None, plot=False):
     if not vars_syms:
         raise ValueError("No decision variables detected.")
 
-    # 3) Enumerate active‐set combinations
     best      = None
     best_fval = np.inf
 
@@ -41,14 +32,12 @@ def lagrange(f_str, eq_strs=None, ineq_strs=None, plot=False):
             lam_eq   = sp.symbols(f"lam_eq0:{len(eqs)}", real=True)
             lam_ineq = sp.symbols(f"lam_i0:{r}",   real=True) if r>0 else ()
 
-            # build Lagrangian L = f + sum λ_eq·eq + sum λ_ineq·h_active
             L = f
             for j, g in enumerate(eqs):
                 L += lam_eq[j] * g
             for k, idx in enumerate(active):
                 L += lam_ineq[k] * ineqs[idx]
 
-            # stationarity + active constraints
             stat_eqs     = [sp.diff(L, v) for v in vars_syms]
             constraint_eqs = eqs + [ineqs[i] for i in active]
             eqns = stat_eqs + constraint_eqs
@@ -57,10 +46,8 @@ def lagrange(f_str, eq_strs=None, ineq_strs=None, plot=False):
             sols = sp.solve(eqns, unknowns, dict=True)
 
             for sol in sols:
-                # require real solutions
                 if not all(sol[v].is_real for v in vars_syms):
                     continue
-                # inactive inequalities must satisfy h>0
                 feas = True
                 for j in set(range(len(ineqs))) - set(active):
                     if float(ineqs[j].subs(sol)) <= 0:
@@ -77,16 +64,13 @@ def lagrange(f_str, eq_strs=None, ineq_strs=None, plot=False):
     if best is None:
         raise RuntimeError("No feasible KKT solution found.")
 
-    # 4) Extract numeric best‐values
     best_vals = {str(v): float(best[v]) for v in vars_syms}
 
-    # 5) Build the result log
     logs.append("Optimal solution:\n")
     for v in vars_syms:
         logs.append(f"  {v} = {best_vals[str(v)]:.4f}\n")
     logs.append(f"  f = {best_fval:.4f}\n")
 
-    # 6) Return concatenated log
     result = "".join(logs)
     return result
 

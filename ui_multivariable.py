@@ -151,7 +151,7 @@ class Ui_wMultiVariable(object):
     # setupUi
 
     def retranslateUi(self, wMultiVariable):
-        wMultiVariable.setWindowTitle(QCoreApplication.translate("wMultiVariable", u"MainWindow", None))
+        wMultiVariable.setWindowTitle(QCoreApplication.translate("wMultiVariable", u"Multi Variable Search", None))
         self.cbPlot.setText(QCoreApplication.translate("wMultiVariable", u"Plot function", None))
         self.btnCalculate.setText(QCoreApplication.translate("wMultiVariable", u"Calculate", None))
         self.btnBack.setText(QCoreApplication.translate("wMultiVariable", u"Back", None))

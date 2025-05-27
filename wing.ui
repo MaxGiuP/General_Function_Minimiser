@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>468</width>
     <height>496</height>
    </rect>
   </property>
@@ -45,7 +45,7 @@
      <rect>
       <x>10</x>
       <y>310</y>
-      <width>371</width>
+      <width>441</width>
       <height>141</height>
      </rect>
     </property>
@@ -192,26 +192,13 @@
      </item>
     </layout>
    </widget>
-   <widget class="QCheckBox" name="cbPlot">
-    <property name="geometry">
-     <rect>
-      <x>350</x>
-      <y>270</y>
-      <width>97</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Show Plot</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>468</width>
      <height>23</height>
     </rect>
    </property>

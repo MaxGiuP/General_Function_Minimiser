@@ -5,24 +5,17 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
 def bfgs(f_str, initial_guess, num_iterations=1, plot=False):
-    """
-    Perform BFGS quasi‐Newton optimization, capturing all console output
-    into a returned string instead of printing. Automatically detects
-    whichever variables (e.g. x0,x1 or x2,x3) appear in f_str.
-    """
-    # 1) Parse and detect symbols
+
     f_expr = sp.sympify(f_str)
     syms = sorted(f_expr.free_symbols, key=lambda s: s.name)
     n = len(syms)
     if n != len(initial_guess):
         raise ValueError(f"Detected symbols {syms} but initial_guess has length {len(initial_guess)}")
     
-    # 2) Lambdify objective and gradient
     f_num    = sp.lambdify(tuple(syms),             f_expr,    'numpy')
     grad_syms= [sp.diff(f_expr, v) for v in syms]
     grad_num = sp.lambdify(tuple(syms), grad_syms,   'numpy')
 
-    # 3) BFGS setup
     Hk = np.eye(n)
     alpha_init, rho, c1 = 1.0, 0.8, 1e-4
 
@@ -35,7 +28,6 @@ def bfgs(f_str, initial_guess, num_iterations=1, plot=False):
                 return alpha
             alpha *= rho
 
-    # 4) Iteration
     xk = np.array(initial_guess, dtype=float)
     trajectory = [xk.copy()]
     logs = []
@@ -50,7 +42,6 @@ def bfgs(f_str, initial_guess, num_iterations=1, plot=False):
         fk_old = float(f_num(*xk))
         fk_new = float(f_num(*x_new))
 
-        # 5) Log details
         logs.append(f"\nIteration {k}\n")
         logs.append("--------------\n")
         logs.append(f"Variables       = {syms}\n")
@@ -63,7 +54,6 @@ def bfgs(f_str, initial_guess, num_iterations=1, plot=False):
         logs.append(f"f(x[{k}])        = {fk_new:.6f}\n")
         logs.append("--------------\n")
 
-        # 6) Update Hessian approx
         g_new = np.array(grad_num(*x_new), dtype=float).flatten()
         yk = g_new - gk
         syk = float(np.dot(yk, sk))
@@ -76,7 +66,6 @@ def bfgs(f_str, initial_guess, num_iterations=1, plot=False):
         xk = x_new
         trajectory.append(xk.copy())
 
-    # 7) Optional plot if exactly 2 variables
     if plot and n == 2:
         xs = np.linspace(trajectory[0][0]-1, trajectory[-1][0]+1, 200)
         ys = np.linspace(trajectory[0][1]-1, trajectory[-1][1]+1, 200)
@@ -93,7 +82,6 @@ def bfgs(f_str, initial_guess, num_iterations=1, plot=False):
         plt.legend()
         plt.show()
 
-    # 8) Return all logs as a single string
     return "".join(logs)
 
 """

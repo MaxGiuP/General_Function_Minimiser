@@ -16,42 +16,34 @@ def roulette(
     individuals,
     fitness,
     rands,
-    method: str       = "rank",       # "fitness" or "rank"
-    order: str        = "ascending",  # "ascending"=worst-first, "descending"=best-first
-    rank_power: float = 1.0,          # exponent p when method="rank"
-    replacement: bool = True          # True=with-replacement, False=without
+    method: str       = "rank",
+    order: str        = "ascending",
+    rank_power: float = 1.0,
+    replacement: bool = True
 ):
-    """
-    Roulette‐wheel selection that returns a single formatted string,
-    including a table of random numbers and selected values.
-    """
     vals = np.array(individuals)
     f    = np.array(fitness,   dtype=float)
     r    = np.array(rands,     dtype=float)
     N    = len(vals)
 
-    # 1) Build sorted_vals and weights for rank-based
     if method == "fitness":
         sorted_vals = vals.copy()
         weights     = f.copy()
     else:
-        idx_sorted  = np.argsort(f)            # ascending fitness ⇒ worst first
+        idx_sorted  = np.argsort(f)
         sorted_vals = vals[idx_sorted]
         ranks       = np.arange(1, N+1, dtype=float)
         weights     = ranks**rank_power
 
-    # 2) Apply order flip for best-first
     if order == "descending":
         sorted_vals = sorted_vals[::-1]
         weights     = weights[::-1]
     elif order != "ascending":
         raise ValueError("order must be 'ascending' or 'descending'")
 
-    # 3) Normalize & cumulative sum
     probs = weights / weights.sum()
     cum   = np.cumsum(probs)
 
-    # 4) Draw
     pool  = []
     sval  = sorted_vals.copy()
     wght  = weights.copy()
@@ -67,7 +59,6 @@ def roulette(
             p_loc = wght / wght.sum()
             cum_l = np.cumsum(p_loc)
 
-    # 5) Build output string
     lines = []
     lines.append("Mating pool: " + ", ".join(str(x) for x in pool) + "\n\n")
     lines.append("Random Number | Selected\n")

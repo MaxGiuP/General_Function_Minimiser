@@ -5,28 +5,24 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
 def conjugate_gradient(f_str, start, num_iterations=1, plot=False):
-    # --- Parse expression and detect symbols in use ---
     f_expr = sp.sympify(f_str)
     syms = sorted(f_expr.free_symbols, key=lambda s: s.name)
     n = len(syms)
     if n != len(start):
         raise ValueError(f"Got {n} symbols {syms} but start vector has length {len(start)}")
-    # line‐search symbol
     l = sp.Symbol('l')
 
-    # Build lambdified functions
     f_num    = sp.lambdify(tuple(syms),        f_expr,    'numpy')
     grad_exprs = [sp.diff(f_expr, s) for s in syms]
     grad_num = sp.lambdify(tuple(syms), grad_exprs, 'numpy')
 
     logs = []
     x_k = np.array(start, dtype=float)
-    # initial gradient & direction
+
     g_prev = np.array(grad_num(*x_k), dtype=float).flatten()
     p = -g_prev
 
     for k in range(1, num_iterations+1):
-        # Exact line‐search along p
         subs = {syms[i]: x_k[i] + l*p[i] for i in range(n)}
         phi = f_expr.subs(subs)
         dphi = sp.diff(phi, l)
@@ -37,33 +33,28 @@ def conjugate_gradient(f_str, start, num_iterations=1, plot=False):
             break
         alpha = real_ls[0]
 
-        # Update x
         x_k = x_k + alpha * p
         f_val = float(f_expr.subs({syms[i]: x_k[i] for i in range(n)}).evalf())
 
-        # Log iteration
         logs.append(f"\nConjugate‐Gradient Iter {k}\n")
         logs.append("-"*30 + "\n")
         logs.append(f"  alpha_{k}  = {alpha:.8f}\n")
         logs.append(f"  x          = {x_k.tolist()}\n")
         logs.append(f"  f(x)       = {f_val:.8f}\n")
 
-        # New direction
         g = np.array(grad_num(*x_k), dtype=float).flatten()
         beta = (g.dot(g)) / (g_prev.dot(g_prev))
         p = -g + beta * p
         g_prev = g.copy()
 
-    # Optional 2D plot
     if plot and n == 2:
-        # contour grid
         mins = x_k.min() - 1
         maxs = x_k.max() + 1
         xs = np.linspace(mins, maxs, 200)
         X, Y = np.meshgrid(xs, xs)
         Z = f_num(X, Y)
         plt.contour(X, Y, Z, levels=40, cmap='viridis')
-        # For path we only know the final point here; full path not stored
+
         plt.plot(x_k[0], x_k[1], 'ro', label='Final')
         plt.title("Conjugate Gradient on " + f_str)
         plt.xlabel(str(syms[0])); plt.ylabel(str(syms[1]))

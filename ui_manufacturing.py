@@ -108,7 +108,7 @@ class Ui_wManufacturing(object):
     # setupUi
 
     def retranslateUi(self, wManufacturing):
-        wManufacturing.setWindowTitle(QCoreApplication.translate("wManufacturing", u"MainWindow", None))
+        wManufacturing.setWindowTitle(QCoreApplication.translate("wManufacturing", u"Manufacturing Question", None))
         self.btnCalculate.setText(QCoreApplication.translate("wManufacturing", u"Calculate", None))
         self.btnBack.setText(QCoreApplication.translate("wManufacturing", u"Back", None))
         self.cbPlot.setText(QCoreApplication.translate("wManufacturing", u"Plot function", None))

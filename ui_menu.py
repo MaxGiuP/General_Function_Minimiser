@@ -22,7 +22,7 @@ class Ui_wMenu(object):
     def setupUi(self, wMenu):
         if not wMenu.objectName():
             wMenu.setObjectName(u"wMenu")
-        wMenu.resize(800, 600)
+        wMenu.resize(460, 459)
         self.centralwidget = QWidget(wMenu)
         self.centralwidget.setObjectName(u"centralwidget")
         self.btnLinear = QPushButton(self.centralwidget)
@@ -42,14 +42,14 @@ class Ui_wMenu(object):
         self.btnMultiObjective.setGeometry(QRect(160, 120, 141, 71))
         self.btnWing = QPushButton(self.centralwidget)
         self.btnWing.setObjectName(u"btnWing")
-        self.btnWing.setGeometry(QRect(30, 340, 181, 71))
+        self.btnWing.setGeometry(QRect(130, 250, 181, 71))
         self.btnManufacturing = QPushButton(self.centralwidget)
         self.btnManufacturing.setObjectName(u"btnManufacturing")
-        self.btnManufacturing.setGeometry(QRect(30, 420, 181, 71))
+        self.btnManufacturing.setGeometry(QRect(130, 330, 181, 71))
         wMenu.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(wMenu)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 800, 23))
+        self.menubar.setGeometry(QRect(0, 0, 460, 23))
         wMenu.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(wMenu)
         self.statusbar.setObjectName(u"statusbar")
@@ -61,7 +61,7 @@ class Ui_wMenu(object):
     # setupUi
 
     def retranslateUi(self, wMenu):
-        wMenu.setWindowTitle(QCoreApplication.translate("wMenu", u"MainWindow", None))
+        wMenu.setWindowTitle(QCoreApplication.translate("wMenu", u"Menu", None))
         self.btnLinear.setText(QCoreApplication.translate("wMenu", u"Linear", None))
         self.btnMultiVariable.setText(QCoreApplication.translate("wMenu", u"Multi-Variable", None))
         self.btnGA.setText(QCoreApplication.translate("wMenu", u"Genetic Algorithm", None))

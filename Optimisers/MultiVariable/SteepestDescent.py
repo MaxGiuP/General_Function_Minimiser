@@ -5,25 +5,16 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
 def steepest_descent(f_str, start, num_iterations=1, plot=False):
-    """
-    Perform steepest descent with exact line search, capturing all console
-    output in a returned string instead of printing.
-    """
-    # --- Parse and lambdify ---
     f_expr = sp.sympify(f_str)
     syms = sorted(f_expr.free_symbols, key=lambda s: s.name)
     n = len(syms)
     if n < 1:
         raise ValueError("No variables found in the function string.")
-    # gradient expressions
     grad_expr = [sp.diff(f_expr, v) for v in syms]
-    # lambdified functions
     f_num = sp.lambdify(tuple(syms), f_expr, 'numpy')
     grad_num = sp.lambdify(tuple(syms), grad_expr, 'numpy')
-    # symbol for line-search
     l = sp.Symbol('l')
 
-    # Optional plot
     if plot and n == 2:
         a = np.array(start, float)
         mins, maxs = a.min() - 1, a.max() + 1
@@ -37,12 +28,9 @@ def steepest_descent(f_str, start, num_iterations=1, plot=False):
     x_k = np.array(start, dtype=float)
 
     for k in range(1, num_iterations + 1):
-        # compute gradient at x_k
         grad_k = np.array(grad_num(*x_k), dtype=float).flatten()
-        # descent direction
         d_k = -grad_k
 
-        # exact line search φ(l) = f(x_k + l d_k)
         subs = {syms[i]: x_k[i] + l*d_k[i] for i in range(n)}
         phi = f_expr.subs(subs)
         dphi = sp.diff(phi, l)
@@ -53,11 +41,9 @@ def steepest_descent(f_str, start, num_iterations=1, plot=False):
             break
         l_star = real_ls[0]
 
-        # update
         x_new = x_k + l_star * d_k
         f_new = float(f_expr.subs({syms[i]: x_new[i] for i in range(n)}).evalf())
 
-        # log
         logs.append(f"\nSteepest Descent Iter {k}\n")
         logs.append("================================\n")
         logs.append(f"  x{k}          = {x_k.tolist()}\n")

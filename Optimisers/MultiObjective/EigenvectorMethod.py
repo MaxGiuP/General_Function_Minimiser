@@ -9,20 +9,16 @@ normalized weight vector.
 import numpy as np
 
 def eigenvector_weights(relative_importance):
-    # 1) build numeric array
     v = np.array(relative_importance, dtype=float)
 
-    # 2) build pairwise matrix
     P = v[:, None] / v[None, :]
 
-    # 3) eigen-decomposition
     vals, vecs = np.linalg.eig(P)
     idx = np.argmax(vals.real)
     w = vecs[:, idx].real
     w = w / np.sum(w)
     lambda_max = vals[idx].real
 
-    # 4) format output
     lines = []
     lines.append("Pairwise comparison matrix P:\n")
     for row in P:

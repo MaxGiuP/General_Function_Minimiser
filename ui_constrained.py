@@ -68,10 +68,10 @@ class Ui_wConstrained(object):
 
         self.txtOutput = QTextEdit(self.centralwidget)
         self.txtOutput.setObjectName(u"txtOutput")
-        self.txtOutput.setGeometry(QRect(210, 240, 281, 141))
+        self.txtOutput.setGeometry(QRect(230, 240, 281, 141))
         self.verticalLayoutWidget = QWidget(self.centralwidget)
         self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
-        self.verticalLayoutWidget.setGeometry(QRect(10, 190, 181, 146))
+        self.verticalLayoutWidget.setGeometry(QRect(10, 190, 311, 212))
         self.verticalLayout = QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
@@ -81,10 +81,15 @@ class Ui_wConstrained(object):
 
         self.verticalLayout.addWidget(self.rbLagrange)
 
-        self.rbFixedPenalty = QRadioButton(self.verticalLayoutWidget)
-        self.rbFixedPenalty.setObjectName(u"rbFixedPenalty")
+        self.rbFixedPenaltyAny = QRadioButton(self.verticalLayoutWidget)
+        self.rbFixedPenaltyAny.setObjectName(u"rbFixedPenaltyAny")
 
-        self.verticalLayout.addWidget(self.rbFixedPenalty)
+        self.verticalLayout.addWidget(self.rbFixedPenaltyAny)
+
+        self.rbFixedPenaltyEach = QRadioButton(self.verticalLayoutWidget)
+        self.rbFixedPenaltyEach.setObjectName(u"rbFixedPenaltyEach")
+
+        self.verticalLayout.addWidget(self.rbFixedPenaltyEach)
 
         self.rbVaryingDoC = QRadioButton(self.verticalLayoutWidget)
         self.rbVaryingDoC.setObjectName(u"rbVaryingDoC")
@@ -109,7 +114,7 @@ class Ui_wConstrained(object):
         self.cbPlot.setGeometry(QRect(490, 10, 121, 24))
         self.btnBack = QPushButton(self.centralwidget)
         self.btnBack.setObjectName(u"btnBack")
-        self.btnBack.setGeometry(QRect(10, 380, 97, 26))
+        self.btnBack.setGeometry(QRect(310, 390, 97, 26))
         wConstrained.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(wConstrained)
         self.menubar.setObjectName(u"menubar")
@@ -128,12 +133,14 @@ class Ui_wConstrained(object):
         wConstrained.setWindowTitle(QCoreApplication.translate("wConstrained", u"ConstrainedWindow", None))
         self.txtFunction.setText(QCoreApplication.translate("wConstrained", u"5 / (x1*(x2**2))", None))
         self.txtEq.setDocumentTitle("")
-        self.txtEq.setPlaceholderText(QCoreApplication.translate("wConstrained", u"x1**2 + x2**2 - 4", None))
         self.label_2.setText(QCoreApplication.translate("wConstrained", u"Equality Constraints", None))
         self.label.setText(QCoreApplication.translate("wConstrained", u"Function", None))
         self.label_3.setText(QCoreApplication.translate("wConstrained", u"Inequality Constraints", None))
         self.rbLagrange.setText(QCoreApplication.translate("wConstrained", u"Lagrange Multipliers", None))
-        self.rbFixedPenalty.setText(QCoreApplication.translate("wConstrained", u"Fixed Penalty", None))
+        self.rbFixedPenaltyAny.setText(QCoreApplication.translate("wConstrained", u"Fixed Penalty for \n"
+"ANY broken constraint", None))
+        self.rbFixedPenaltyEach.setText(QCoreApplication.translate("wConstrained", u"Fixed Penalty for \n"
+"EACH broken constraint", None))
         self.rbVaryingDoC.setText(QCoreApplication.translate("wConstrained", u"Varying DoC", None))
         self.rbVaryingSL.setText(QCoreApplication.translate("wConstrained", u"Varying SL", None))
         self.rbAugmented.setText(QCoreApplication.translate("wConstrained", u"Augmented Lagrange", None))

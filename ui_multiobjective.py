@@ -123,7 +123,7 @@ class Ui_wMultiObjective(object):
     # setupUi
 
     def retranslateUi(self, wMultiObjective):
-        wMultiObjective.setWindowTitle(QCoreApplication.translate("wMultiObjective", u"MainWindow", None))
+        wMultiObjective.setWindowTitle(QCoreApplication.translate("wMultiObjective", u"Multi Objective Search", None))
         self.rbEigenvectors.setText(QCoreApplication.translate("wMultiObjective", u"Eigenvectors", None))
         self.rbFuzzyLogic.setText(QCoreApplication.translate("wMultiObjective", u"Fuzzy Logic", None))
         self.rbPareto.setText(QCoreApplication.translate("wMultiObjective", u"Pareto Dominance", None))

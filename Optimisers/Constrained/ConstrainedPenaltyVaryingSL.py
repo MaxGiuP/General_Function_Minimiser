@@ -14,21 +14,15 @@ def varying_sl(
     method='BFGS',
     plot=False
 ):
-    """
-    Exterior‐penalty schedule: gradually increase R until constraints satisfied.
-    Returns all console‐style logs as a single string.
-    Supports any variable names (x0,x1,…).
-    """
+
     eq_strs   = [s for s in (eq_strs or [])   if s.strip()]
     ineq_strs = [s for s in (ineq_strs or []) if s.strip()]
     logs = []
 
-    # 1) parse
     f_expr    = sp.sympify(f_str)
     eq_exprs  = [sp.sympify(s) for s in eq_strs]
     ineq_exprs= [sp.sympify(s) for s in ineq_strs]
 
-    # 2) detect variables
     vars_syms = sorted(
         f_expr.free_symbols
          .union(*(e.free_symbols for e in eq_exprs))
@@ -39,16 +33,13 @@ def varying_sl(
     if n < 1:
         raise ValueError("No decision variables detected.")
 
-    # 3) lambdify
     f_num    = sp.lambdify(tuple(vars_syms),            f_expr,    'numpy')
     eq_funcs = [sp.lambdify(tuple(vars_syms), e,       'numpy') for e in eq_exprs]
     ineq_funcs= [sp.lambdify(tuple(vars_syms), h,      'numpy') for h in ineq_exprs]
 
-    # 4) initial guess
     x0 = np.ones(n) if initial_guess is None else np.array(initial_guess, dtype=float)
     logs.append(f"Initial guess: {dict(zip([str(v) for v in vars_syms], x0.tolist()))}\n\n")
 
-    # 5) outer loop
     R = R0
     for k in range(1, max_round+1):
         R = R0 * (scale**(k-1))
@@ -70,7 +61,6 @@ def varying_sl(
         eq_viol = np.array([abs(ef(*x0)) for ef in eq_funcs])
         ineq_vals= np.array([hf(*x0)        for hf in ineq_funcs])
 
-        # log current solution
         sol_repr = dict(zip([str(v) for v in vars_syms], x0.tolist()))
         logs.append(f"  Solution: {sol_repr}\n")
         logs.append(f"  f     = {f_num(*x0):.6f}\n")
@@ -81,7 +71,6 @@ def varying_sl(
             logs.append("Constraints satisfied—stopping early.\n")
             break
 
-    # 6) final summary
     logs.append("Final result:\n")
     logs.append(f"  R_final = {R:.6g}\n")
     sol_repr = dict(zip([str(v) for v in vars_syms], x0.tolist()))

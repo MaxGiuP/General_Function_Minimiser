@@ -3,7 +3,8 @@ import sys
 
 from PySide6.QtWidgets import QApplication, QMainWindow
 from Optimisers.Constrained import ConstrainedLagrange
-from Optimisers.Constrained import ConstrainedPenaltyFixed
+from Optimisers.Constrained import ConstrainedPenaltyFixedAny
+from Optimisers.Constrained import ConstrainedPenaltyFixedEach
 from Optimisers.Constrained import ConstrainedPenaltyVaryingSL
 from Optimisers.Constrained import ConstrainedPenaltyVaryingDoC
 from Optimisers.Constrained import ConstrainedAugmented
@@ -49,10 +50,14 @@ class ConstrainedWindow(QMainWindow):
             print("Starting Lagrange")
             result = ConstrainedLagrange.lagrange(Function, Equalities, Inequalities, ShowPlot)
             print("End Lagrange")
-        elif self.ui.rbFixedPenalty.isChecked():
-            print("Starting fixed penalty")
-            result = ConstrainedPenaltyFixed.fixed_penalty(Function, Equalities, Inequalities, R, start, method, ShowPlot)
-            print("Finished fixed penalty")
+        elif self.ui.rbFixedPenaltyAny.isChecked():
+            print("Starting fixed penalty ANY")
+            result = ConstrainedPenaltyFixedAny.fixed_penalty(Function, Equalities, Inequalities, R, start, method, ShowPlot)
+            print("Finished fixed penalty ANY")
+        elif self.ui.rbFixedPenaltyEach.isChecked():
+            print("Starting fixed penalty EACH")
+            result = ConstrainedPenaltyFixedEach.fixed_penalty(Function, Equalities, Inequalities, R, start, method, ShowPlot)
+            print("Finished fixed penalty EACH")
         elif self.ui.rbVaryingSL.isChecked():
             print("Starting Varying SL")
             result = ConstrainedPenaltyVaryingSL.varying_sl(Function, Equalities, Inequalities, R, scale, max_round, tol, start, method, ShowPlot)

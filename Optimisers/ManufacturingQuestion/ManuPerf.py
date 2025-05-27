@@ -5,32 +5,23 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 
 def manufacturing(f_str, x_min, x_max, h, plot=False):
-    """
-    Computes nominal and noise-robust settings for the performance index,
-    but returns all output as a single string instead of printing.
-    """
-    # 0) Ensure numeric inputs
     x_min = float(x_min)
     x_max = float(x_max)
     h     = float(h)
 
-    # 1) Symbolic setup
     x = sp.symbols('x', real=True)
     f_expr = sp.sympify(f_str, locals={'x': x})
 
-    # 2) Nominal minimizer
     df = sp.diff(f_expr, x)
     crits = sp.solve(df, x)
     x_nom = float(next(c for c in crits if c.is_real and x_min < c < x_max))
     f_nom = float(f_expr.subs(x, x_nom))
 
-    # 3) Mean performance under uniform noise
     u = sp.symbols('u', real=True)
     f_noisy     = f_expr.subs(x, x + u)
     mean_f_expr = (1/(2*h)) * sp.integrate(f_noisy, (u, -h, h))
     mean_f_expr = sp.simplify(mean_f_expr)
 
-    # 4) Robust minimizer
     dmean  = sp.diff(mean_f_expr, x)
     crits2 = sp.solve(dmean, x)
     valid  = [float(c) for c in crits2
@@ -40,10 +31,8 @@ def manufacturing(f_str, x_min, x_max, h, plot=False):
     x_rob = valid[0]
     f_rob = float(mean_f_expr.subs(x, x_rob))
 
-    # 5) Percentage deterioration
     pct_drop = 100*(f_rob - f_nom)/f_nom
 
-    # 6) Build result string
     lines = []
     lines.append("Nominal optimum:\n")
     lines.append(f"  x*        = {x_nom:.6f}\n")
@@ -54,7 +43,6 @@ def manufacturing(f_str, x_min, x_max, h, plot=False):
     lines.append(f"Performance deterioration: {pct_drop:.2f}%\n")
     result = "".join(lines)
 
-    # 7) Optional plotting
     if plot:
         xs      = np.linspace(x_min+h, x_max-h, 400)
         f_num   = sp.lambdify(x, f_expr,     'numpy')
