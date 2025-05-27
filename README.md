@@ -1,4 +1,4 @@
-# FEEG6009_Optimiser
+# Optimiser Tool Overview
 Desktop application written with Qt Creator Python that performs function minimisation using:
 
 LINE SEARCH
