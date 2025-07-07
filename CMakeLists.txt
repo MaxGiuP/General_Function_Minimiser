@@ -16,68 +16,57 @@ set(PROJECT_SOURCES
         main.cpp
 
         menu.cpp
-        ui_menu.h
+        menu.h
         menu.ui
 
-#        linear.cpp
-        ui_linear.h
+        linear.cpp
+        linear.h
         linear.ui
 
-#        multivariable.cpp
-        ui_multivariable.h
+        multivariable.cpp
+        multivariable.h
         multivariable.ui
 
-#        ga.cpp
-        ui_ga.h
+        ga.cpp
+        ga.h
         ga.ui
 
-#        constrained.cpp
-        ui_constrained.h
+        constrained.cpp
+        constrained.h
         constrained.ui
 
-#        multiobjective.cpp
-        ui_multiobjective.h
+        multiobjective.cpp
+        multiobjective.h
         multiobjective.ui
 
-#        wing.cpp
-        ui_wing.h
+        wing.cpp
+        wing.h
         wing.ui
 
-#        manufacturing.cpp
-        ui_manufacturing.h
+        manufacturing.cpp
+        manufacturing.h
         manufacturing.ui
 
 )
 
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(Optimiser
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
-        linear.cpp
-        multiobjective.cpp
-        manufacturing.cpp
-        multivariable.cpp
-        wing.cpp
-        constrained.cpp
-        ga.cpp
-    )
+
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Optimiser APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
 # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
-else()
-    if(ANDROID)
-        add_library(Optimiser SHARED
-            ${PROJECT_SOURCES}
-        )
+
+if(ANDROID)
+    add_library(Optimiser SHARED
+        ${PROJECT_SOURCES}
+    )
 # Define properties for Android with Qt 5 after find_package() calls as:
 #    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
-    else()
-        add_executable(Optimiser
-            ${PROJECT_SOURCES}
-        )
-    endif()
+else()
+    add_executable(Optimiser
+        ${PROJECT_SOURCES}
+    )
 endif()
+
 
 target_link_libraries(Optimiser PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
