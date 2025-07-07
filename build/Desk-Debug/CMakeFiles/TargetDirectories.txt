@@ -1,0 +1,9 @@
+/home/linmax/QtProjects/Optimiser/build/Desk-Debug/CMakeFiles/Optimiser.dir
+/home/linmax/QtProjects/Optimiser/build/Desk-Debug/CMakeFiles/edit_cache.dir
+/home/linmax/QtProjects/Optimiser/build/Desk-Debug/CMakeFiles/rebuild_cache.dir
+/home/linmax/QtProjects/Optimiser/build/Desk-Debug/CMakeFiles/list_install_components.dir
+/home/linmax/QtProjects/Optimiser/build/Desk-Debug/CMakeFiles/install.dir
+/home/linmax/QtProjects/Optimiser/build/Desk-Debug/CMakeFiles/install/local.dir
+/home/linmax/QtProjects/Optimiser/build/Desk-Debug/CMakeFiles/install/strip.dir
+/home/linmax/QtProjects/Optimiser/build/Desk-Debug/CMakeFiles/Optimiser_autogen_timestamp_deps.dir
+/home/linmax/QtProjects/Optimiser/build/Desk-Debug/CMakeFiles/Optimiser_autogen.dir
