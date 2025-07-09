@@ -12,39 +12,44 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
+# ——— Embed Python ———
+find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+
+
 set(PROJECT_SOURCES
+
         main.cpp
 
         menu.cpp
-        menu.h
+        ui_menu.h
         menu.ui
 
         linear.cpp
-        linear.h
+        ui_linear.h
         linear.ui
 
         multivariable.cpp
-        multivariable.h
+        ui_multivariable.h
         multivariable.ui
 
         ga.cpp
-        ga.h
+        ui_ga.h
         ga.ui
 
         constrained.cpp
-        constrained.h
+        ui_constrained.h
         constrained.ui
 
         multiobjective.cpp
-        multiobjective.h
+        ui_multiobjective.h
         multiobjective.ui
 
         wing.cpp
-        wing.h
+        ui_wing.h
         wing.ui
 
         manufacturing.cpp
-        manufacturing.h
+        ui_manufacturing.h
         manufacturing.ui
 
 )
@@ -64,11 +69,36 @@ if(ANDROID)
 else()
     add_executable(Optimiser
         ${PROJECT_SOURCES}
+        main.cpp
+
+        constrained.h
+        ga.h
+        linear.h
+        manufacturing.h
+        menu.h
+        multiobjective.h
+        multivariable.h
+        wing.h
+        python_utils.h
+        python_utils.cpp
     )
 endif()
 
 
-target_link_libraries(Optimiser PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+#target_link_libraries(Optimiser PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(Optimiser
+    PRIVATE
+      Qt${QT_VERSION_MAJOR}::Widgets
+      Python3::Python    # <— link the CPython library
+)
+
+# allow cross-compiling against the generated ui_*.h
+target_include_directories(Optimiser
+    PRIVATE
+      ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

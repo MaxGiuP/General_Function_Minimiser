@@ -582,6 +582,8 @@ CMAKE_UNAME:INTERNAL=/usr/bin/uname
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding OpenGL
 FIND_PACKAGE_MESSAGE_DETAILS_OpenGL:INTERNAL=[/usr/lib/libOpenGL.so][/usr/lib/libGLX.so][/usr/include][ ][v()]
+//Details about finding Python3
+FIND_PACKAGE_MESSAGE_DETAILS_Python3:INTERNAL=[/usr/bin/python3.13][/usr/include/python3.13][/usr/lib/libpython3.13.so][found components: Interpreter Development Development.Module Development.Embed ][v3.13.5()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //Details about finding WrapAtomic
@@ -1453,6 +1455,25 @@ Vulkan_INCLUDE_DIR-ADVANCED:INTERNAL=1
 Vulkan_LIBRARY-ADVANCED:INTERNAL=1
 //CMAKE_INSTALL_PREFIX during last run
 _GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=/tmp
+//Compiler reason failure
+_Python3_Compiler_REASON_FAILURE:INTERNAL=
+_Python3_DEVELOPMENT_EMBED_SIGNATURE:INTERNAL=82b13d141b9a005f0015bee39d059b07
+_Python3_DEVELOPMENT_MODULE_SIGNATURE:INTERNAL=a95b148aac5e04f29e19ad19bf7876a8
+//Development reason failure
+_Python3_Development_REASON_FAILURE:INTERNAL=
+//Path to a program.
+_Python3_EXECUTABLE:INTERNAL=/usr/bin/python3.13
+//Path to a file.
+_Python3_INCLUDE_DIR:INTERNAL=/usr/include/python3.13
+//Python3 Properties
+_Python3_INTERPRETER_PROPERTIES:INTERNAL=Python;3;13;5;64;<none>;cpython-313-x86_64-linux-gnu;abi3;/usr/lib/python3.13;/usr/lib/python3.13;/usr/lib/python3.13/site-packages;/usr/lib/python3.13/site-packages
+_Python3_INTERPRETER_SIGNATURE:INTERNAL=c92b3d9e6f476adbdafd9eb663c4620e
+//Interpreter reason failure
+_Python3_Interpreter_REASON_FAILURE:INTERNAL=
+//Path to a library.
+_Python3_LIBRARY_RELEASE:INTERNAL=/usr/lib/libpython3.13.so
+//NumPy reason failure
+_Python3_NumPy_REASON_FAILURE:INTERNAL=
 __pkg_config_arguments_PKG_XKB:INTERNAL=QUIET;xkbcommon
 __pkg_config_checked_PKG_XKB:INTERNAL=1
 //ADVANCED property for variable: pkgcfg_lib_PKG_XKB_xkbcommon

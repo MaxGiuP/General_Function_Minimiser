@@ -1,95 +1,92 @@
-#include "constrainedwindow.h"
+// constrained.cpp
+#include "constrained.h"
+#include "menu.h"
+#include "python_utils.h"
 #include <QDebug>
 
 ConstrainedWindow::ConstrainedWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::wConstrained)
-    , mainWindow(nullptr)
 {
     ui->setupUi(this);
-
     connect(ui->btnCalculate, &QPushButton::clicked,
             this, &ConstrainedWindow::btnCalculate_clicked);
-    connect(ui->btnBack, &QPushButton::clicked,
+    connect(ui->btnBack,      &QPushButton::clicked,
             this, &ConstrainedWindow::btnBack_clicked);
-
-    qDebug() << "ConstrainedWindow Initialised";
+    qDebug() << "ConstrainedWindow initialized";
 }
 
 ConstrainedWindow::~ConstrainedWindow()
 {
     delete ui;
-    // if mainWindow was created, it will be reparented and deleted by Qt
 }
 
 void ConstrainedWindow::btnCalculate_clicked()
 {
     qDebug() << "Calculate clicked";
-
     bool showPlot = ui->cbPlot->isChecked();
-    QString functionText = ui->txtFunction->text();
-    QStringList equalities   = ui->txtEq->toPlainText().split('\n', Qt::SkipEmptyParts);
-    QStringList inequalities = ui->txtIneq->toPlainText().split('\n', Qt::SkipEmptyParts);
+    QString fn   = ui->txtFunction->text();
+    QStringList eq   = ui->txtEq->toPlainText().split('\n', Qt::SkipEmptyParts);
+    QStringList ineq = ui->txtIneq->toPlainText().split('\n', Qt::SkipEmptyParts);
 
-    // Default parameters
-    QVector<double> start{1.0, 1.0};
-    double R      = 0.01;
-    QString method = "BFGS";
-    int scale     = 10;
-    int max_round = 6;
-    double tol    = 1e-6;
+    // Common params
+    double R          = 0.01;
+    QString method    = "BFGS";
+    QString start     = QStringList{"1","1"}.join(";");
+    int scale         = 10;
+    int maxRound      = 6;
+    double tol        = 1e-6;
 
-    QString result;
-
+    // Decide module/function
+    QString module, function;
+    QStringList args;
     if (ui->rbLagrange->isChecked()) {
-        qDebug() << "Starting Lagrange";
-        result = ConstrainedLagrange::lagrange(
-            functionText, equalities, inequalities, showPlot);
-        qDebug() << "End Lagrange";
+        module   = "Optimisers.Constrained.ConstrainedLagrange";
+        function = "lagrange";
+        args     = { fn, eq.join(";"), ineq.join(";"), showPlot ? "1" : "0" };
     }
     else if (ui->rbFixedPenaltyAny->isChecked()) {
-        qDebug() << "Starting fixed penalty ANY";
-        result = ConstrainedPenaltyFixedAny::fixed_penalty(
-            functionText, equalities, inequalities,
-            R, start, method, showPlot);
-        qDebug() << "Finished fixed penalty ANY";
+        module   = "Optimisers.Constrained.ConstrainedPenaltyFixedAny";
+        function = "fixed_penalty";
+        args     = { fn, eq.join(";"), ineq.join(";"),
+                QString::number(R), start, method, showPlot ? "1" : "0" };
     }
     else if (ui->rbFixedPenaltyEach->isChecked()) {
-        qDebug() << "Starting fixed penalty EACH";
-        result = ConstrainedPenaltyFixedEach::fixed_penalty(
-            functionText, equalities, inequalities,
-            R, start, method, showPlot);
-        qDebug() << "Finished fixed penalty EACH";
+        module   = "Optimisers.Constrained.ConstrainedPenaltyFixedEach";
+        function = "fixed_penalty";
+        args     = { fn, eq.join(";"), ineq.join(";"),
+                QString::number(R), start, method, showPlot ? "1" : "0" };
     }
     else if (ui->rbVaryingSL->isChecked()) {
-        qDebug() << "Starting Varying SL";
-        result = ConstrainedPenaltyVaryingSL::varying_sl(
-            functionText, equalities, inequalities,
-            R, scale, max_round, tol,
-            start, method, showPlot);
-        qDebug() << "Finished Varying SL";
+        module   = "Optimisers.Constrained.ConstrainedPenaltyVaryingSL";
+        function = "varying_sl";
+        args     = { fn, eq.join(";"), ineq.join(";"),
+                QString::number(R), QString::number(scale),
+                QString::number(maxRound), QString::number(tol),
+                start, method, showPlot ? "1" : "0" };
     }
     else if (ui->rbVaryingDoC->isChecked()) {
-        qDebug() << "Starting Varying DoC";
-        result = ConstrainedPenaltyVaryingDoC::varying_doc(
-            functionText, equalities, inequalities,
-            R, start, method, showPlot);
-        qDebug() << "Finished Varying DoC";
+        module   = "Optimisers.Constrained.ConstrainedPenaltyVaryingDoC";
+        function = "varying_doc";
+        args     = { fn, eq.join(";"), ineq.join(";"),
+                QString::number(R), start, method, showPlot ? "1" : "0" };
     }
     else if (ui->rbAugmented->isChecked()) {
-        qDebug() << "Starting Augmented";
-        result = ConstrainedAugmented::augmented(
-            functionText, equalities, inequalities);
-        qDebug() << "Finished Augmented";
+        module   = "Optimisers.Constrained.ConstrainedAugmented";
+        function = "augmented";
+        args     = { fn, eq.join(";"), ineq.join(";") };
     }
 
+    // Call into Python and display
+    QString result = callPythonFunction(module, function, args);
+    qDebug() << "Python returned:" << result;
     ui->txtOutput->setText(result);
 }
 
 void ConstrainedWindow::btnBack_clicked()
 {
     qDebug() << "Back clicked";
-    this->hide();
-    mainWindow = new MainWindow(this);
-    mainWindow->show();
+    hide();
+    Menu *m = new Menu(this);
+    m->show();
 }

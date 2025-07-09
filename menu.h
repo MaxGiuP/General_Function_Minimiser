@@ -1,98 +1,27 @@
-/********************************************************************************
-** Form generated from reading UI file 'menu.ui'
-**
-** Created by: Qt User Interface Compiler version 5.15.17
-**
-** WARNING! All changes made in this file will be lost when recompiling UI file!
-********************************************************************************/
+#ifndef MENU_H
+#define MENU_H
 
-#ifndef UI_MENU_H
-#define UI_MENU_H
+#include <QMainWindow>
+#include "ui_menu.h"    // your auto-gen header
 
-#include <QtCore/QVariant>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenuBar>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QStatusBar>
-#include <QtWidgets/QWidget>
+class Menu : public QMainWindow {
+    Q_OBJECT
 
-QT_BEGIN_NAMESPACE
-
-class Ui_wMenu
-{
 public:
-    QWidget *centralwidget;
-    QPushButton *btnLinear;
-    QPushButton *btnMultiVariable;
-    QPushButton *btnGA;
-    QPushButton *btnConstrained;
-    QPushButton *btnMultiObjective;
-    QPushButton *btnWing;
-    QPushButton *btnManufacturing;
-    QMenuBar *menubar;
-    QStatusBar *statusbar;
+    explicit Menu(QWidget *parent = nullptr);
+    ~Menu() override;
 
-    void setupUi(QMainWindow *wMenu)
-    {
-        if (wMenu->objectName().isEmpty())
-            wMenu->setObjectName(QString::fromUtf8("wMenu"));
-        wMenu->resize(460, 459);
-        centralwidget = new QWidget(wMenu);
-        centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-        btnLinear = new QPushButton(centralwidget);
-        btnLinear->setObjectName(QString::fromUtf8("btnLinear"));
-        btnLinear->setGeometry(QRect(10, 10, 141, 71));
-        btnMultiVariable = new QPushButton(centralwidget);
-        btnMultiVariable->setObjectName(QString::fromUtf8("btnMultiVariable"));
-        btnMultiVariable->setGeometry(QRect(160, 10, 141, 71));
-        btnGA = new QPushButton(centralwidget);
-        btnGA->setObjectName(QString::fromUtf8("btnGA"));
-        btnGA->setGeometry(QRect(310, 10, 141, 71));
-        btnConstrained = new QPushButton(centralwidget);
-        btnConstrained->setObjectName(QString::fromUtf8("btnConstrained"));
-        btnConstrained->setGeometry(QRect(10, 120, 141, 71));
-        btnMultiObjective = new QPushButton(centralwidget);
-        btnMultiObjective->setObjectName(QString::fromUtf8("btnMultiObjective"));
-        btnMultiObjective->setGeometry(QRect(160, 120, 141, 71));
-        btnWing = new QPushButton(centralwidget);
-        btnWing->setObjectName(QString::fromUtf8("btnWing"));
-        btnWing->setGeometry(QRect(130, 250, 181, 71));
-        btnManufacturing = new QPushButton(centralwidget);
-        btnManufacturing->setObjectName(QString::fromUtf8("btnManufacturing"));
-        btnManufacturing->setGeometry(QRect(130, 330, 181, 71));
-        wMenu->setCentralWidget(centralwidget);
-        menubar = new QMenuBar(wMenu);
-        menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 460, 23));
-        wMenu->setMenuBar(menubar);
-        statusbar = new QStatusBar(wMenu);
-        statusbar->setObjectName(QString::fromUtf8("statusbar"));
-        wMenu->setStatusBar(statusbar);
+private slots:
+    void btnLinear_clicked();
+    void btnMultiVariable_clicked();
+    void btnGA_clicked();
+    void btnConstrained_clicked();
+    void btnMultiObjective_clicked();
+    void btnWing_clicked();
+    void btnManufacturing_clicked();
 
-        retranslateUi(wMenu);
-
-        QMetaObject::connectSlotsByName(wMenu);
-    } // setupUi
-
-    void retranslateUi(QMainWindow *wMenu)
-    {
-        wMenu->setWindowTitle(QCoreApplication::translate("wMenu", "Menu", nullptr));
-        btnLinear->setText(QCoreApplication::translate("wMenu", "Linear", nullptr));
-        btnMultiVariable->setText(QCoreApplication::translate("wMenu", "Multi-Variable", nullptr));
-        btnGA->setText(QCoreApplication::translate("wMenu", "Genetic Algorithm", nullptr));
-        btnConstrained->setText(QCoreApplication::translate("wMenu", "Constrained", nullptr));
-        btnMultiObjective->setText(QCoreApplication::translate("wMenu", "Multi-Objective", nullptr));
-        btnWing->setText(QCoreApplication::translate("wMenu", "Wing Question", nullptr));
-        btnManufacturing->setText(QCoreApplication::translate("wMenu", "Manufacturing Question", nullptr));
-    } // retranslateUi
-
+private:
+    Ui::wMenu *ui;
 };
 
-namespace Ui {
-    class wMenu: public Ui_wMenu {};
-} // namespace Ui
-
-QT_END_NAMESPACE
-
-#endif // UI_MENU_H
+#endif // MENU_H
