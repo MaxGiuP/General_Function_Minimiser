@@ -54,7 +54,7 @@ build CMakeFiles/Optimiser.dir/Optimiser_autogen/mocs_compilation.cpp.o: CXX_COM
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Optimiser.dir/Optimiser_autogen/mocs_compilation.cpp.o.d
   FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
-  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
+  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
   OBJECT_DIR = CMakeFiles/Optimiser.dir
   OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir/Optimiser_autogen
 
@@ -63,79 +63,7 @@ build CMakeFiles/Optimiser.dir/main.cpp.o: CXX_COMPILER__Optimiser_unscanned_Deb
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Optimiser.dir/main.cpp.o.d
   FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
-  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
-  OBJECT_DIR = CMakeFiles/Optimiser.dir
-  OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir
-
-build CMakeFiles/Optimiser.dir/menu.cpp.o: CXX_COMPILER__Optimiser_unscanned_Debug /home/linmax/QtProjects/Optimiser/menu.cpp || cmake_object_order_depends_target_Optimiser
-  CONFIG = Debug
-  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
-  DEP_FILE = CMakeFiles/Optimiser.dir/menu.cpp.o.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
-  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
-  OBJECT_DIR = CMakeFiles/Optimiser.dir
-  OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir
-
-build CMakeFiles/Optimiser.dir/linear.cpp.o: CXX_COMPILER__Optimiser_unscanned_Debug /home/linmax/QtProjects/Optimiser/linear.cpp || cmake_object_order_depends_target_Optimiser
-  CONFIG = Debug
-  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
-  DEP_FILE = CMakeFiles/Optimiser.dir/linear.cpp.o.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
-  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
-  OBJECT_DIR = CMakeFiles/Optimiser.dir
-  OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir
-
-build CMakeFiles/Optimiser.dir/multivariable.cpp.o: CXX_COMPILER__Optimiser_unscanned_Debug /home/linmax/QtProjects/Optimiser/multivariable.cpp || cmake_object_order_depends_target_Optimiser
-  CONFIG = Debug
-  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
-  DEP_FILE = CMakeFiles/Optimiser.dir/multivariable.cpp.o.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
-  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
-  OBJECT_DIR = CMakeFiles/Optimiser.dir
-  OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir
-
-build CMakeFiles/Optimiser.dir/ga.cpp.o: CXX_COMPILER__Optimiser_unscanned_Debug /home/linmax/QtProjects/Optimiser/ga.cpp || cmake_object_order_depends_target_Optimiser
-  CONFIG = Debug
-  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
-  DEP_FILE = CMakeFiles/Optimiser.dir/ga.cpp.o.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
-  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
-  OBJECT_DIR = CMakeFiles/Optimiser.dir
-  OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir
-
-build CMakeFiles/Optimiser.dir/constrained.cpp.o: CXX_COMPILER__Optimiser_unscanned_Debug /home/linmax/QtProjects/Optimiser/constrained.cpp || cmake_object_order_depends_target_Optimiser
-  CONFIG = Debug
-  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
-  DEP_FILE = CMakeFiles/Optimiser.dir/constrained.cpp.o.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
-  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
-  OBJECT_DIR = CMakeFiles/Optimiser.dir
-  OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir
-
-build CMakeFiles/Optimiser.dir/multiobjective.cpp.o: CXX_COMPILER__Optimiser_unscanned_Debug /home/linmax/QtProjects/Optimiser/multiobjective.cpp || cmake_object_order_depends_target_Optimiser
-  CONFIG = Debug
-  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
-  DEP_FILE = CMakeFiles/Optimiser.dir/multiobjective.cpp.o.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
-  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
-  OBJECT_DIR = CMakeFiles/Optimiser.dir
-  OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir
-
-build CMakeFiles/Optimiser.dir/wing.cpp.o: CXX_COMPILER__Optimiser_unscanned_Debug /home/linmax/QtProjects/Optimiser/wing.cpp || cmake_object_order_depends_target_Optimiser
-  CONFIG = Debug
-  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
-  DEP_FILE = CMakeFiles/Optimiser.dir/wing.cpp.o.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
-  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
-  OBJECT_DIR = CMakeFiles/Optimiser.dir
-  OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir
-
-build CMakeFiles/Optimiser.dir/manufacturing.cpp.o: CXX_COMPILER__Optimiser_unscanned_Debug /home/linmax/QtProjects/Optimiser/manufacturing.cpp || cmake_object_order_depends_target_Optimiser
-  CONFIG = Debug
-  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
-  DEP_FILE = CMakeFiles/Optimiser.dir/manufacturing.cpp.o.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
-  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
+  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
   OBJECT_DIR = CMakeFiles/Optimiser.dir
   OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir
 
@@ -144,7 +72,79 @@ build CMakeFiles/Optimiser.dir/python_utils.cpp.o: CXX_COMPILER__Optimiser_unsca
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Optimiser.dir/python_utils.cpp.o.d
   FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
-  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6 -isystem /usr/include/qt6/QtCore -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
+  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
+  OBJECT_DIR = CMakeFiles/Optimiser.dir
+  OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir
+
+build CMakeFiles/Optimiser.dir/menu.cpp.o: CXX_COMPILER__Optimiser_unscanned_Debug /home/linmax/QtProjects/Optimiser/menu.cpp || cmake_object_order_depends_target_Optimiser
+  CONFIG = Debug
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles/Optimiser.dir/menu.cpp.o.d
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
+  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
+  OBJECT_DIR = CMakeFiles/Optimiser.dir
+  OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir
+
+build CMakeFiles/Optimiser.dir/linear.cpp.o: CXX_COMPILER__Optimiser_unscanned_Debug /home/linmax/QtProjects/Optimiser/linear.cpp || cmake_object_order_depends_target_Optimiser
+  CONFIG = Debug
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles/Optimiser.dir/linear.cpp.o.d
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
+  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
+  OBJECT_DIR = CMakeFiles/Optimiser.dir
+  OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir
+
+build CMakeFiles/Optimiser.dir/multivariable.cpp.o: CXX_COMPILER__Optimiser_unscanned_Debug /home/linmax/QtProjects/Optimiser/multivariable.cpp || cmake_object_order_depends_target_Optimiser
+  CONFIG = Debug
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles/Optimiser.dir/multivariable.cpp.o.d
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
+  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
+  OBJECT_DIR = CMakeFiles/Optimiser.dir
+  OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir
+
+build CMakeFiles/Optimiser.dir/ga.cpp.o: CXX_COMPILER__Optimiser_unscanned_Debug /home/linmax/QtProjects/Optimiser/ga.cpp || cmake_object_order_depends_target_Optimiser
+  CONFIG = Debug
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles/Optimiser.dir/ga.cpp.o.d
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
+  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
+  OBJECT_DIR = CMakeFiles/Optimiser.dir
+  OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir
+
+build CMakeFiles/Optimiser.dir/constrained.cpp.o: CXX_COMPILER__Optimiser_unscanned_Debug /home/linmax/QtProjects/Optimiser/constrained.cpp || cmake_object_order_depends_target_Optimiser
+  CONFIG = Debug
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles/Optimiser.dir/constrained.cpp.o.d
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
+  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
+  OBJECT_DIR = CMakeFiles/Optimiser.dir
+  OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir
+
+build CMakeFiles/Optimiser.dir/multiobjective.cpp.o: CXX_COMPILER__Optimiser_unscanned_Debug /home/linmax/QtProjects/Optimiser/multiobjective.cpp || cmake_object_order_depends_target_Optimiser
+  CONFIG = Debug
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles/Optimiser.dir/multiobjective.cpp.o.d
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
+  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
+  OBJECT_DIR = CMakeFiles/Optimiser.dir
+  OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir
+
+build CMakeFiles/Optimiser.dir/wing.cpp.o: CXX_COMPILER__Optimiser_unscanned_Debug /home/linmax/QtProjects/Optimiser/wing.cpp || cmake_object_order_depends_target_Optimiser
+  CONFIG = Debug
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles/Optimiser.dir/wing.cpp.o.d
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
+  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
+  OBJECT_DIR = CMakeFiles/Optimiser.dir
+  OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir
+
+build CMakeFiles/Optimiser.dir/manufacturing.cpp.o: CXX_COMPILER__Optimiser_unscanned_Debug /home/linmax/QtProjects/Optimiser/manufacturing.cpp || cmake_object_order_depends_target_Optimiser
+  CONFIG = Debug
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles/Optimiser.dir/manufacturing.cpp.o.d
+  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always -mno-direct-extern-access
+  INCLUDES = -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/include -I/home/linmax/QtProjects/Optimiser/build/Desk-Debug -isystem /usr/include/qt6/QtCore -isystem /usr/include/qt6 -isystem /usr/lib/qt6/mkspecs/linux-g++ -isystem /usr/include/qt6/QtWidgets -isystem /usr/include/qt6/QtGui -isystem /usr/include/python3.13
   OBJECT_DIR = CMakeFiles/Optimiser.dir
   OBJECT_FILE_DIR = CMakeFiles/Optimiser.dir
 
@@ -156,7 +156,7 @@ build CMakeFiles/Optimiser.dir/python_utils.cpp.o: CXX_COMPILER__Optimiser_unsca
 #############################################
 # Link the executable Optimiser
 
-build Optimiser: CXX_EXECUTABLE_LINKER__Optimiser_Debug CMakeFiles/Optimiser.dir/Optimiser_autogen/mocs_compilation.cpp.o CMakeFiles/Optimiser.dir/main.cpp.o CMakeFiles/Optimiser.dir/menu.cpp.o CMakeFiles/Optimiser.dir/linear.cpp.o CMakeFiles/Optimiser.dir/multivariable.cpp.o CMakeFiles/Optimiser.dir/ga.cpp.o CMakeFiles/Optimiser.dir/constrained.cpp.o CMakeFiles/Optimiser.dir/multiobjective.cpp.o CMakeFiles/Optimiser.dir/wing.cpp.o CMakeFiles/Optimiser.dir/manufacturing.cpp.o CMakeFiles/Optimiser.dir/python_utils.cpp.o | /usr/lib/libQt6Widgets.so.6.9.1 /usr/lib/libpython3.13.so /usr/lib/libQt6Gui.so.6.9.1 /usr/lib/libGLX.so /usr/lib/libOpenGL.so /usr/lib/libQt6Core.so.6.9.1 || Optimiser_autogen Optimiser_autogen_timestamp_deps
+build Optimiser: CXX_EXECUTABLE_LINKER__Optimiser_Debug CMakeFiles/Optimiser.dir/Optimiser_autogen/mocs_compilation.cpp.o CMakeFiles/Optimiser.dir/main.cpp.o CMakeFiles/Optimiser.dir/python_utils.cpp.o CMakeFiles/Optimiser.dir/menu.cpp.o CMakeFiles/Optimiser.dir/linear.cpp.o CMakeFiles/Optimiser.dir/multivariable.cpp.o CMakeFiles/Optimiser.dir/ga.cpp.o CMakeFiles/Optimiser.dir/constrained.cpp.o CMakeFiles/Optimiser.dir/multiobjective.cpp.o CMakeFiles/Optimiser.dir/wing.cpp.o CMakeFiles/Optimiser.dir/manufacturing.cpp.o | /usr/lib/libQt6Widgets.so.6.9.1 /usr/lib/libpython3.13.so /usr/lib/libQt6Gui.so.6.9.1 /usr/lib/libGLX.so /usr/lib/libOpenGL.so /usr/lib/libQt6Core.so.6.9.1 || Optimiser_autogen Optimiser_autogen_timestamp_deps
   CONFIG = Debug
   DEP_FILE = CMakeFiles/Optimiser.dir/link.d
   FLAGS = -DQT_QML_DEBUG -g

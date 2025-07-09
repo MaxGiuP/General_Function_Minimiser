@@ -1,6 +1,5 @@
 /home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/EWIEGA46WW/moc_menu.cpp: /home/linmax/QtProjects/Optimiser/menu.h \
   /home/linmax/QtProjects/Optimiser/build/Desk-Debug/Optimiser_autogen/moc_predefs.h \
-  /home/linmax/QtProjects/Optimiser/ui_menu.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/bitsperlong.h \
   /usr/include/asm-generic/errno-base.h \
@@ -261,8 +260,6 @@
   /usr/include/linux/types.h \
   /usr/include/locale.h \
   /usr/include/pthread.h \
-  /usr/include/qt6/QtCore/QDebug \
-  /usr/include/qt6/QtCore/QVariant \
   /usr/include/qt6/QtCore/q17memory.h \
   /usr/include/qt6/QtCore/q20functional.h \
   /usr/include/qt6/QtCore/q20iterator.h \
@@ -270,7 +267,6 @@
   /usr/include/qt6/QtCore/q20type_traits.h \
   /usr/include/qt6/QtCore/q20utility.h \
   /usr/include/qt6/QtCore/q23utility.h \
-  /usr/include/qt6/QtCore/qabstracteventdispatcher.h \
   /usr/include/qt6/QtCore/qalgorithms.h \
   /usr/include/qt6/QtCore/qanystringview.h \
   /usr/include/qt6/QtCore/qarraydata.h \
@@ -280,7 +276,6 @@
   /usr/include/qt6/QtCore/qatomic.h \
   /usr/include/qt6/QtCore/qatomic_cxx11.h \
   /usr/include/qt6/QtCore/qbasicatomic.h \
-  /usr/include/qt6/QtCore/qbasictimer.h \
   /usr/include/qt6/QtCore/qbindingstorage.h \
   /usr/include/qt6/QtCore/qbytearray.h \
   /usr/include/qt6/QtCore/qbytearrayalgorithms.h \
@@ -297,16 +292,10 @@
   /usr/include/qt6/QtCore/qcontainerinfo.h \
   /usr/include/qt6/QtCore/qcontainertools_impl.h \
   /usr/include/qt6/QtCore/qcontiguouscache.h \
-  /usr/include/qt6/QtCore/qcoreapplication.h \
-  /usr/include/qt6/QtCore/qcoreapplication_platform.h \
-  /usr/include/qt6/QtCore/qcoreevent.h \
   /usr/include/qt6/QtCore/qdarwinhelpers.h \
   /usr/include/qt6/QtCore/qdatastream.h \
-  /usr/include/qt6/QtCore/qdeadlinetimer.h \
   /usr/include/qt6/QtCore/qdebug.h \
-  /usr/include/qt6/QtCore/qelapsedtimer.h \
   /usr/include/qt6/QtCore/qendian.h \
-  /usr/include/qt6/QtCore/qeventloop.h \
   /usr/include/qt6/QtCore/qexceptionhandling.h \
   /usr/include/qt6/QtCore/qflags.h \
   /usr/include/qt6/QtCore/qfloat16.h \
@@ -324,7 +313,6 @@
   /usr/include/qt6/QtCore/qlatin1stringview.h \
   /usr/include/qt6/QtCore/qline.h \
   /usr/include/qt6/QtCore/qlist.h \
-  /usr/include/qt6/QtCore/qlocale.h \
   /usr/include/qt6/QtCore/qlogging.h \
   /usr/include/qt6/QtCore/qmalloc.h \
   /usr/include/qt6/QtCore/qmap.h \
@@ -334,7 +322,6 @@
   /usr/include/qt6/QtCore/qmetatype.h \
   /usr/include/qt6/QtCore/qminmax.h \
   /usr/include/qt6/QtCore/qnamespace.h \
-  /usr/include/qt6/QtCore/qnativeinterface.h \
   /usr/include/qt6/QtCore/qnumeric.h \
   /usr/include/qt6/QtCore/qobject.h \
   /usr/include/qt6/QtCore/qobject_impl.h \
@@ -407,11 +394,8 @@
   /usr/include/qt6/QtGui/qfontinfo.h \
   /usr/include/qt6/QtGui/qfontmetrics.h \
   /usr/include/qt6/QtGui/qfontvariableaxis.h \
-  /usr/include/qt6/QtGui/qguiapplication.h \
-  /usr/include/qt6/QtGui/qguiapplication_platform.h \
   /usr/include/qt6/QtGui/qicon.h \
   /usr/include/qt6/QtGui/qimage.h \
-  /usr/include/qt6/QtGui/qinputmethod.h \
   /usr/include/qt6/QtGui/qkeysequence.h \
   /usr/include/qt6/QtGui/qpaintdevice.h \
   /usr/include/qt6/QtGui/qpalette.h \
@@ -426,20 +410,9 @@
   /usr/include/qt6/QtGui/qtguiglobal.h \
   /usr/include/qt6/QtGui/qtransform.h \
   /usr/include/qt6/QtGui/qwindowdefs.h \
-  /usr/include/qt6/QtWidgets/QApplication \
   /usr/include/qt6/QtWidgets/QMainWindow \
-  /usr/include/qt6/QtWidgets/QMenuBar \
-  /usr/include/qt6/QtWidgets/QPushButton \
-  /usr/include/qt6/QtWidgets/QStatusBar \
-  /usr/include/qt6/QtWidgets/QWidget \
-  /usr/include/qt6/QtWidgets/qabstractbutton.h \
-  /usr/include/qt6/QtWidgets/qapplication.h \
   /usr/include/qt6/QtWidgets/qmainwindow.h \
-  /usr/include/qt6/QtWidgets/qmenu.h \
-  /usr/include/qt6/QtWidgets/qmenubar.h \
-  /usr/include/qt6/QtWidgets/qpushbutton.h \
   /usr/include/qt6/QtWidgets/qsizepolicy.h \
-  /usr/include/qt6/QtWidgets/qstatusbar.h \
   /usr/include/qt6/QtWidgets/qtabwidget.h \
   /usr/include/qt6/QtWidgets/qtwidgets-config.h \
   /usr/include/qt6/QtWidgets/qtwidgetsexports.h \

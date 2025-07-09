@@ -54,8 +54,6 @@ public:
     QLabel *label;
     QLabel *label_3;
     QPushButton *btnBack;
-    QPushButton *btnCalculate_2;
-    QPushButton *btnBack_2;
     QMenuBar *menubar;
     QMenu *menuLinear_Search;
     QStatusBar *statusbar;
@@ -64,7 +62,7 @@ public:
     {
         if (wLinear->objectName().isEmpty())
             wLinear->setObjectName("wLinear");
-        wLinear->resize(724, 403);
+        wLinear->resize(662, 393);
         centralwidget = new QWidget(wLinear);
         centralwidget->setObjectName("centralwidget");
         btnCalculate = new QPushButton(centralwidget);
@@ -72,7 +70,7 @@ public:
         btnCalculate->setGeometry(QRect(320, 280, 151, 41));
         verticalLayoutWidget = new QWidget(centralwidget);
         verticalLayoutWidget->setObjectName("verticalLayoutWidget");
-        verticalLayoutWidget->setGeometry(QRect(10, 120, 244, 86));
+        verticalLayoutWidget->setGeometry(QRect(10, 120, 244, 89));
         verticalLayout = new QVBoxLayout(verticalLayoutWidget);
         verticalLayout->setObjectName("verticalLayout");
         verticalLayout->setContentsMargins(0, 0, 0, 0);
@@ -166,16 +164,10 @@ public:
         btnBack = new QPushButton(centralwidget);
         btnBack->setObjectName("btnBack");
         btnBack->setGeometry(QRect(40, 280, 97, 26));
-        btnCalculate_2 = new QPushButton(centralwidget);
-        btnCalculate_2->setObjectName("btnCalculate_2");
-        btnCalculate_2->setGeometry(QRect(460, 380, 151, 41));
-        btnBack_2 = new QPushButton(centralwidget);
-        btnBack_2->setObjectName("btnBack_2");
-        btnBack_2->setGeometry(QRect(180, 380, 97, 26));
         wLinear->setCentralWidget(centralwidget);
         menubar = new QMenuBar(wLinear);
         menubar->setObjectName("menubar");
-        menubar->setGeometry(QRect(0, 0, 724, 23));
+        menubar->setGeometry(QRect(0, 0, 662, 25));
         menuLinear_Search = new QMenu(menubar);
         menuLinear_Search->setObjectName("menuLinear_Search");
         wLinear->setMenuBar(menubar);
@@ -207,8 +199,6 @@ public:
         label->setText(QCoreApplication::translate("wLinear", "Function", nullptr));
         label_3->setText(QCoreApplication::translate("wLinear", "Number of Iterations", nullptr));
         btnBack->setText(QCoreApplication::translate("wLinear", "Back", nullptr));
-        btnCalculate_2->setText(QCoreApplication::translate("wLinear", "Calculate", nullptr));
-        btnBack_2->setText(QCoreApplication::translate("wLinear", "Back", nullptr));
         menuLinear_Search->setTitle(QString());
     } // retranslateUi
 

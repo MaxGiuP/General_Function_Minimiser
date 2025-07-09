@@ -529,54 +529,6 @@
 			null
 		],
 		[
-			"/home/linmax/QtProjects/Optimiser/ui_constrained.h",
-			"MU",
-			"EWIEGA46WW/moc_ui_constrained.cpp",
-			null
-		],
-		[
-			"/home/linmax/QtProjects/Optimiser/ui_ga.h",
-			"MU",
-			"EWIEGA46WW/moc_ui_ga.cpp",
-			null
-		],
-		[
-			"/home/linmax/QtProjects/Optimiser/ui_linear.h",
-			"MU",
-			"EWIEGA46WW/moc_ui_linear.cpp",
-			null
-		],
-		[
-			"/home/linmax/QtProjects/Optimiser/ui_manufacturing.h",
-			"MU",
-			"EWIEGA46WW/moc_ui_manufacturing.cpp",
-			null
-		],
-		[
-			"/home/linmax/QtProjects/Optimiser/ui_menu.h",
-			"MU",
-			"EWIEGA46WW/moc_ui_menu.cpp",
-			null
-		],
-		[
-			"/home/linmax/QtProjects/Optimiser/ui_multiobjective.h",
-			"MU",
-			"EWIEGA46WW/moc_ui_multiobjective.cpp",
-			null
-		],
-		[
-			"/home/linmax/QtProjects/Optimiser/ui_multivariable.h",
-			"MU",
-			"EWIEGA46WW/moc_ui_multivariable.cpp",
-			null
-		],
-		[
-			"/home/linmax/QtProjects/Optimiser/ui_wing.h",
-			"MU",
-			"EWIEGA46WW/moc_ui_wing.cpp",
-			null
-		],
-		[
 			"/home/linmax/QtProjects/Optimiser/wing.h",
 			"MU",
 			"EWIEGA46WW/moc_wing.cpp",
@@ -597,10 +549,10 @@
 	"MOC_INCLUDES" : 
 	[
 		"/home/linmax/QtProjects/Optimiser/build/Desk-Debug",
-		"/usr/include/qt6/QtWidgets",
-		"/usr/include/qt6",
 		"/usr/include/qt6/QtCore",
+		"/usr/include/qt6",
 		"/usr/lib/qt6/mkspecs/linux-g++",
+		"/usr/include/qt6/QtWidgets",
 		"/usr/include/qt6/QtGui",
 		"/usr/include/python3.13",
 		"/usr/include",
